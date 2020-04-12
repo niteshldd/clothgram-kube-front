@@ -1,0 +1,43 @@
+#Cluster IP will available to kubernetes internal conncectivty 
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: clothgram-server-cluster-ip-service
+#   namespace: development
+# spec:
+#   type: ClusterIP
+#   selector:
+#     component: clothgram-server
+#   ports:
+#     - port: 8000 #this port will be available internally 
+#       targetPort: 8000 #this port of web 
+
+# ---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: clothgram-dashboard-cluster-ip-services-test
+  namespace: development
+spec:
+  type: ClusterIP
+  selector:
+    component: clothgram-dashboard-test
+  ports:
+    - port: 90 #this port will be available internally 
+      targetPort: 90 #this port of web 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: clothgram-frontend-cluster-ip-services-test
+  namespace: development
+spec:
+  type: ClusterIP
+  selector:
+    component: clothgram-frontend-test
+  ports:
+    - port: 80 #this port will be available internally 
+      targetPort: 80 #this port of web 
