@@ -1,0 +1,98 @@
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: clothgram-server-deployment
+#   namespace: development
+# spec:
+#   replicas: 1
+#   strategy:
+#     type: RollingUpdate
+#   selector:
+#     matchLabels:
+#       component: clothgram-server
+#   template:
+#     metadata:
+#       labels:
+#         component: clothgram-server
+#     spec:
+#       volumes:
+#         - name: clothgram-media
+#           persistentVolumeClaim:
+#             claimName: jenkins-storage
+#       containers:
+#         - name: clothgram-server
+#           image: niteshldd/clothgram:latest
+#           volumeMounts:
+#           - name: clothgram-media
+#             mountPath: /app/media/
+#             subPath: cloth-media
+#           # command: ["python3 manage.py migrate --no-input && python3 manage.py collectstatic --noinput && python3 manage.py populatedb --createsuperuser"]
+#           ports:
+#             - containerPort: 8000
+#           env:
+#             - name: DATABASE_URL
+#               value: postgres://postgres:pg12345nitesh@postrgess-cluster-ip-services/postgres
+#             - name: CELERY_BROKER_URL
+#               value: redis://redis-cluster-ip-services:6379/1
+#             - name: SECRET_KEY
+#               value: 'niteshkwhdiw'
+#             - name: JWT_VERIFY_EXPIRATION
+#               value: 'True'
+#             - name: ALLOWED_HOSTS
+#               value: '*'
+
+
+
+# ---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clothgram-frontend-deployment-test
+  namespace: development
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1 # This what we are making extra changes compare to kind pod and adding matchlevels 
+  selector:
+    matchLabels:
+      component: clothgram-frontend-test # This label give access to templates:metadata:labels 
+  template:
+    metadata:
+      labels:
+        component: clothgram-frontend-test # This lable is used by match Labels
+    spec:
+      containers:
+        - name: clothgram-frontend-test
+          image: niteshldd/clothgram-storefront:test
+          ports:
+           - containerPort: 80 #changing configuration in client-deployment will applied by changing the configuration
+
+#Deplyoment will roll the new configuration 
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clothgram-dashboard-deployment-test
+  namespace: development
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1 # This what we are making extra changes compare to kind pod and adding matchlevels 
+  selector:
+    matchLabels:
+      component: clothgram-dashboard-test # This label give access to templates:metadata:labels 
+  template:
+    metadata:
+      labels:
+        component: clothgram-dashboard-test # This lable is used by match Labels
+    spec:
+      containers:
+        - name: clothgram-dashboard-test
+          image: niteshldd/clothgram-dashboard:test
+          ports:
+           - containerPort: 90 #changing configuration in client-deployment will applied by changing the configuration
+
