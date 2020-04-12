@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filtering URL params should not be empty if active filters are present 1`] = `
+Object {
+  "createdFrom": "2019-12-09",
+  "createdTo": "2019-12-38",
+  "status": Array [
+    "FULFILLED",
+    "PARTIALLY_FULFILLED",
+  ],
+}
+`;
+
+exports[`Filtering URL params should not be empty if active filters are present 2`] = `"createdFrom=2019-12-09&createdTo=2019-12-38&status%5B0%5D=FULFILLED&status%5B1%5D=PARTIALLY_FULFILLED"`;
