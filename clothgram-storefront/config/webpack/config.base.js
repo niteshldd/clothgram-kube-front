@@ -111,7 +111,7 @@ module.exports = ({ sourceDir, distDir }) => ({
       },
     }),
     new webpack.EnvironmentPlugin({
-      API_URI: "http://localhost:8000/graphql/",
+      API_URI: "https://api-clothgram.kube.rukjaana.com/graphql/",
       SERVICE_WORKER_TIMEOUT: "60000",
     }),
   ],

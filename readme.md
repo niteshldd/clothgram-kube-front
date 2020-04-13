@@ -40,6 +40,26 @@ Below command will push the commit to test branch
 
 git push origin test 
 
+## TO run this in local follow the below step 
+
+- Start installation with below command 
+
+1) npm i 
+
+2) create env variable with below command 
+
+export API_URI=https://api-clothgram.kube.rukjaana.com/graphql/
+
+3) npm start 
+
+you should be able to access the web page from 
+
+http://localhost:3000
+
+or 
+
+http://yourip:3000
+
 ## Now every thing well good then you should see the update in below link for test 
 
 For Frontend - https://test-clothgram.kube.rukjaana.com

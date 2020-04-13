@@ -31,7 +31,7 @@ These instructions will get you a copy of the project up and running on your loc
 - Node.js 10.0+
 - A running instance of Saleor.
 
-  To run the storefront, you have to set the `API_URI` environment variable to point to the Saleor GraphQL API. If you are running Saleor locally with the default settings, set `API_URI` to: `http://localhost:8000/graphql/`.
+  To run the storefront, you have to set the `API_URI` environment variable to point to the Saleor GraphQL API. If you are running Saleor locally with the default settings, set `API_URI` to: `https://api-clothgram.kube.rukjaana.com/graphql/`.
 
 ### Installing
 

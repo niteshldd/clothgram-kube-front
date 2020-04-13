@@ -2,7 +2,7 @@ module.exports = {
   client: {
     service: {
       name: "saleor",
-      url: "http://localhost:8000/graphql/",
+      url: "https://api-clothgram.kube.rukjaana.com/graphql/",
       includes: ["./**/*.js", "./**/*.ts"],
       excludes: ["**/__tests__/**/*"],
     },
