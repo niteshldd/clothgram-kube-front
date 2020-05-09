@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
     background-color: ${props => props.theme.colors.hoverLightBackground};
   }
 
-  ${media.mediumScreen`
+  ${media.largeScreen`
     padding: 1.8rem;
   `}
 `;
@@ -33,4 +33,14 @@ export const Price = styled.p`
   ${textProps}
 `;
 
-export const Image = styled.div``;
+export const Image = styled.div`
+  width: auto;
+  height: auto;
+  max-width: 100%;
+
+  > img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+  }
+`;

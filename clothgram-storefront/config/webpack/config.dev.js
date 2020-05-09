@@ -6,7 +6,7 @@ module.exports = ({ sourceDir, distDir }) => ({
     filename: "js/[name].js"
   },
   devServer: {
-    host:'000.000.00.00',
+    host:'0.0.0.0',
     port: 3000
   },
   module: {

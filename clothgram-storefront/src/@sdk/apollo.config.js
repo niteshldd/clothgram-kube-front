@@ -3,7 +3,7 @@ module.exports = {
     includes: ["./queries/*.ts", "./mutations/*.ts", "./fragments/*.ts"],
     service: {
       name: "saleor",
-      url: "https://api-clothgram.kube.rukjaana.com/graphql/"
+      url: "http://localhost:8000/graphql/"
     }
   }
 };

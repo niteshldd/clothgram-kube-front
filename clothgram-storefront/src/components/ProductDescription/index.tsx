@@ -3,28 +3,25 @@ import "./scss/index.scss";
 import isEqual from "lodash/isEqual";
 import * as React from "react";
 
-import { TextField } from "@components/molecules";
 import { ProductVariantPicker } from "@components/organisms";
 import {
-  ProductDetails_product_attributes,
   ProductDetails_product_pricing,
   ProductDetails_product_variants,
   ProductDetails_product_variants_pricing,
 } from "@sdk/queries/types/ProductDetails";
 import { IProductVariantsAttributesSelectedValues, ITaxedMoney } from "@types";
 
+import { ICheckoutModelLine } from "@sdk/repository";
 import { TaxedMoney } from "../../@next/components/containers";
-import { CartContext, CartLine } from "../CartProvider/context";
 import AddToCart from "./AddToCart";
-import AddToWishlist from "./AddToWishlist";
+import { QuantityTextField } from "./QuantityTextField";
 
 interface ProductDescriptionProps {
   productId: string;
   productVariants: ProductDetails_product_variants[];
-  selectedAttributes: ProductDetails_product_attributes[];
   name: string;
   pricing: ProductDetails_product_pricing;
-  children: React.ReactNode;
+  items: ICheckoutModelLine[];
   addToCart(varinatId: string, quantity?: number): void;
   setVariantId(variantId: string);
 }
@@ -106,41 +103,45 @@ class ProductDescription extends React.Component<
     }
   };
 
-  handleSubmit = () => {
-    this.props.addToCart(this.state.variant, this.state.quantity);
-  };
-
-  canAddToCart = (lines: CartLine[]) => {
+  canAddToCart = () => {
+    const { items } = this.props;
     const { variant, quantity, variantStock } = this.state;
-    const cartLine = lines.find(({ variantId }) => variantId === variant);
-    const syncedQuantityWithCart = cartLine
-      ? quantity + cartLine.quantity
+
+    const cartItem = items?.find(item => item.variant.id === variant);
+    const syncedQuantityWithCart = cartItem
+      ? quantity + (cartItem?.quantity || 0)
       : quantity;
     return quantity !== 0 && variant && variantStock >= syncedQuantityWithCart;
   };
 
+  handleSubmit = () => {
+    this.props.addToCart(this.state.variant, this.state.quantity);
+  };
+
+  getAvailableQuantity = () => {
+    const { items } = this.props;
+    const { variant, variantStock } = this.state;
+
+    const cartItem = items?.find(item => item.variant.id === variant);
+    const quantityInCart = cartItem?.quantity || 0;
+
+    return variantStock - quantityInCart;
+  };
+
+  handleQuantityChange = (quantity: number) => {
+    this.setState({
+      quantity,
+    });
+  };
+
   render() {
-    const { children, name, selectedAttributes } = this.props;
-    const { quantity } = this.state;
+    const { name } = this.props;
+    const { variant, quantity } = this.state;
 
     return (
       <div className="product-description">
         <h3>{name}</h3>
         <h4>{this.getProductPrice()}</h4>
-        <div>
-          {selectedAttributes.map(
-            ({ attribute, values }) =>
-              values.length > 0 && (
-                <div
-                  className="product-description__selected-attributes"
-                  key={attribute.id}
-                >
-                  <span>{`${attribute.name}: `}</span>
-                  <span>{values.map(({ name }) => name).join(", ")}</span>
-                </div>
-              )
-          )}
-        </div>
         <div className="product-description__variant-picker">
           <ProductVariantPicker
             productVariants={this.props.productVariants}
@@ -149,32 +150,17 @@ class ProductDescription extends React.Component<
           />
         </div>
         <div className="product-description__quantity-input">
-          <TextField
-            type="number"
-            label="Quantity"
-            min="1"
-            value={quantity || ""}
-            onChange={e =>
-              this.setState({ quantity: Math.max(1, Number(e.target.value)) })
-            }
+          <QuantityTextField
+            quantity={quantity}
+            maxQuantity={this.getAvailableQuantity()}
+            onQuantityChange={this.handleQuantityChange}
+            hideErrors={!variant}
           />
         </div>
-        <div className="product-description__about">
-          <h4>Description</h4>
-          {children}
-        </div>
-        <CartContext.Consumer>
-          {({ lines }) => (
-            <AddToCart
-              onSubmit={this.handleSubmit}
-              lines={lines}
-              disabled={!this.canAddToCart(lines)}
-            />
-          )}
-        </CartContext.Consumer>
-        <div className="product-description__add-to-wishlist">
-          <AddToWishlist productId={this.props.productId} />
-        </div>
+        <AddToCart
+          onSubmit={this.handleSubmit}
+          disabled={!this.canAddToCart()}
+        />
       </div>
     );
   }
