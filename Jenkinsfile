@@ -20,8 +20,8 @@ pipeline {
     stage('Apply Kubernetes Files') {
       steps {
           withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://api.kube.rukjaana.com']) {
+          sh 'kubectl rollout restart deployment/clothgram-dashboard-deployment-test -n development'
           sh 'kubectl get all'
-          sh 'kubectl apply -f clothgram-test/'
         }
       }
   }

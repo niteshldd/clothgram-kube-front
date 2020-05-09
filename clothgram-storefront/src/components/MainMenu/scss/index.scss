@@ -4,10 +4,10 @@
   align-items: center;
   align-items: stretch;
   background-color: $white;
-  border-bottom: 1px solid $gray-light;
+  border-bottom: none;
   display: flex;
   flex-direction: row;
-  height: 3.55rem;
+  height: 5rem;
   position: relative;
 
   &__left {
@@ -45,7 +45,8 @@
       width: 4rem;
 
       @media (min-width: $small-screen) {
-        width: 6rem;
+        width: 4rem;
+        height: 4.5rem;
       }
     }
   }

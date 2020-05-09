@@ -8,30 +8,6 @@ import { CheckoutErrorCode } from "./../../types/globalTypes";
 // GraphQL mutation operation: RemoveCheckoutPromoCode
 // ====================================================
 
-export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_availablePaymentGateways_config {
-  __typename: "GatewayConfigLine";
-  /**
-   * Gateway config key.
-   */
-  field: string;
-  /**
-   * Gateway config value for key.
-   */
-  value: string | null;
-}
-
-export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_availablePaymentGateways {
-  __typename: "PaymentGateway";
-  /**
-   * Payment gateway name.
-   */
-  name: string;
-  /**
-   * Payment gateway client configuration.
-   */
-  config: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_availablePaymentGateways_config[];
-}
-
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_totalPrice_gross {
   __typename: "Money";
   /**
@@ -42,10 +18,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_totalP
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_totalPrice_net {
@@ -58,10 +30,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_totalP
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_totalPrice {
@@ -86,10 +54,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_subtot
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_subtotalPrice_net {
@@ -102,10 +66,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_subtot
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_subtotalPrice {
@@ -212,10 +172,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_availa
    * Amount of money.
    */
   amount: number;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_availableShippingMethods {
@@ -238,10 +194,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_shippi
    * Amount of money.
    */
   amount: number;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_shippingMethod {
@@ -264,10 +216,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_shippi
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_shippingPrice_net {
@@ -280,10 +228,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_shippi
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_shippingPrice {
@@ -308,10 +252,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_totalPrice_net {
@@ -324,10 +264,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_totalPrice {
@@ -352,10 +288,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_pricing_priceUndiscounted_net {
@@ -368,10 +300,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_pricing_priceUndiscounted {
@@ -396,10 +324,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_pricing_price_net {
@@ -412,10 +336,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
    * Currency code.
    */
   currency: string;
-  /**
-   * Money formatted according to the current locale.
-   */
-  localized: string;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_pricing_price {
@@ -446,6 +366,46 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
   price: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_pricing_price | null;
 }
 
+export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_attributes_attribute {
+  __typename: "Attribute";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  /**
+   * Name of an attribute displayed in the interface.
+   */
+  name: string | null;
+}
+
+export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_attributes_values {
+  __typename: "AttributeValue";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  /**
+   * Name of a value displayed in the interface.
+   */
+  name: string | null;
+  /**
+   * Name of a value displayed in the interface.
+   */
+  value: string | null;
+}
+
+export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_attributes {
+  __typename: "SelectedAttribute";
+  /**
+   * Name of an attribute displayed in the interface.
+   */
+  attribute: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_attributes_attribute;
+  /**
+   * Values of an attribute.
+   */
+  values: (RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_attributes_values | null)[];
+}
+
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_product_thumbnail {
   __typename: "Image";
   /**
@@ -466,6 +426,11 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
   url: string;
 }
 
+export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_product_productType {
+  __typename: "ProductType";
+  isShippingRequired: boolean;
+}
+
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_product {
   __typename: "Product";
   /**
@@ -481,23 +446,33 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_
    * The main thumbnail for a product.
    */
   thumbnail2x: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_product_thumbnail2x | null;
+  productType: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_product_productType;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant {
   __typename: "ProductVariant";
   /**
-   * Quantity of a product available for sale.
-   */
-  stockQuantity: number;
-  /**
    * The ID of the object.
    */
   id: string;
   name: string;
+  sku: string;
+  /**
+   * Quantity of a product available for sale.
+   */
+  stockQuantity: number;
+  /**
+   * Whether the variant is in stock and visible or not.
+   */
+  isAvailable: boolean | null;
   /**
    * Lists the storefront variant's pricing, the current price and discounts, only meant for displaying.
    */
   pricing: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_pricing | null;
+  /**
+   * List of attributes assigned to this variant.
+   */
+  attributes: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_attributes[];
   product: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_lines_variant_product;
 }
 
@@ -529,10 +504,6 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_discou
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout {
   __typename: "Checkout";
-  /**
-   * List of available payment gateways.
-   */
-  availablePaymentGateways: (RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkout_availablePaymentGateways | null)[];
   token: any;
   /**
    * The ID of the object.
@@ -602,7 +573,7 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkoutErrors 
   /**
    * The error code.
    */
-  code: CheckoutErrorCode | null;
+  code: CheckoutErrorCode;
 }
 
 export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode {
@@ -614,8 +585,8 @@ export interface RemoveCheckoutPromoCode_checkoutRemovePromoCode {
   /**
    * List of errors that occurred executing the mutation.
    */
-  errors: RemoveCheckoutPromoCode_checkoutRemovePromoCode_errors[] | null;
-  checkoutErrors: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkoutErrors[] | null;
+  errors: RemoveCheckoutPromoCode_checkoutRemovePromoCode_errors[];
+  checkoutErrors: RemoveCheckoutPromoCode_checkoutRemovePromoCode_checkoutErrors[];
 }
 
 export interface RemoveCheckoutPromoCode {

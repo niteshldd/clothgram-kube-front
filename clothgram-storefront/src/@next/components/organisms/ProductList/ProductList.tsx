@@ -12,8 +12,8 @@ import { IProps } from "./types";
 export const ProductList: React.FC<IProps> = ({
   products,
   canLoadMore = false,
-  loading,
-  onLoadMore,
+  loading = false,
+  onLoadMore = () => null,
 }: IProps) => {
   return (
     <>
@@ -32,7 +32,11 @@ export const ProductList: React.FC<IProps> = ({
           <Loader />
         ) : (
           canLoadMore && (
-            <Button color="secondary" onClick={onLoadMore}>
+            <Button
+              data-cy="load-more_button"
+              color="secondary"
+              onClick={onLoadMore}
+            >
               More +
             </Button>
           )

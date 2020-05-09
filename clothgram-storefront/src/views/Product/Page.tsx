@@ -4,20 +4,26 @@ import classNames from "classnames";
 import * as React from "react";
 import Media from "react-media";
 
-import { RichTextContent } from "@components/atoms";
 import { CachedImage, Thumbnail } from "@components/molecules";
 
 import { Breadcrumbs, ProductDescription } from "../../components";
-import { CartContext } from "../../components/CartProvider/context";
 import { generateCategoryUrl, generateProductUrl } from "../../core/utils";
 import GalleryCarousel from "./GalleryCarousel";
 import OtherProducts from "./Other";
 import { ProductDetails_product } from "./types/ProductDetails";
 
+import { ICheckoutModelLine } from "@sdk/repository";
+import { ProductDescription as NewProductDescription } from "../../@next/components/molecules";
+import { ProductGallery } from "../../@next/components/organisms/";
+
 import { structuredData } from "../../core/SEO/Product/structuredData";
 
 class Page extends React.PureComponent<
-  { product: ProductDetails_product },
+  {
+    product: ProductDetails_product;
+    add: (variantId: string, quantity: number) => any;
+    items: ICheckoutModelLine[];
+  },
   { variantId: string }
 > {
   fixedElement: React.RefObject<HTMLDivElement> = React.createRef();
@@ -55,7 +61,11 @@ class Page extends React.PureComponent<
       const variant = product.variants
         .filter(variant => variant.id === this.state.variantId)
         .pop();
-      return variant.images;
+      if (variant.images.length > 0) {
+        return variant.images;
+      } else {
+        return product.images;
+      }
     } else {
       return product.images;
     }
@@ -78,22 +88,16 @@ class Page extends React.PureComponent<
   render() {
     const { product } = this.props;
 
-    const cartContextConsumer = (
-      <CartContext.Consumer>
-        {cart => (
-          <ProductDescription
-            productId={product.id}
-            name={product.name}
-            productVariants={product.variants}
-            selectedAttributes={product.attributes}
-            pricing={product.pricing}
-            addToCart={cart.add}
-            setVariantId={this.setVariantId}
-          >
-            <RichTextContent descriptionJson={product.descriptionJson} />
-          </ProductDescription>
-        )}
-      </CartContext.Consumer>
+    const productDescription = (
+      <ProductDescription
+        items={this.props.items}
+        productId={product.id}
+        name={product.name}
+        productVariants={product.variants}
+        pricing={product.pricing}
+        addToCart={this.props.add}
+        setVariantId={this.setVariantId}
+      />
     );
     return (
       <div className="product-page">
@@ -114,7 +118,7 @@ class Page extends React.PureComponent<
                   <>
                     <GalleryCarousel images={this.getImages()} />
                     <div className="product-page__product__info">
-                      {cartContextConsumer}
+                      {productDescription}
                     </div>
                   </>
                 ) : (
@@ -123,7 +127,7 @@ class Page extends React.PureComponent<
                       className="product-page__product__gallery"
                       ref={this.productGallery}
                     >
-                      {this.renderImages(product)}
+                      <ProductGallery images={this.getImages()} />
                     </div>
                     <div className="product-page__product__info">
                       <div
@@ -131,13 +135,21 @@ class Page extends React.PureComponent<
                           "product-page__product__info--fixed"
                         )}
                       >
-                        {cartContextConsumer}
+                        {productDescription}
                       </div>
                     </div>
                   </>
                 )
               }
             </Media>
+          </div>
+        </div>
+        <div className="container">
+          <div className="product-page__product__description">
+            <NewProductDescription
+              descriptionJson={product.descriptionJson}
+              attributes={product.attributes}
+            />
           </div>
         </div>
         <OtherProducts products={product.category.products.edges} />

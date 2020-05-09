@@ -31,7 +31,7 @@ These instructions will get you a copy of the project up and running on your loc
 - Node.js 10.0+
 - A running instance of Saleor.
 
-  To run the storefront, you have to set the `API_URI` environment variable to point to the Saleor GraphQL API. If you are running Saleor locally with the default settings, set `API_URI` to: `https://api-clothgram.kube.rukjaana.com/graphql/`.
+  To run the storefront, you have to set the `API_URI` environment variable to point to the Saleor GraphQL API. If you are running Saleor locally with the default settings, set `API_URI` to: `http://localhost:8000/graphql/`.
 
 ### Installing
 
@@ -52,7 +52,7 @@ cd saleor-storefront
 To use the official stable release, checkout to a release tag:
 
 ```
-$ git checkout v0.7.0
+$ git checkout 2.10.0-rc.2
 ```
 
 See the list of all releases here: https://github.com/mirumee/saleor-storefront/releases/
@@ -78,28 +78,6 @@ npm start
 ```
 
 Go to `http://localhost:3000` to access the storefront.
-
-### Translating
-
-Add a new language pack file:
-
-```
-npm run add-locale <locale>
-```
-
-Update the list of available languages in the `./src/languages.ts` file.
-
-Extract messages from source files that need to be translated:
-
-```
-npm run extract
-```
-
-Compile messages:
-
-```
-npm run compile
-```
 
 ## License
 
