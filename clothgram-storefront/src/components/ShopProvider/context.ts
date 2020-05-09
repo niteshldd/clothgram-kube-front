@@ -4,8 +4,8 @@ import { getShop_shop } from "./types/getShop";
 
 export const defaultCountry = {
   __typename: "CountryDisplay" as "CountryDisplay",
-  code: "US",
-  country: "United States of America",
+  code: "IN",
+  country: "India",
 };
 
 export const defaultContext: getShop_shop = {

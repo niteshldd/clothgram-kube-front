@@ -34,11 +34,11 @@ const Page: React.FC<{
       </script>
       <div
         className="home-page__hero"
-        style={
-          backgroundImage
-            ? { backgroundImage: `url(${backgroundImage.url})` }
-            : null
-        }
+        // style={
+        //   backgroundImage
+        //     ? { backgroundImage: `url(${backgroundImage.url})` }
+        //     : null
+        // }
       >
         <div className="home-page__hero-text">
           <div>
@@ -69,7 +69,7 @@ const Page: React.FC<{
           )}
         </div>
       </div>
-      <ProductsFeatured />
+
       {categoriesExist() && (
         <div className="home-page__categories">
           <div className="container">
@@ -102,6 +102,7 @@ const Page: React.FC<{
               ))}
             </div>
           </div>
+          <ProductsFeatured />
         </div>
       )}
     </>
