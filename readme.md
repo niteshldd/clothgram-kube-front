@@ -6,6 +6,12 @@ Active website can be found here -
 For Frontend - https://test-clothgram.kube.rukjaana.com
 
 For Dashboard - https://test-dash-cloth.kube.rukjaana.com
+
+
+For older version of dashboard - https://api-clothgram.kube.rukjaana.com/dashboard/
+
+Username - admin@example.com
+Password - admin
 ##############TEST###################
 
 ############## DEMO ###################
