@@ -17,7 +17,9 @@ import SingleAutocompleteSelectField, {
 } from "@saleor/components/SingleAutocompleteSelectField";
 import { ChangeEvent } from "@saleor/hooks/useForm";
 import { maybe } from "@saleor/misc";
-import { FetchMoreProps, FormErrors } from "@saleor/types";
+import { FetchMoreProps } from "@saleor/types";
+import { getFormErrors, getProductErrorMessage } from "@saleor/utils/errors";
+import { ProductErrorFragment } from "@saleor/attributes/types/ProductErrorFragment";
 
 interface ProductType {
   hasVariants: boolean;
@@ -53,7 +55,7 @@ interface ProductOrganizationProps {
     productType?: string;
   };
   disabled: boolean;
-  errors: FormErrors<"productType" | "category">;
+  errors: ProductErrorFragment[];
   productType?: ProductType;
   productTypeInputDisplayValue?: string;
   productTypes?: SingleAutocompleteChoiceType[];
@@ -73,7 +75,6 @@ const ProductOrganization: React.FC<ProductOrganizationProps> = props => {
     canChangeType,
     categories,
     categoryInputDisplayValue,
-
     collections,
     collectionsInputDisplayValue,
     data,
@@ -96,6 +97,11 @@ const ProductOrganization: React.FC<ProductOrganizationProps> = props => {
   const classes = useStyles(props);
   const intl = useIntl();
 
+  const formErrors = getFormErrors(
+    ["productType", "category", "collections"],
+    errors
+  );
+
   return (
     <Card className={classes.card}>
       <CardTitle
@@ -108,8 +114,8 @@ const ProductOrganization: React.FC<ProductOrganizationProps> = props => {
         {canChangeType ? (
           <SingleAutocompleteSelectField
             displayValue={productTypeInputDisplayValue}
-            error={!!errors.productType}
-            helperText={errors.productType}
+            error={!!formErrors.productType}
+            helperText={getProductErrorMessage(formErrors.productType, intl)}
             name="productType"
             disabled={disabled}
             label={intl.formatMessage({
@@ -154,8 +160,8 @@ const ProductOrganization: React.FC<ProductOrganizationProps> = props => {
         <FormSpacer />
         <SingleAutocompleteSelectField
           displayValue={categoryInputDisplayValue}
-          error={!!errors.category}
-          helperText={errors.category}
+          error={!!formErrors.category}
+          helperText={getProductErrorMessage(formErrors.category, intl)}
           disabled={disabled}
           label={intl.formatMessage({
             defaultMessage: "Category"
@@ -173,17 +179,21 @@ const ProductOrganization: React.FC<ProductOrganizationProps> = props => {
         <FormSpacer />
         <MultiAutocompleteSelectField
           displayValues={collectionsInputDisplayValue}
+          error={!!formErrors.collections}
           label={intl.formatMessage({
             defaultMessage: "Collections"
           })}
           choices={disabled ? [] : collections}
           name="collections"
           value={data.collections}
-          helperText={intl.formatMessage({
-            defaultMessage:
-              "*Optional. Adding product to collection helps users find it.",
-            description: "field is optional"
-          })}
+          helperText={
+            getProductErrorMessage(formErrors.collections, intl) ||
+            intl.formatMessage({
+              defaultMessage:
+                "*Optional. Adding product to collection helps users find it.",
+              description: "field is optional"
+            })
+          }
           onChange={onCollectionChange}
           fetchChoices={fetchCollections}
           data-tc="collections"

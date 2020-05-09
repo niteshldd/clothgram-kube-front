@@ -2,19 +2,21 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { DiscountErrorCode } from "./../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: VoucherDelete
 // ====================================================
 
 export interface VoucherDelete_voucherDelete_errors {
-  __typename: "Error";
+  __typename: "DiscountError";
+  code: DiscountErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface VoucherDelete_voucherDelete {
   __typename: "VoucherDelete";
-  errors: VoucherDelete_voucherDelete_errors[] | null;
+  errors: VoucherDelete_voucherDelete_errors[];
 }
 
 export interface VoucherDelete {

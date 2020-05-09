@@ -14,8 +14,8 @@ export interface TokenAuth_tokenCreate_errors {
   message: string | null;
 }
 
-export interface TokenAuth_tokenCreate_user_permissions {
-  __typename: "PermissionDisplay";
+export interface TokenAuth_tokenCreate_user_userPermissions {
+  __typename: "UserPermission";
   code: PermissionEnum;
   name: string;
 }
@@ -31,14 +31,14 @@ export interface TokenAuth_tokenCreate_user {
   email: string;
   firstName: string;
   lastName: string;
-  permissions: (TokenAuth_tokenCreate_user_permissions | null)[] | null;
+  userPermissions: (TokenAuth_tokenCreate_user_userPermissions | null)[] | null;
   avatar: TokenAuth_tokenCreate_user_avatar | null;
 }
 
 export interface TokenAuth_tokenCreate {
   __typename: "CreateToken";
   token: string | null;
-  errors: (TokenAuth_tokenCreate_errors | null)[];
+  errors: TokenAuth_tokenCreate_errors[];
   user: TokenAuth_tokenCreate_user | null;
 }
 

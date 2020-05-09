@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-import { TypedMutation } from "../mutations";
+import makeMutation from "@saleor/hooks/makeMutation";
 import { countryFragment } from "../taxes/queries";
 import { shippingMethodFragment, shippingZoneDetailsFragment } from "./queries";
 import {
@@ -40,32 +40,39 @@ import {
   UpdateShippingZoneVariables
 } from "./types/UpdateShippingZone";
 
+export const shippingErrorFragment = gql`
+  fragment ShippingErrorFragment on ShippingError {
+    code
+    field
+  }
+`;
+
 const deleteShippingZone = gql`
+  ${shippingErrorFragment}
   mutation DeleteShippingZone($id: ID!) {
     shippingZoneDelete(id: $id) {
-      errors {
-        field
-        message
+      errors: shippingErrors {
+        ...ShippingErrorFragment
       }
     }
   }
 `;
-export const TypedDeleteShippingZone = TypedMutation<
+export const useShippingZoneDelete = makeMutation<
   DeleteShippingZone,
   DeleteShippingZoneVariables
 >(deleteShippingZone);
 
 const bulkDeleteShippingZone = gql`
+  ${shippingErrorFragment}
   mutation BulkDeleteShippingZone($ids: [ID]!) {
     shippingZoneBulkDelete(ids: $ids) {
-      errors {
-        field
-        message
+      errors: shippingErrors {
+        ...ShippingErrorFragment
       }
     }
   }
 `;
-export const TypedBulkDeleteShippingZone = TypedMutation<
+export const useShippingZoneBulkDelete = makeMutation<
   BulkDeleteShippingZone,
   BulkDeleteShippingZoneVariables
 >(bulkDeleteShippingZone);
@@ -83,18 +90,18 @@ const updateDefaultWeightUnit = gql`
     }
   }
 `;
-export const TypedUpdateDefaultWeightUnit = TypedMutation<
+export const useDefaultWeightUnitUpdate = makeMutation<
   UpdateDefaultWeightUnit,
   UpdateDefaultWeightUnitVariables
 >(updateDefaultWeightUnit);
 
 const createShippingZone = gql`
   ${countryFragment}
-  mutation CreateShippingZone($input: ShippingZoneInput!) {
+  ${shippingErrorFragment}
+  mutation CreateShippingZone($input: ShippingZoneCreateInput!) {
     shippingZoneCreate(input: $input) {
-      errors {
-        field
-        message
+      errors: shippingErrors {
+        ...ShippingErrorFragment
       }
       shippingZone {
         countries {
@@ -107,18 +114,18 @@ const createShippingZone = gql`
     }
   }
 `;
-export const TypedCreateShippingZone = TypedMutation<
+export const useShippingZoneCreate = makeMutation<
   CreateShippingZone,
   CreateShippingZoneVariables
 >(createShippingZone);
 
 const updateShippingZone = gql`
   ${countryFragment}
-  mutation UpdateShippingZone($id: ID!, $input: ShippingZoneInput!) {
+  ${shippingErrorFragment}
+  mutation UpdateShippingZone($id: ID!, $input: ShippingZoneUpdateInput!) {
     shippingZoneUpdate(id: $id, input: $input) {
-      errors {
-        field
-        message
+      errors: shippingErrors {
+        ...ShippingErrorFragment
       }
       shippingZone {
         countries {
@@ -131,18 +138,18 @@ const updateShippingZone = gql`
     }
   }
 `;
-export const TypedUpdateShippingZone = TypedMutation<
+export const useShippingZoneUpdate = makeMutation<
   UpdateShippingZone,
   UpdateShippingZoneVariables
 >(updateShippingZone);
 
 const updateShippingRate = gql`
+  ${shippingErrorFragment}
   ${shippingMethodFragment}
   mutation UpdateShippingRate($id: ID!, $input: ShippingPriceInput!) {
     shippingPriceUpdate(id: $id, input: $input) {
-      errors {
-        field
-        message
+      errors: shippingErrors {
+        ...ShippingErrorFragment
       }
       shippingMethod {
         ...ShippingMethodFragment
@@ -150,18 +157,18 @@ const updateShippingRate = gql`
     }
   }
 `;
-export const TypedUpdateShippingRate = TypedMutation<
+export const useShippingRateUpdate = makeMutation<
   UpdateShippingRate,
   UpdateShippingRateVariables
 >(updateShippingRate);
 
 const createShippingRate = gql`
+  ${shippingErrorFragment}
   ${shippingZoneDetailsFragment}
   mutation CreateShippingRate($input: ShippingPriceInput!) {
     shippingPriceCreate(input: $input) {
-      errors {
-        field
-        message
+      errors: shippingErrors {
+        ...ShippingErrorFragment
       }
       shippingZone {
         ...ShippingZoneDetailsFragment
@@ -169,18 +176,18 @@ const createShippingRate = gql`
     }
   }
 `;
-export const TypedCreateShippingRate = TypedMutation<
+export const useShippingRateCreate = makeMutation<
   CreateShippingRate,
   CreateShippingRateVariables
 >(createShippingRate);
 
 const deleteShippingRate = gql`
+  ${shippingErrorFragment}
   ${shippingZoneDetailsFragment}
   mutation DeleteShippingRate($id: ID!) {
     shippingPriceDelete(id: $id) {
-      errors {
-        field
-        message
+      errors: shippingErrors {
+        ...ShippingErrorFragment
       }
       shippingZone {
         ...ShippingZoneDetailsFragment
@@ -188,22 +195,22 @@ const deleteShippingRate = gql`
     }
   }
 `;
-export const TypedDeleteShippingRate = TypedMutation<
+export const useShippingRateDelete = makeMutation<
   DeleteShippingRate,
   DeleteShippingRateVariables
 >(deleteShippingRate);
 
 const bulkDeleteShippingRate = gql`
+  ${shippingErrorFragment}
   mutation BulkDeleteShippingRate($ids: [ID]!) {
     shippingPriceBulkDelete(ids: $ids) {
-      errors {
-        field
-        message
+      errors: shippingErrors {
+        ...ShippingErrorFragment
       }
     }
   }
 `;
-export const TypedBulkDeleteShippingRate = TypedMutation<
+export const useShippingRateBulkDelete = makeMutation<
   BulkDeleteShippingRate,
   BulkDeleteShippingRateVariables
 >(bulkDeleteShippingRate);

@@ -17,6 +17,7 @@ import useAppState from "@saleor/hooks/useAppState";
 import AttributeSection from "./attributes";
 import { attributeSection } from "./attributes/urls";
 import Auth, { getAuthToken, removeAuthToken } from "./auth";
+import { isJwtError } from "./auth/errors";
 import AuthProvider from "./auth/AuthProvider";
 import LoginLoading from "./auth/components/LoginLoading/LoginLoading";
 import SectionRoute from "./auth/components/SectionRoute";
@@ -45,6 +46,7 @@ import PageSection from "./pages";
 import PluginsSection from "./plugins";
 import ProductSection from "./products";
 import ProductTypesSection from "./productTypes";
+import PermissionGroupSection from "./permissionGroups";
 import ServiceSection from "./services";
 import { serviceSection } from "./services/urls";
 import ShippingSection from "./shipping";
@@ -54,6 +56,8 @@ import TaxesSection from "./taxes";
 import TranslationsSection from "./translations";
 import { PermissionEnum } from "./types/globalTypes";
 import WebhooksSection from "./webhooks";
+import { warehouseSection } from "./warehouses/urls";
+import WarehouseSection from "./warehouses";
 
 interface ResponseError extends ErrorResponse {
   networkError?: Error & {
@@ -63,7 +67,10 @@ interface ResponseError extends ErrorResponse {
 }
 
 const invalidTokenLink = onError((error: ResponseError) => {
-  if (error.networkError && error.networkError.statusCode === 401) {
+  if (
+    (error.networkError && error.networkError.statusCode === 401) ||
+    error.graphQLErrors?.some(isJwtError)
+  ) {
     removeAuthToken();
   }
 });
@@ -218,6 +225,11 @@ const Routes: React.FC = () => {
                     component={StaffSection}
                   />
                   <SectionRoute
+                    permissions={[PermissionEnum.MANAGE_STAFF]}
+                    path="/permission-groups"
+                    component={PermissionGroupSection}
+                  />
+                  <SectionRoute
                     permissions={[PermissionEnum.MANAGE_SETTINGS]}
                     path="/site-settings"
                     component={SiteSettingsSection}
@@ -253,9 +265,14 @@ const Routes: React.FC = () => {
                     component={AttributeSection}
                   />
                   <SectionRoute
-                    permissions={[PermissionEnum.MANAGE_SERVICE_ACCOUNTS]}
+                    permissions={[PermissionEnum.MANAGE_APPS]}
                     path={serviceSection}
                     component={ServiceSection}
+                  />
+                  <SectionRoute
+                    permissions={[PermissionEnum.MANAGE_PRODUCTS]}
+                    path={warehouseSection}
+                    component={WarehouseSection}
                   />
                   {createConfigurationMenu(intl).filter(menu =>
                     menu.menuItems.map(item =>

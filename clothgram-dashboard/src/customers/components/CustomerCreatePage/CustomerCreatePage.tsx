@@ -13,7 +13,7 @@ import useAddressValidation from "@saleor/hooks/useAddressValidation";
 import { sectionNames } from "@saleor/intl";
 import { AddressInput } from "@saleor/types/globalTypes";
 import createSingleAutocompleteSelectHandler from "@saleor/utils/handlers/singleAutocompleteSelectChangeHandler";
-import { UserError } from "../../../types";
+import { AccountErrorFragment } from "@saleor/customers/types/AccountErrorFragment";
 import { AddressTypeInput } from "../../types";
 import { CustomerCreateData_shop_countries } from "../../types/CustomerCreateData";
 import CustomerCreateAddress from "../CustomerCreateAddress/CustomerCreateAddress";
@@ -52,7 +52,7 @@ const initialForm: CustomerCreatePageFormData & AddressTypeInput = {
 export interface CustomerCreatePageProps {
   countries: CustomerCreateData_shop_countries[];
   disabled: boolean;
-  errors: UserError[];
+  errors: AccountErrorFragment[];
   saveButtonBar: ConfirmButtonTransitionState;
   onBack: () => void;
   onSubmit: (data: CustomerCreatePageSubmitData) => void;
@@ -61,7 +61,7 @@ export interface CustomerCreatePageProps {
 const CustomerCreatePage: React.FC<CustomerCreatePageProps> = ({
   countries,
   disabled,
-  errors,
+  errors: apiErrors,
   saveButtonBar,
   onBack,
   onSubmit
@@ -98,6 +98,8 @@ const CustomerCreatePage: React.FC<CustomerCreatePageProps> = ({
     })
   );
 
+  const errors = [...apiErrors, ...validationErrors];
+
   const handleSubmit = (
     formData: CustomerCreatePageFormData & AddressTypeInput
   ) => {
@@ -130,13 +132,8 @@ const CustomerCreatePage: React.FC<CustomerCreatePageProps> = ({
   };
 
   return (
-    <Form
-      initial={initialForm}
-      onSubmit={handleSubmit}
-      errors={[...errors, ...validationErrors]}
-      confirmLeave
-    >
-      {({ change, data, errors: formErrors, hasChanged, submit }) => {
+    <Form initial={initialForm} onSubmit={handleSubmit} confirmLeave>
+      {({ change, data, hasChanged, submit }) => {
         const handleCountrySelect = createSingleAutocompleteSelectHandler(
           change,
           setCountryDisplayName,
@@ -159,7 +156,7 @@ const CustomerCreatePage: React.FC<CustomerCreatePageProps> = ({
                 <CustomerCreateDetails
                   data={data}
                   disabled={disabled}
-                  errors={formErrors}
+                  errors={errors}
                   onChange={change}
                 />
                 <CardSpacer />
@@ -168,7 +165,7 @@ const CustomerCreatePage: React.FC<CustomerCreatePageProps> = ({
                   countryDisplayName={countryDisplayName}
                   data={data}
                   disabled={disabled}
-                  errors={formErrors}
+                  errors={errors}
                   onChange={change}
                   onCountryChange={handleCountrySelect}
                 />
@@ -176,7 +173,7 @@ const CustomerCreatePage: React.FC<CustomerCreatePageProps> = ({
                 <CustomerCreateNote
                   data={data}
                   disabled={disabled}
-                  errors={formErrors}
+                  errors={errors}
                   onChange={change}
                 />
               </div>

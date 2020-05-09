@@ -9,10 +9,13 @@ import {
   ProductDetails_product_variants
 } from "@saleor/products/types/ProductDetails";
 import { SearchProductTypes_search_edges_node_productAttributes } from "@saleor/searches/types/SearchProductTypes";
+import { StockInput } from "@saleor/types/globalTypes";
+import { FormsetAtomicData } from "@saleor/hooks/useFormset";
 import { ProductAttributeInput } from "../components/ProductAttributes";
 import { VariantAttributeInput } from "../components/ProductVariantAttributes";
 import { ProductVariant } from "../types/ProductVariant";
 import { ProductVariantCreateData_product } from "../types/ProductVariantCreateData";
+import { ProductStockInput } from "../components/ProductStocks";
 
 export interface Collection {
   id: string;
@@ -102,6 +105,19 @@ export function getAttributeInputFromVariant(
   );
 }
 
+export function getStockInputFromVariant(
+  variant: ProductVariant
+): ProductStockInput[] {
+  return (
+    variant?.stocks.map(stock => ({
+      data: null,
+      id: stock.warehouse.id,
+      label: stock.warehouse.name,
+      value: stock.quantity.toString()
+    })) || []
+  );
+}
+
 export function getVariantAttributeInputFromProduct(
   product: ProductVariantCreateData_product
 ): VariantAttributeInput[] {
@@ -115,6 +131,17 @@ export function getVariantAttributeInputFromProduct(
       value: ""
     }))
   );
+}
+
+export function getStockInputFromProduct(
+  product: ProductDetails_product
+): ProductStockInput[] {
+  return product?.variants[0]?.stocks.map(stock => ({
+    data: null,
+    id: stock.warehouse.id,
+    label: stock.warehouse.name,
+    value: stock.quantity.toString()
+  }));
 }
 
 export function getCollectionInput(
@@ -153,7 +180,7 @@ export interface ProductUpdatePageFormData {
   seoDescription: string;
   seoTitle: string;
   sku: string;
-  stockQuantity: number;
+  trackInventory: boolean;
 }
 
 export function getProductUpdatePageFormData(
@@ -183,14 +210,15 @@ export function getProductUpdatePageFormData(
           : undefined,
       ""
     ),
-    stockQuantity: maybe(
-      () =>
-        product.productType.hasVariants
-          ? undefined
-          : variants && variants[0]
-          ? variants[0].quantity
-          : undefined,
-      0
-    )
+    trackInventory: !!product?.variants[0]?.trackInventory
+  };
+}
+
+export function mapFormsetStockToStockInput(
+  stock: FormsetAtomicData<null, string>
+): StockInput {
+  return {
+    quantity: parseInt(stock.value, 10),
+    warehouse: stock.id
   };
 }

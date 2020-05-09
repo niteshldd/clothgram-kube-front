@@ -6,11 +6,17 @@ import {
   saveCredentials
 } from "@saleor/utils/credentialsManagement";
 import { MutationFunction, MutationResult } from "react-apollo";
-import { TypedTokenAuthMutation, TypedVerifyTokenMutation } from "./mutations";
+import { maybe } from "@saleor/misc";
+import {
+  TypedTokenAuthMutation,
+  TypedVerifyTokenMutation,
+  TokenRefreshMutation
+} from "./mutations";
 import { TokenAuth, TokenAuthVariables } from "./types/TokenAuth";
 import { User } from "./types/User";
 import { VerifyToken, VerifyTokenVariables } from "./types/VerifyToken";
 import { getAuthToken, removeAuthToken, setAuthToken } from "./utils";
+import { RefreshToken, RefreshTokenVariables } from "./types/RefreshToken";
 import { UserContext } from "./";
 
 interface AuthProviderOperationsProps {
@@ -29,9 +35,17 @@ const AuthProviderOperations: React.FC<AuthProviderOperationsProps> = ({
     {(...tokenAuth) => (
       <TypedVerifyTokenMutation>
         {(...tokenVerify) => (
-          <AuthProvider tokenAuth={tokenAuth} tokenVerify={tokenVerify}>
-            {children}
-          </AuthProvider>
+          <TokenRefreshMutation>
+            {(...tokenRefresh) => (
+              <AuthProvider
+                tokenAuth={tokenAuth}
+                tokenVerify={tokenVerify}
+                tokenRefresh={tokenRefresh}
+              >
+                {children}
+              </AuthProvider>
+            )}
+          </TokenRefreshMutation>
         )}
       </TypedVerifyTokenMutation>
     )}
@@ -53,6 +67,10 @@ interface AuthProviderProps {
   tokenVerify: [
     MutationFunction<VerifyToken, VerifyTokenVariables>,
     MutationResult<VerifyToken>
+  ];
+  tokenRefresh: [
+    MutationFunction<RefreshToken, RefreshTokenVariables>,
+    MutationResult<RefreshToken>
   ];
 }
 
@@ -90,9 +108,13 @@ class AuthProvider extends React.Component<
         );
       }
     } else {
-      if (tokenVerifyOpts.data && tokenVerifyOpts.data.tokenVerify.user) {
-        const user = tokenVerifyOpts.data.tokenVerify.user;
-        this.setState({ user });
+      if (maybe(() => tokenVerifyOpts.data.tokenVerify === null)) {
+        this.logout();
+      } else {
+        const user = maybe(() => tokenVerifyOpts.data.tokenVerify.user);
+        if (!!user) {
+          this.setState({ user });
+        }
       }
     }
   }
@@ -138,6 +160,16 @@ class AuthProvider extends React.Component<
     return tokenVerifyFn({ variables: { token } });
   };
 
+  refreshToken = async () => {
+    const { tokenRefresh } = this.props;
+    const [tokenRefreshFn] = tokenRefresh;
+    const token = getAuthToken();
+
+    const refreshData = await tokenRefreshFn({ variables: { token } });
+
+    setAuthToken(refreshData.data.tokenRefresh.token, this.state.persistToken);
+  };
+
   render() {
     const { children, tokenAuth, tokenVerify } = this.props;
     const tokenAuthOpts = tokenAuth[1];
@@ -152,6 +184,7 @@ class AuthProvider extends React.Component<
           loginByToken: this.loginByToken,
           logout: this.logout,
           tokenAuthLoading: tokenAuthOpts.loading,
+          tokenRefresh: this.refreshToken,
           tokenVerifyLoading: tokenVerifyOpts.loading,
           user
         }}

@@ -4,6 +4,8 @@ All notable, unreleased changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## 2.10.0
+
 - Fix minor bugs - #244 by @dominik-zeglen
 - Fix tax settings updating - #243 by @dominik-zeglen
 - Add secret fields in plugin configuration - #246 by @dominik-zeglen
@@ -29,6 +31,26 @@ All notable, unreleased changes to this project will be documented in this file.
 - Add filtering to views - #361 by @dominik-zeglen
 - Do not render password change if authenticating - #378 by @dominik-zeglen
 - Fix crash when one product is selected - #391 by @dominik-zeglen
+- Improve product update form error handling - #392 by @dominik-zeglen
+- Fix column picker errors - #393 by @dominik-zeglen
+- Improve order filters - #396 by @dominik-zeglen
+- Use structurized JSON files instead of PO - #403 by @dominik-zeglen
+- Remove PO files from repo and update translations #409 by @dominik-zeglen
+- Add optional chaining and explicitely return "Not found" page - #408 by @dominik-zeglen
+- Do not store errors in form component - #410 by @dominik-zeglen
+- Handle rich text editor content error - #395 by @dominik-zeglen
+- Fix crashing views - #422 by @dominik-zeglen
+- Add "Ready to capture" to the "Status" order filter - #430 by @dominik-zeglen
+- Reset state after closing - #456 by @dominik-zeglen
+- Password validation errors are not shown - #471 by @gabmartinez
+- Reset pagination when guest change the sorting of the list - #474 by @gabmartinez
+- Filter column ids before send it to GridAttributes operation - #476 by @gabmartinez
+- Display Is Published column correctly in main Product Listing - #475 by @gabmartinez
+- Add Permission Groups section - #406 by @krzysztofwolski
+- Add warehouse management - #390 by @dominik-zeglen
+- Fix minor visual bugs - #521 by @dominik-zeglen
+- Handle session expiration - #520 by @dominik-zeglen
+- Update product stock management to newest design - #515 by @dominik-zeglen
 
 ## 2.0.0
 

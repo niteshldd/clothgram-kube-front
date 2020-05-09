@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { AddressInput } from "./../../types/globalTypes";
+import { AddressInput, AccountErrorCode } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: CreateCustomerAddress
 // ====================================================
 
 export interface CreateCustomerAddress_addressCreate_errors {
-  __typename: "Error";
+  __typename: "AccountError";
+  code: AccountErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface CreateCustomerAddress_addressCreate_address_country {
@@ -81,7 +81,7 @@ export interface CreateCustomerAddress_addressCreate_user {
 
 export interface CreateCustomerAddress_addressCreate {
   __typename: "AddressCreate";
-  errors: CreateCustomerAddress_addressCreate_errors[] | null;
+  errors: CreateCustomerAddress_addressCreate_errors[];
   address: CreateCustomerAddress_addressCreate_address | null;
   user: CreateCustomerAddress_addressCreate_user | null;
 }

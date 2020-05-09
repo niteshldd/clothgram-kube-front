@@ -1,5 +1,6 @@
 import gql from "graphql-tag";
 
+import { accountErrorFragment } from "@saleor/customers/mutations";
 import { TypedMutation } from "../mutations";
 import {
   RequestPasswordReset,
@@ -8,6 +9,7 @@ import {
 import { SetPassword, SetPasswordVariables } from "./types/SetPassword";
 import { TokenAuth, TokenAuthVariables } from "./types/TokenAuth";
 import { VerifyToken, VerifyTokenVariables } from "./types/VerifyToken";
+import { RefreshToken, RefreshTokenVariables } from "./types/RefreshToken";
 
 export const fragmentUser = gql`
   fragment User on User {
@@ -15,7 +17,7 @@ export const fragmentUser = gql`
     email
     firstName
     lastName
-    permissions {
+    userPermissions {
       code
       name
     }
@@ -64,11 +66,11 @@ export const TypedVerifyTokenMutation = TypedMutation<
 >(tokenVerifyMutation);
 
 export const requestPasswordReset = gql`
+  ${accountErrorFragment}
   mutation RequestPasswordReset($email: String!, $redirectUrl: String!) {
     requestPasswordReset(email: $email, redirectUrl: $redirectUrl) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountErrorFragment
       }
     }
   }
@@ -79,14 +81,14 @@ export const RequestPasswordResetMutation = TypedMutation<
 >(requestPasswordReset);
 
 export const setPassword = gql`
+  ${accountErrorFragment}
   ${fragmentUser}
   mutation SetPassword($email: String!, $password: String!, $token: String!) {
     setPassword(email: $email, password: $password, token: $token) {
-      token
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountErrorFragment
       }
+      token
       user {
         ...User
       }
@@ -97,3 +99,16 @@ export const SetPasswordMutation = TypedMutation<
   SetPassword,
   SetPasswordVariables
 >(setPassword);
+
+const refreshToken = gql`
+  mutation RefreshToken($token: String!) {
+    tokenRefresh(token: $token) {
+      token
+      payload
+    }
+  }
+`;
+export const TokenRefreshMutation = TypedMutation<
+  RefreshToken,
+  RefreshTokenVariables
+>(refreshToken);

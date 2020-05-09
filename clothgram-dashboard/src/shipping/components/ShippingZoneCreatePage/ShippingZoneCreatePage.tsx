@@ -11,8 +11,8 @@ import Grid from "@saleor/components/Grid";
 import PageHeader from "@saleor/components/PageHeader";
 import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import { sectionNames } from "@saleor/intl";
+import { ShippingErrorFragment } from "@saleor/shipping/types/ShippingErrorFragment";
 import { CountryFragment } from "../../../taxes/types/CountryFragment";
-import { UserError } from "../../../types";
 import ShippingZoneCountriesAssignDialog from "../ShippingZoneCountriesAssignDialog";
 import ShippingZoneInfo from "../ShippingZoneInfo";
 
@@ -25,7 +25,7 @@ export interface FormData {
 export interface ShippingZoneCreatePageProps {
   countries: CountryFragment[];
   disabled: boolean;
-  errors: UserError[];
+  errors: ShippingErrorFragment[];
   saveButtonBarState: ConfirmButtonTransitionState;
   onBack: () => void;
   onSubmit: (data: FormData) => void;
@@ -50,8 +50,8 @@ const ShippingZoneCreatePage: React.FC<ShippingZoneCreatePageProps> = ({
   };
 
   return (
-    <Form errors={errors} initial={initialForm} onSubmit={onSubmit}>
-      {({ change, data, errors: formErrors, hasChanged, submit }) => (
+    <Form initial={initialForm} onSubmit={onSubmit}>
+      {({ change, data, hasChanged, submit }) => (
         <>
           <Container>
             <AppHeader onBack={onBack}>
@@ -67,7 +67,8 @@ const ShippingZoneCreatePage: React.FC<ShippingZoneCreatePageProps> = ({
               <div>
                 <ShippingZoneInfo
                   data={data}
-                  errors={formErrors}
+                  disabled={disabled}
+                  errors={errors}
                   onChange={change}
                 />
                 <CardSpacer />

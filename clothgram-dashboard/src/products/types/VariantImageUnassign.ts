@@ -2,14 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { ProductErrorCode } from "./../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: VariantImageUnassign
 // ====================================================
 
 export interface VariantImageUnassign_variantImageUnassign_errors {
-  __typename: "Error";
+  __typename: "ProductError";
+  code: ProductErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface VariantImageUnassign_variantImageUnassign_productVariant_attributes_attribute_values {
@@ -95,6 +97,20 @@ export interface VariantImageUnassign_variantImageUnassign_productVariant_produc
   variants: (VariantImageUnassign_variantImageUnassign_productVariant_product_variants | null)[] | null;
 }
 
+export interface VariantImageUnassign_variantImageUnassign_productVariant_stocks_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
+export interface VariantImageUnassign_variantImageUnassign_productVariant_stocks {
+  __typename: "Stock";
+  id: string;
+  quantity: number;
+  quantityAllocated: number;
+  warehouse: VariantImageUnassign_variantImageUnassign_productVariant_stocks_warehouse;
+}
+
 export interface VariantImageUnassign_variantImageUnassign_productVariant {
   __typename: "ProductVariant";
   id: string;
@@ -105,13 +121,13 @@ export interface VariantImageUnassign_variantImageUnassign_productVariant {
   priceOverride: VariantImageUnassign_variantImageUnassign_productVariant_priceOverride | null;
   product: VariantImageUnassign_variantImageUnassign_productVariant_product;
   sku: string;
-  quantity: number;
-  quantityAllocated: number | null;
+  stocks: (VariantImageUnassign_variantImageUnassign_productVariant_stocks | null)[] | null;
+  trackInventory: boolean;
 }
 
 export interface VariantImageUnassign_variantImageUnassign {
   __typename: "VariantImageUnassign";
-  errors: VariantImageUnassign_variantImageUnassign_errors[] | null;
+  errors: VariantImageUnassign_variantImageUnassign_errors[];
   productVariant: VariantImageUnassign_variantImageUnassign_productVariant | null;
 }
 

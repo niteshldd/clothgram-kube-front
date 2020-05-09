@@ -2,14 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { ProductErrorCode } from "./../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: VariantImageAssign
 // ====================================================
 
 export interface VariantImageAssign_variantImageAssign_errors {
-  __typename: "Error";
+  __typename: "ProductError";
+  code: ProductErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface VariantImageAssign_variantImageAssign_productVariant_attributes_attribute_values {
@@ -95,6 +97,20 @@ export interface VariantImageAssign_variantImageAssign_productVariant_product {
   variants: (VariantImageAssign_variantImageAssign_productVariant_product_variants | null)[] | null;
 }
 
+export interface VariantImageAssign_variantImageAssign_productVariant_stocks_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
+export interface VariantImageAssign_variantImageAssign_productVariant_stocks {
+  __typename: "Stock";
+  id: string;
+  quantity: number;
+  quantityAllocated: number;
+  warehouse: VariantImageAssign_variantImageAssign_productVariant_stocks_warehouse;
+}
+
 export interface VariantImageAssign_variantImageAssign_productVariant {
   __typename: "ProductVariant";
   id: string;
@@ -105,13 +121,13 @@ export interface VariantImageAssign_variantImageAssign_productVariant {
   priceOverride: VariantImageAssign_variantImageAssign_productVariant_priceOverride | null;
   product: VariantImageAssign_variantImageAssign_productVariant_product;
   sku: string;
-  quantity: number;
-  quantityAllocated: number | null;
+  stocks: (VariantImageAssign_variantImageAssign_productVariant_stocks | null)[] | null;
+  trackInventory: boolean;
 }
 
 export interface VariantImageAssign_variantImageAssign {
   __typename: "VariantImageAssign";
-  errors: VariantImageAssign_variantImageAssign_errors[] | null;
+  errors: VariantImageAssign_variantImageAssign_errors[];
   productVariant: VariantImageAssign_variantImageAssign_productVariant | null;
 }
 

@@ -10,8 +10,8 @@ import Grid from "@saleor/components/Grid";
 import PageHeader from "@saleor/components/PageHeader";
 import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import { sectionNames } from "@saleor/intl";
+import { AccountErrorFragment } from "@saleor/customers/types/AccountErrorFragment";
 import { getUserName, maybe } from "../../../misc";
-import { UserError } from "../../../types";
 import { CustomerDetails_user } from "../../types/CustomerDetails";
 import CustomerAddresses from "../CustomerAddresses";
 import CustomerDetails from "../CustomerDetails";
@@ -30,7 +30,7 @@ export interface CustomerDetailsPageFormData {
 export interface CustomerDetailsPageProps {
   customer: CustomerDetails_user;
   disabled: boolean;
-  errors: UserError[];
+  errors: AccountErrorFragment[];
   saveButtonBar: ConfirmButtonTransitionState;
   onBack: () => void;
   onSubmit: (data: CustomerDetailsPageFormData) => void;
@@ -56,7 +56,6 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
 
   return (
     <Form
-      errors={errors}
       initial={{
         email: maybe(() => customer.email, ""),
         firstName: maybe(() => customer.firstName, ""),
@@ -67,7 +66,7 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
       onSubmit={onSubmit}
       confirmLeave
     >
-      {({ change, data, errors: formErrors, hasChanged, submit }) => (
+      {({ change, data, hasChanged, submit }) => (
         <Container>
           <AppHeader onBack={onBack}>
             {intl.formatMessage(sectionNames.customers)}
@@ -79,14 +78,14 @@ const CustomerDetailsPage: React.FC<CustomerDetailsPageProps> = ({
                 customer={customer}
                 data={data}
                 disabled={disabled}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
               <CardSpacer />
               <CustomerInfo
                 data={data}
                 disabled={disabled}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
               <CardSpacer />

@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 
 import makeQuery from "@saleor/hooks/makeQuery";
+import { warehouseFragment } from "@saleor/warehouses/queries";
 import { pageInfoFragment, TypedQuery } from "../queries";
 import {
   AvailableInGridAttributes,
@@ -27,6 +28,22 @@ import {
   InitialProductFilterData,
   InitialProductFilterDataVariables
 } from "./types/InitialProductFilterData";
+import {
+  CreateMultipleVariantsData,
+  CreateMultipleVariantsDataVariables
+} from "./types/CreateMultipleVariantsData";
+
+export const stockFragment = gql`
+  fragment StockFragment on Stock {
+    id
+    quantity
+    quantityAllocated
+    warehouse {
+      id
+      name
+    }
+  }
+`;
 
 export const fragmentMoney = gql`
   fragment Money on Money {
@@ -53,6 +70,7 @@ export const productFragment = gql`
       url
     }
     isAvailable
+    isPublished
     basePrice {
       ...Money
     }
@@ -62,11 +80,51 @@ export const productFragment = gql`
     }
   }
 `;
+
+const productVariantAttributesFragment = gql`
+  fragment ProductVariantAttributesFragment on Product {
+    id
+    attributes {
+      attribute {
+        id
+        slug
+        name
+        inputType
+        valueRequired
+        values {
+          id
+          name
+          slug
+        }
+      }
+      values {
+        id
+        name
+        slug
+      }
+    }
+    productType {
+      id
+      variantAttributes {
+        id
+        name
+        values {
+          id
+          name
+          slug
+        }
+      }
+    }
+  }
+`;
+
 export const productFragmentDetails = gql`
   ${fragmentProductImage}
   ${fragmentMoney}
+  ${productVariantAttributesFragment}
+  ${stockFragment}
   fragment Product on Product {
-    id
+    ...ProductVariantAttributesFragment
     name
     descriptionJson
     seoTitle
@@ -98,25 +156,6 @@ export const productFragmentDetails = gql`
     isPublished
     chargeTaxes
     publicationDate
-    attributes {
-      attribute {
-        id
-        slug
-        name
-        inputType
-        valueRequired
-        values {
-          id
-          name
-          slug
-        }
-      }
-      values {
-        id
-        name
-        slug
-      }
-    }
     pricing {
       priceRange {
         start {
@@ -142,22 +181,23 @@ export const productFragmentDetails = gql`
         ...Money
       }
       margin
-      quantity
-      quantityAllocated
-      stockQuantity
+      stocks {
+        ...StockFragment
+      }
+      trackInventory
     }
     productType {
       id
       name
       hasVariants
     }
-    url
   }
 `;
 
 export const fragmentVariant = gql`
   ${fragmentMoney}
   ${fragmentProductImage}
+  ${stockFragment}
   fragment ProductVariant on ProductVariant {
     id
     attributes {
@@ -209,8 +249,10 @@ export const fragmentVariant = gql`
       }
     }
     sku
-    quantity
-    quantityAllocated
+    stocks {
+      ...StockFragment
+    }
+    trackInventory
   }
 `;
 
@@ -316,17 +358,6 @@ const productDetailsQuery = gql`
   query ProductDetails($id: ID!) {
     product(id: $id) {
       ...Product
-      productType {
-        variantAttributes {
-          id
-          name
-          values {
-            id
-            name
-            slug
-          }
-        }
-      }
     }
   }
 `;
@@ -448,3 +479,28 @@ export const AvailableInGridAttributesQuery = TypedQuery<
   AvailableInGridAttributes,
   AvailableInGridAttributesVariables
 >(availableInGridAttributes);
+
+const createMultipleVariantsData = gql`
+  ${fragmentMoney}
+  ${productVariantAttributesFragment}
+  ${warehouseFragment}
+  query CreateMultipleVariantsData($id: ID!) {
+    product(id: $id) {
+      ...ProductVariantAttributesFragment
+      basePrice {
+        ...Money
+      }
+    }
+    warehouses(first: 20) {
+      edges {
+        node {
+          ...WarehouseFragment
+        }
+      }
+    }
+  }
+`;
+export const useCreateMultipleVariantsData = makeQuery<
+  CreateMultipleVariantsData,
+  CreateMultipleVariantsDataVariables
+>(createMultipleVariantsData);

@@ -11,8 +11,9 @@ import PageHeader from "@saleor/components/PageHeader";
 import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import { Tab, TabContainer } from "@saleor/components/Tab";
 import { sectionNames } from "@saleor/intl";
+import { DiscountErrorFragment } from "@saleor/discounts/types/DiscountErrorFragment";
 import { maybe, splitDateTime } from "../../../misc";
-import { ListProps, TabListActions, UserError } from "../../../types";
+import { ListProps, TabListActions } from "../../../types";
 import { SaleType as SaleTypeEnum } from "../../../types/globalTypes";
 import { SaleDetails_sale } from "../../types/SaleDetails";
 import DiscountCategories from "../DiscountCategories";
@@ -55,7 +56,7 @@ export interface SaleDetailsPageProps
     > {
   activeTab: SaleDetailsPageTab;
   defaultCurrency: string;
-  errors: UserError[];
+  errors: DiscountErrorFragment[];
   sale: SaleDetails_sale;
   saveButtonBarState: ConfirmButtonTransitionState;
   onBack: () => void;
@@ -121,8 +122,8 @@ const SaleDetailsPage: React.FC<SaleDetailsPageProps> = ({
     value: maybe(() => sale.value.toString(), "")
   };
   return (
-    <Form errors={errors} initial={initialForm} onSubmit={onSubmit}>
-      {({ change, data, errors: formErrors, hasChanged, submit }) => (
+    <Form initial={initialForm} onSubmit={onSubmit}>
+      {({ change, data, hasChanged, submit }) => (
         <Container>
           <AppHeader onBack={onBack}>
             {intl.formatMessage(sectionNames.sales)}
@@ -133,7 +134,7 @@ const SaleDetailsPage: React.FC<SaleDetailsPageProps> = ({
               <SaleInfo
                 data={data}
                 disabled={disabled}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
               <CardSpacer />
@@ -143,7 +144,7 @@ const SaleDetailsPage: React.FC<SaleDetailsPageProps> = ({
                 currencySymbol={defaultCurrency}
                 data={data}
                 disabled={disabled}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
               <CardSpacer />
@@ -258,7 +259,7 @@ const SaleDetailsPage: React.FC<SaleDetailsPageProps> = ({
                 data={data}
                 disabled={disabled}
                 defaultCurrency={defaultCurrency}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
             </div>

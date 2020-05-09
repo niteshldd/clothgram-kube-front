@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { OrderUpdateInput } from "./../../types/globalTypes";
+import { OrderUpdateInput, OrderErrorCode } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: OrderUpdate
 // ====================================================
 
 export interface OrderUpdate_orderUpdate_errors {
-  __typename: "Error";
+  __typename: "OrderError";
+  code: OrderErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface OrderUpdate_orderUpdate_order_billingAddress_country {
@@ -68,7 +68,7 @@ export interface OrderUpdate_orderUpdate_order {
 
 export interface OrderUpdate_orderUpdate {
   __typename: "OrderUpdate";
-  errors: OrderUpdate_orderUpdate_errors[] | null;
+  errors: OrderUpdate_orderUpdate_errors[];
   order: OrderUpdate_orderUpdate_order | null;
 }
 

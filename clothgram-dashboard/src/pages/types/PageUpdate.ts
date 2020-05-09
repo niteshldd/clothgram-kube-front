@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { PageInput } from "./../../types/globalTypes";
+import { PageInput, PageErrorCode } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: PageUpdate
 // ====================================================
 
 export interface PageUpdate_pageUpdate_errors {
-  __typename: "Error";
+  __typename: "PageError";
+  code: PageErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface PageUpdate_pageUpdate_page {
@@ -28,7 +28,7 @@ export interface PageUpdate_pageUpdate_page {
 
 export interface PageUpdate_pageUpdate {
   __typename: "PageUpdate";
-  errors: PageUpdate_pageUpdate_errors[] | null;
+  errors: PageUpdate_pageUpdate_errors[];
   page: PageUpdate_pageUpdate_page | null;
 }
 

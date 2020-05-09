@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { OrderLineCreateInput, OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
+import { OrderLineCreateInput, OrderErrorCode, OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: OrderLinesAdd
 // ====================================================
 
 export interface OrderLinesAdd_draftOrderLinesCreate_errors {
-  __typename: "Error";
+  __typename: "OrderError";
+  code: OrderErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface OrderLinesAdd_draftOrderLinesCreate_order_billingAddress_country {
@@ -97,6 +97,12 @@ export interface OrderLinesAdd_draftOrderLinesCreate_order_fulfillments_lines {
   orderLine: OrderLinesAdd_draftOrderLinesCreate_order_fulfillments_lines_orderLine | null;
 }
 
+export interface OrderLinesAdd_draftOrderLinesCreate_order_fulfillments_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
 export interface OrderLinesAdd_draftOrderLinesCreate_order_fulfillments {
   __typename: "Fulfillment";
   id: string;
@@ -104,6 +110,7 @@ export interface OrderLinesAdd_draftOrderLinesCreate_order_fulfillments {
   fulfillmentOrder: number;
   status: FulfillmentStatus;
   trackingNumber: string;
+  warehouse: OrderLinesAdd_draftOrderLinesCreate_order_fulfillments_warehouse | null;
 }
 
 export interface OrderLinesAdd_draftOrderLinesCreate_order_lines_unitPrice_gross {
@@ -268,7 +275,7 @@ export interface OrderLinesAdd_draftOrderLinesCreate_order {
 
 export interface OrderLinesAdd_draftOrderLinesCreate {
   __typename: "DraftOrderLinesCreate";
-  errors: OrderLinesAdd_draftOrderLinesCreate_errors[] | null;
+  errors: OrderLinesAdd_draftOrderLinesCreate_errors[];
   order: OrderLinesAdd_draftOrderLinesCreate_order | null;
 }
 

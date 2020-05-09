@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
+import { OrderErrorCode, OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: OrderMarkAsPaid
 // ====================================================
 
 export interface OrderMarkAsPaid_orderMarkAsPaid_errors {
-  __typename: "Error";
+  __typename: "OrderError";
+  code: OrderErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface OrderMarkAsPaid_orderMarkAsPaid_order_billingAddress_country {
@@ -97,6 +97,12 @@ export interface OrderMarkAsPaid_orderMarkAsPaid_order_fulfillments_lines {
   orderLine: OrderMarkAsPaid_orderMarkAsPaid_order_fulfillments_lines_orderLine | null;
 }
 
+export interface OrderMarkAsPaid_orderMarkAsPaid_order_fulfillments_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
 export interface OrderMarkAsPaid_orderMarkAsPaid_order_fulfillments {
   __typename: "Fulfillment";
   id: string;
@@ -104,6 +110,7 @@ export interface OrderMarkAsPaid_orderMarkAsPaid_order_fulfillments {
   fulfillmentOrder: number;
   status: FulfillmentStatus;
   trackingNumber: string;
+  warehouse: OrderMarkAsPaid_orderMarkAsPaid_order_fulfillments_warehouse | null;
 }
 
 export interface OrderMarkAsPaid_orderMarkAsPaid_order_lines_unitPrice_gross {
@@ -268,7 +275,7 @@ export interface OrderMarkAsPaid_orderMarkAsPaid_order {
 
 export interface OrderMarkAsPaid_orderMarkAsPaid {
   __typename: "OrderMarkAsPaid";
-  errors: OrderMarkAsPaid_orderMarkAsPaid_errors[] | null;
+  errors: OrderMarkAsPaid_orderMarkAsPaid_errors[];
   order: OrderMarkAsPaid_orderMarkAsPaid_order | null;
 }
 

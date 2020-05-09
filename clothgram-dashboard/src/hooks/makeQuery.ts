@@ -6,8 +6,10 @@ import { useIntl } from "react-intl";
 
 import { commonMessages } from "@saleor/intl";
 import { maybe, RequireAtLeastOne } from "@saleor/misc";
+import { isJwtError } from "@saleor/auth/errors";
 import useAppState from "./useAppState";
 import useNotifier from "./useNotifier";
+import useUser from "./useUser";
 
 export interface LoadMore<TData, TVariables> {
   loadMore: (
@@ -18,14 +20,13 @@ export interface LoadMore<TData, TVariables> {
 
 export type UseQueryResult<TData, TVariables> = QueryResult<TData, TVariables> &
   LoadMore<TData, TVariables>;
-type UseQueryOpts<TData, TVariables> = Partial<{
+type UseQueryOpts<TVariables> = Partial<{
   displayLoader: boolean;
-  require: Array<keyof TData>;
   skip: boolean;
   variables: TVariables;
 }>;
 type UseQueryHook<TData, TVariables> = (
-  opts: UseQueryOpts<TData, TVariables>
+  opts: UseQueryOpts<TVariables>
 ) => UseQueryResult<TData, TVariables>;
 
 function makeQuery<TData, TVariables>(
@@ -33,13 +34,14 @@ function makeQuery<TData, TVariables>(
 ): UseQueryHook<TData, TVariables> {
   function useQuery({
     displayLoader,
-    require,
     skip,
     variables
-  }: UseQueryOpts<TData, TVariables>): UseQueryResult<TData, TVariables> {
+  }: UseQueryOpts<TVariables>): UseQueryResult<TData, TVariables> {
     const notify = useNotifier();
     const intl = useIntl();
     const [, dispatchAppState] = useAppState();
+    const user = useUser();
+
     const queryData = useBaseQuery(query, {
       context: {
         useBatching: true
@@ -62,7 +64,12 @@ function makeQuery<TData, TVariables>(
     }, [queryData.loading]);
 
     if (queryData.error) {
-      if (
+      if (queryData.error.graphQLErrors.every(isJwtError)) {
+        user.logout();
+        notify({
+          text: intl.formatMessage(commonMessages.sessionExpired)
+        });
+      } else if (
         !queryData.error.graphQLErrors.every(
           err =>
             maybe(() => err.extensions.exception.code) === "PermissionDenied"
@@ -88,20 +95,6 @@ function makeQuery<TData, TVariables>(
         },
         variables: { ...variables, ...extraVariables }
       });
-
-    if (
-      !queryData.loading &&
-      require &&
-      queryData.data &&
-      !require.reduce((acc, key) => acc && queryData.data[key] !== null, true)
-    ) {
-      dispatchAppState({
-        payload: {
-          error: "not-found"
-        },
-        type: "displayError"
-      });
-    }
 
     return {
       ...queryData,

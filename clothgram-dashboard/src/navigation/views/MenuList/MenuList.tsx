@@ -174,6 +174,7 @@ const MenuList: React.FC<MenuListProps> = ({ params }) => {
                     open={params.action === "add"}
                     confirmButtonState={menuCreateOpts.status}
                     disabled={menuCreateOpts.loading}
+                    errors={menuCreateOpts?.data?.menuCreate.errors || []}
                     onClose={closeModal}
                     onConfirm={formData =>
                       menuCreate({
@@ -238,7 +239,7 @@ const MenuList: React.FC<MenuListProps> = ({ params }) => {
                   >
                     <DialogContentText>
                       <FormattedMessage
-                        defaultMessage="Are you sure you want to delete {counter,plural,one{this menu} other{{displayQuantity} menus}}?"
+                        defaultMessage="{counter,plural,one{Are you sure you want to delete this menu?} other{Are you sure you want to delete {displayQuantity} menus?}}"
                         id="menuListDeleteMenusContent"
                         values={{
                           counter: maybe(

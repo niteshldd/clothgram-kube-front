@@ -19,8 +19,8 @@ import SeoForm from "@saleor/components/SeoForm";
 import VisibilityCard from "@saleor/components/VisibilityCard";
 import useDateLocalize from "@saleor/hooks/useDateLocalize";
 import { sectionNames } from "@saleor/intl";
+import { PageErrorFragment } from "@saleor/pages/types/PageErrorFragment";
 import { maybe } from "../../../misc";
-import { UserError } from "../../../types";
 import { PageDetails_page } from "../../types/PageDetails";
 import PageInfo from "../PageInfo";
 import PageSlug from "../PageSlug";
@@ -37,7 +37,7 @@ export interface FormData {
 
 export interface PageDetailsPageProps {
   disabled: boolean;
-  errors: UserError[];
+  errors: PageErrorFragment[];
   page: PageDetails_page;
   saveButtonBarState: ConfirmButtonTransitionState;
   onBack: () => void;
@@ -70,8 +70,8 @@ const PageDetailsPage: React.FC<PageDetailsPageProps> = ({
     title: maybe(() => page.title, "")
   };
   return (
-    <Form errors={errors} initial={initialForm} onSubmit={onSubmit}>
-      {({ change, data, errors: formErrors, hasChanged, submit }) => (
+    <Form initial={initialForm} onSubmit={onSubmit}>
+      {({ change, data, hasChanged, submit }) => (
         <Container>
           <AppHeader onBack={onBack}>
             {intl.formatMessage(sectionNames.pages)}
@@ -91,7 +91,7 @@ const PageDetailsPage: React.FC<PageDetailsPageProps> = ({
               <PageInfo
                 data={data}
                 disabled={disabled}
-                errors={formErrors}
+                errors={errors}
                 page={page}
                 onChange={change}
               />
@@ -119,13 +119,13 @@ const PageDetailsPage: React.FC<PageDetailsPageProps> = ({
               <PageSlug
                 data={data}
                 disabled={disabled}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
               <CardSpacer />
               <VisibilityCard
                 data={data}
-                errors={formErrors}
+                errors={errors}
                 disabled={disabled}
                 hiddenMessage={intl.formatMessage(
                   {

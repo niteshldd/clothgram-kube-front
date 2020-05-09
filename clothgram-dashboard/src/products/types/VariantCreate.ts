@@ -8,11 +8,10 @@ import { ProductVariantCreateInput, ProductErrorCode } from "./../../types/globa
 // GraphQL mutation operation: VariantCreate
 // ====================================================
 
-export interface VariantCreate_productVariantCreate_productErrors {
+export interface VariantCreate_productVariantCreate_errors {
   __typename: "ProductError";
-  code: ProductErrorCode | null;
+  code: ProductErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface VariantCreate_productVariantCreate_productVariant_attributes_attribute_values {
@@ -98,6 +97,20 @@ export interface VariantCreate_productVariantCreate_productVariant_product {
   variants: (VariantCreate_productVariantCreate_productVariant_product_variants | null)[] | null;
 }
 
+export interface VariantCreate_productVariantCreate_productVariant_stocks_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
+export interface VariantCreate_productVariantCreate_productVariant_stocks {
+  __typename: "Stock";
+  id: string;
+  quantity: number;
+  quantityAllocated: number;
+  warehouse: VariantCreate_productVariantCreate_productVariant_stocks_warehouse;
+}
+
 export interface VariantCreate_productVariantCreate_productVariant {
   __typename: "ProductVariant";
   id: string;
@@ -108,13 +121,13 @@ export interface VariantCreate_productVariantCreate_productVariant {
   priceOverride: VariantCreate_productVariantCreate_productVariant_priceOverride | null;
   product: VariantCreate_productVariantCreate_productVariant_product;
   sku: string;
-  quantity: number;
-  quantityAllocated: number | null;
+  stocks: (VariantCreate_productVariantCreate_productVariant_stocks | null)[] | null;
+  trackInventory: boolean;
 }
 
 export interface VariantCreate_productVariantCreate {
   __typename: "ProductVariantCreate";
-  productErrors: VariantCreate_productVariantCreate_productErrors[] | null;
+  errors: VariantCreate_productVariantCreate_errors[];
   productVariant: VariantCreate_productVariantCreate_productVariant | null;
 }
 

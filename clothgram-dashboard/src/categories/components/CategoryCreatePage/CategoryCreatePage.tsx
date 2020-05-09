@@ -11,7 +11,7 @@ import PageHeader from "@saleor/components/PageHeader";
 import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import SeoForm from "@saleor/components/SeoForm";
 import { sectionNames } from "@saleor/intl";
-import { UserError } from "../../../types";
+import { ProductErrorFragment } from "@saleor/attributes/types/ProductErrorFragment";
 import CategoryDetailsForm from "../../components/CategoryDetailsForm";
 
 interface FormData {
@@ -29,7 +29,7 @@ const initialData: FormData = {
 };
 
 export interface CategoryCreatePageProps {
-  errors: UserError[];
+  errors: ProductErrorFragment[];
   disabled: boolean;
   saveButtonBarState: ConfirmButtonTransitionState;
   onSubmit(data: FormData);
@@ -40,18 +40,13 @@ export const CategoryCreatePage: React.FC<CategoryCreatePageProps> = ({
   disabled,
   onSubmit,
   onBack,
-  errors: userErrors,
+  errors,
   saveButtonBarState
 }) => {
   const intl = useIntl();
   return (
-    <Form
-      onSubmit={onSubmit}
-      initial={initialData}
-      errors={userErrors}
-      confirmLeave
-    >
-      {({ data, change, errors, submit, hasChanged }) => (
+    <Form onSubmit={onSubmit} initial={initialData} confirmLeave>
+      {({ data, change, submit, hasChanged }) => (
         <Container>
           <AppHeader onBack={onBack}>
             {intl.formatMessage(sectionNames.categories)}

@@ -12,7 +12,8 @@ import Debounce, { DebounceProps } from "@saleor/components/Debounce";
 import ArrowDropdownIcon from "@saleor/icons/ArrowDropdown";
 import { FetchMoreProps } from "@saleor/types";
 import MultiAutocompleteSelectFieldContent, {
-  MultiAutocompleteChoiceType
+  MultiAutocompleteChoiceType,
+  MultiAutocompleteActionType
 } from "./MultiAutocompleteSelectFieldContent";
 
 const useStyles = makeStyles(
@@ -50,6 +51,20 @@ const useStyles = makeStyles(
     container: {
       flexGrow: 1,
       position: "relative"
+    },
+    disabledChipInner: {
+      "& svg": {
+        color: theme.palette.grey[200]
+      },
+      alignItems: "center",
+      background: fade(theme.palette.grey[400], 0.8),
+      borderRadius: 18,
+      color: theme.palette.primary.contrastText,
+      display: "flex",
+      justifyContent: "space-between",
+      margin: theme.spacing(1, 0),
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(1)
     }
   }),
   { name: "MultiAutocompleteSelectField" }
@@ -57,8 +72,10 @@ const useStyles = makeStyles(
 
 export interface MultiAutocompleteSelectFieldProps
   extends Partial<FetchMoreProps> {
+  add?: MultiAutocompleteActionType;
   allowCustomValues?: boolean;
   displayValues: MultiAutocompleteChoiceType[];
+  error?: boolean;
   name: string;
   choices: MultiAutocompleteChoiceType[];
   value: string[];
@@ -70,19 +87,17 @@ export interface MultiAutocompleteSelectFieldProps
   onChange: (event: React.ChangeEvent<any>) => void;
 }
 
-const DebounceAutocomplete: React.ComponentType<
-  DebounceProps<string>
-> = Debounce;
+const DebounceAutocomplete: React.ComponentType<DebounceProps<
+  string
+>> = Debounce;
 
-const MultiAutocompleteSelectFieldComponent: React.FC<
-  MultiAutocompleteSelectFieldProps
-> = props => {
+const MultiAutocompleteSelectFieldComponent: React.FC<MultiAutocompleteSelectFieldProps> = props => {
   const {
+    add,
     allowCustomValues,
     choices,
-
     displayValues,
-
+    error,
     hasMore,
     helperText,
     label,
@@ -117,6 +132,7 @@ const MultiAutocompleteSelectFieldComponent: React.FC<
         itemToString={() => ""}
       >
         {({
+          closeMenu,
           getInputProps,
           getItemProps,
           isOpen,
@@ -147,12 +163,20 @@ const MultiAutocompleteSelectFieldComponent: React.FC<
                   id: undefined,
                   onClick: toggleMenu
                 }}
+                error={error}
                 helperText={helperText}
                 label={label}
                 fullWidth={true}
               />
               {isOpen && (!!inputValue || !!choices.length) && (
                 <MultiAutocompleteSelectFieldContent
+                  add={{
+                    ...add,
+                    onClick: () => {
+                      add.onClick();
+                      closeMenu();
+                    }
+                  }}
                   choices={choices.filter(
                     choice => !value.includes(choice.value)
                   )}
@@ -173,12 +197,18 @@ const MultiAutocompleteSelectFieldComponent: React.FC<
       <div className={classes.chipContainer}>
         {displayValues.map(value => (
           <div className={classes.chip} key={value.value}>
-            <div className={classes.chipInner}>
+            <div
+              className={
+                !value.disabled ? classes.chipInner : classes.disabledChipInner
+              }
+            >
               <Typography className={classes.chipLabel}>
                 {value.label}
               </Typography>
+
               <IconButton
                 className={classes.chipClose}
+                disabled={value.disabled}
                 onClick={() => handleSelect(value.value)}
               >
                 <CloseIcon fontSize="small" />
@@ -191,9 +221,11 @@ const MultiAutocompleteSelectFieldComponent: React.FC<
   );
 };
 
-const MultiAutocompleteSelectField: React.FC<
-  MultiAutocompleteSelectFieldProps
-> = ({ choices, fetchChoices, ...props }) => {
+const MultiAutocompleteSelectField: React.FC<MultiAutocompleteSelectFieldProps> = ({
+  choices,
+  fetchChoices,
+  ...props
+}) => {
   const [query, setQuery] = React.useState("");
 
   if (fetchChoices) {

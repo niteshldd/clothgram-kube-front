@@ -38,10 +38,7 @@ const HomeSection = () => {
           onOrdersToFulfillClick={() =>
             navigate(
               orderListUrl({
-                status: [
-                  OrderStatusFilter.UNFULFILLED,
-                  OrderStatusFilter.PARTIALLY_FULFILLED
-                ]
+                status: [OrderStatusFilter.READY_TO_FULFILL]
               })
             )
           }
@@ -56,7 +53,7 @@ const HomeSection = () => {
           ordersToFulfill={maybe(() => data.ordersToFulfill.totalCount)}
           productsOutOfStock={maybe(() => data.productsOutOfStock.totalCount)}
           userName={getUserName(user, true)}
-          userPermissions={maybe(() => user.permissions, [])}
+          userPermissions={user?.userPermissions || []}
         />
       )}
     </HomePageQuery>

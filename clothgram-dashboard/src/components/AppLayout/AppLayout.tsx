@@ -25,11 +25,9 @@ import useNavigator from "@saleor/hooks/useNavigator";
 import useTheme from "@saleor/hooks/useTheme";
 import useUser from "@saleor/hooks/useUser";
 import ArrowDropdown from "@saleor/icons/ArrowDropdown";
-import { maybe } from "@saleor/misc";
 import { staffMemberDetailsUrl } from "@saleor/staff/urls";
 import Container from "../Container";
 import ErrorPage from "../ErrorPage";
-import NotFoundPage from "../NotFoundPage";
 import AppActionContext from "./AppActionContext";
 import AppHeaderContext from "./AppHeaderContext";
 import { appLoaderHeight, drawerWidth, drawerWidthExpanded } from "./consts";
@@ -315,7 +313,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
   const menuStructure = createMenuStructure(intl);
   const configurationMenu = createConfigurationMenu(intl);
-  const userPermissions = maybe(() => user.permissions, []);
+  const userPermissions = user?.userPermissions || [];
 
   const renderConfigure = configurationMenu.some(section =>
     section.menuItems.some(
@@ -507,15 +505,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 </Container>
               </div>
               <main className={classes.view}>
-                {appState.error ? (
-                  appState.error === "not-found" ? (
-                    <NotFoundPage onBack={handleErrorBack} />
-                  ) : (
-                    <ErrorPage onBack={handleErrorBack} />
-                  )
-                ) : (
-                  children
-                )}
+                {appState.error
+                  ? appState.error === "unhandled" && (
+                      <ErrorPage onBack={handleErrorBack} />
+                    )
+                  : children}
               </main>
             </div>
             <div className={classes.appAction} ref={appActionAnchor} />

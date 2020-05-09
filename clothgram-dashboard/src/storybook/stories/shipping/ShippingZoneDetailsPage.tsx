@@ -1,14 +1,18 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
 
+import { ShippingErrorCode } from "@saleor/types/globalTypes";
+import { warehouseList } from "@saleor/warehouses/fixtures";
+import { fetchMoreProps, searchPageProps } from "@saleor/fixtures";
 import ShippingZoneDetailsPage, {
   ShippingZoneDetailsPageProps
 } from "../../../shipping/components/ShippingZoneDetailsPage";
 import { shippingZone } from "../../../shipping/fixtures";
 import Decorator from "../../Decorator";
-import { formError } from "../../misc";
 
 const props: ShippingZoneDetailsPageProps = {
+  ...fetchMoreProps,
+  ...searchPageProps,
   disabled: false,
   errors: [],
   onBack: () => undefined,
@@ -19,10 +23,12 @@ const props: ShippingZoneDetailsPageProps = {
   onPriceRateEdit: () => undefined,
   onRateRemove: () => undefined,
   onSubmit: () => undefined,
+  onWarehouseAdd: () => undefined,
   onWeightRateAdd: () => undefined,
   onWeightRateEdit: () => undefined,
   saveButtonBarState: "default",
-  shippingZone
+  shippingZone,
+  warehouses: warehouseList
 };
 
 storiesOf("Views / Shipping / Shipping zone details", module)
@@ -36,5 +42,12 @@ storiesOf("Views / Shipping / Shipping zone details", module)
     />
   ))
   .add("form errors", () => (
-    <ShippingZoneDetailsPage {...props} errors={["name"].map(formError)} />
+    <ShippingZoneDetailsPage
+      {...props}
+      errors={["name"].map(field => ({
+        __typename: "ShippingError",
+        code: ShippingErrorCode.INVALID,
+        field
+      }))}
+    />
   ));

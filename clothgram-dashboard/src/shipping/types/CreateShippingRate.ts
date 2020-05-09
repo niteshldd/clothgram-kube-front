@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { ShippingPriceInput, ShippingMethodTypeEnum } from "./../../types/globalTypes";
+import { ShippingPriceInput, ShippingErrorCode, ShippingMethodTypeEnum } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: CreateShippingRate
 // ====================================================
 
 export interface CreateShippingRate_shippingPriceCreate_errors {
-  __typename: "Error";
+  __typename: "ShippingError";
+  code: ShippingErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface CreateShippingRate_shippingPriceCreate_shippingZone_countries {
@@ -62,6 +62,12 @@ export interface CreateShippingRate_shippingPriceCreate_shippingZone_shippingMet
   type: ShippingMethodTypeEnum | null;
 }
 
+export interface CreateShippingRate_shippingPriceCreate_shippingZone_warehouses {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
 export interface CreateShippingRate_shippingPriceCreate_shippingZone {
   __typename: "ShippingZone";
   id: string;
@@ -69,11 +75,12 @@ export interface CreateShippingRate_shippingPriceCreate_shippingZone {
   name: string;
   default: boolean;
   shippingMethods: (CreateShippingRate_shippingPriceCreate_shippingZone_shippingMethods | null)[] | null;
+  warehouses: (CreateShippingRate_shippingPriceCreate_shippingZone_warehouses | null)[] | null;
 }
 
 export interface CreateShippingRate_shippingPriceCreate {
   __typename: "ShippingPriceCreate";
-  errors: CreateShippingRate_shippingPriceCreate_errors[] | null;
+  errors: CreateShippingRate_shippingPriceCreate_errors[];
   shippingZone: CreateShippingRate_shippingPriceCreate_shippingZone | null;
 }
 

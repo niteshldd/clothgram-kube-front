@@ -132,6 +132,14 @@ export const orderStatusMessages = defineMessages({
     defaultMessage: "Partially fulfilled",
     description: "order status"
   },
+  readyToCapture: {
+    defaultMessage: "Ready to capture",
+    description: "order status"
+  },
+  readyToFulfill: {
+    defaultMessage: "Ready to fulfill",
+    description: "order status"
+  },
   unfulfilled: {
     defaultMessage: "Unfulfilled",
     description: "order status"
@@ -379,4 +387,8 @@ export function transformFormToAddress<T>(
     ...address,
     country: findInEnum(address.country, CountryCode)
   };
+}
+
+export function getStringOrPlaceholder(s: string | undefined): string {
+  return s || "...";
 }

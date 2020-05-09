@@ -6,21 +6,26 @@ import { useIntl } from "react-intl";
 
 import CardTitle from "@saleor/components/CardTitle";
 import { commonMessages } from "@saleor/intl";
-import { FormErrors } from "../../../types";
-import { FormData } from "../ShippingZoneDetailsPage";
+import { getFormErrors } from "@saleor/utils/errors";
+import getShippingErrorMessage from "@saleor/utils/errors/shipping";
+import { ShippingErrorFragment } from "@saleor/shipping/types/ShippingErrorFragment";
 
 export interface ShippingZoneInfoProps {
-  data: FormData;
-  errors: FormErrors<"name">;
+  data: Record<"name", string>;
+  disabled: boolean;
+  errors: ShippingErrorFragment[];
   onChange: (event: React.ChangeEvent<any>) => void;
 }
 
 const ShippingZoneInfo: React.FC<ShippingZoneInfoProps> = ({
   data,
+  disabled,
   errors,
   onChange
 }) => {
   const intl = useIntl();
+
+  const formErrors = getFormErrors(["name"], errors);
 
   return (
     <Card>
@@ -29,13 +34,14 @@ const ShippingZoneInfo: React.FC<ShippingZoneInfoProps> = ({
       />
       <CardContent>
         <TextField
-          error={!!errors.name}
+          disabled={disabled}
+          error={!!formErrors.name}
           fullWidth
-          helperText={errors.name}
+          helperText={getShippingErrorMessage(formErrors.name, intl)}
           label={intl.formatMessage({
             defaultMessage: "Shipping Zone Name"
           })}
-          name={"name" as keyof FormData}
+          name="name"
           value={data.name}
           onChange={onChange}
         />

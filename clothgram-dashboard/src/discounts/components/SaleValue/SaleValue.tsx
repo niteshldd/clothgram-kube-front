@@ -6,15 +6,17 @@ import { useIntl } from "react-intl";
 
 import CardTitle from "@saleor/components/CardTitle";
 import { FormChange } from "@saleor/hooks/useForm";
-import { FormErrors } from "@saleor/types";
 import { SaleType } from "@saleor/types/globalTypes";
+import { getFormErrors } from "@saleor/utils/errors";
+import getDiscountErrorMessage from "@saleor/utils/errors/discounts";
+import { DiscountErrorFragment } from "@saleor/discounts/types/DiscountErrorFragment";
 import { FormData } from "../SaleDetailsPage";
 
 export interface SaleValueProps {
   currencySymbol: string;
   data: FormData;
   disabled: boolean;
-  errors: FormErrors<"value">;
+  errors: DiscountErrorFragment[];
   onChange: FormChange;
 }
 
@@ -26,6 +28,8 @@ const SaleValue: React.FC<SaleValueProps> = ({
   onChange
 }) => {
   const intl = useIntl();
+
+  const formErrors = getFormErrors(["value"], errors);
 
   return (
     <Card>
@@ -43,12 +47,12 @@ const SaleValue: React.FC<SaleValueProps> = ({
             defaultMessage: "Discount Value",
             description: "sale discount"
           })}
-          error={!!errors.value}
+          error={!!formErrors.value}
           name="value"
           InputProps={{
             endAdornment: data.type === SaleType.FIXED ? currencySymbol : "%"
           }}
-          helperText={errors.value}
+          helperText={getDiscountErrorMessage(formErrors.value, intl)}
           value={data.value}
           onChange={onChange}
         />

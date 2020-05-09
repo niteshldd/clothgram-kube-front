@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { ShippingPriceInput, ShippingMethodTypeEnum } from "./../../types/globalTypes";
+import { ShippingPriceInput, ShippingErrorCode, ShippingMethodTypeEnum } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateShippingRate
 // ====================================================
 
 export interface UpdateShippingRate_shippingPriceUpdate_errors {
-  __typename: "Error";
+  __typename: "ShippingError";
+  code: ShippingErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface UpdateShippingRate_shippingPriceUpdate_shippingMethod_minimumOrderPrice {
@@ -58,7 +58,7 @@ export interface UpdateShippingRate_shippingPriceUpdate_shippingMethod {
 
 export interface UpdateShippingRate_shippingPriceUpdate {
   __typename: "ShippingPriceUpdate";
-  errors: UpdateShippingRate_shippingPriceUpdate_errors[] | null;
+  errors: UpdateShippingRate_shippingPriceUpdate_errors[];
   shippingMethod: UpdateShippingRate_shippingPriceUpdate_shippingMethod | null;
 }
 

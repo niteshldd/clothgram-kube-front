@@ -7,7 +7,7 @@ import useNavigator from "@saleor/hooks/useNavigator";
 import useNotifier from "@saleor/hooks/useNotifier";
 import useShop from "@saleor/hooks/useShop";
 import { commonMessages } from "@saleor/intl";
-import { maybe } from "@saleor/misc";
+import { maybe, getStringOrPlaceholder } from "@saleor/misc";
 import ServiceDeleteDialog from "@saleor/services/components/ServiceDeleteDialog";
 import ServiceTokenCreateDialog from "@saleor/services/components/ServiceTokenCreateDialog";
 import ServiceTokenDeleteDialog from "@saleor/services/components/ServiceTokenDeleteDialog";
@@ -22,6 +22,7 @@ import { ServiceTokenCreate } from "@saleor/services/types/ServiceTokenCreate";
 import { ServiceTokenDelete } from "@saleor/services/types/ServiceTokenDelete";
 import { ServiceUpdate } from "@saleor/services/types/ServiceUpdate";
 import createDialogActionHandlers from "@saleor/utils/handlers/dialogActionHandlers";
+import NotFoundPage from "@saleor/components/NotFoundPage";
 import ServiceDetailsPage, {
   ServiceDetailsPageFormData
 } from "../../components/ServiceDetailsPage";
@@ -77,12 +78,14 @@ export const ServiceDetails: React.FC<OrderListProps> = ({
   const handleBack = () => navigate(serviceListUrl());
 
   return (
-    <ServiceDetailsQuery
-      displayLoader
-      variables={{ id }}
-      require={["serviceAccount"]}
-    >
+    <ServiceDetailsQuery displayLoader variables={{ id }}>
       {({ data, loading, refetch }) => {
+        const service = data?.serviceAccount;
+
+        if (service === null) {
+          return <NotFoundPage onBack={handleBack} />;
+        }
+
         const onTokenCreate = (data: ServiceTokenCreate) => {
           if (maybe(() => data.serviceAccountTokenCreate.errors.length === 0)) {
             refetch();
@@ -152,16 +155,15 @@ export const ServiceDetails: React.FC<OrderListProps> = ({
                           return (
                             <>
                               <WindowTitle
-                                title={maybe(() => data.serviceAccount.name)}
+                                title={getStringOrPlaceholder(service?.name)}
                               />
                               <ServiceDetailsPage
                                 apiUri={API_URI}
                                 disabled={loading}
-                                errors={maybe(
-                                  () =>
-                                    updateServiceOpts.data.serviceAccountUpdate
-                                      .errors
-                                )}
+                                errors={
+                                  updateServiceOpts.data?.serviceAccountUpdate
+                                    .errors || []
+                                }
                                 token={token}
                                 onApiUriClick={() => open(API_URI, "blank")}
                                 onBack={handleBack}
@@ -174,15 +176,14 @@ export const ServiceDetails: React.FC<OrderListProps> = ({
                                     id
                                   })
                                 }
-                                permissions={maybe(() => shop.permissions)}
-                                service={maybe(() => data.serviceAccount)}
+                                permissions={shop?.permissions}
+                                service={data?.serviceAccount}
                                 saveButtonBarState={updateServiceOpts.status}
                               />
                               <ServiceDeleteDialog
                                 confirmButtonState={deleteServiceOpts.status}
-                                name={maybe(
-                                  () => data.serviceAccount.name,
-                                  "..."
+                                name={getStringOrPlaceholder(
+                                  data?.serviceAccount?.name
                                 )}
                                 onClose={closeModal}
                                 onConfirm={handleRemoveConfirm}
@@ -193,11 +194,10 @@ export const ServiceDetails: React.FC<OrderListProps> = ({
                                 onClose={closeModal}
                                 onCreate={handleTokenCreate}
                                 open={params.action === "create-token"}
-                                token={maybe(
-                                  () =>
-                                    createTokenOpts.data
-                                      .serviceAccountTokenCreate.authToken
-                                )}
+                                token={
+                                  createTokenOpts.data
+                                    ?.serviceAccountTokenCreate.authToken
+                                }
                               />
                               <ServiceTokenDeleteDialog
                                 confirmButtonState={deleteTokenOpts.status}

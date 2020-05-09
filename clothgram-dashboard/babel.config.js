@@ -23,6 +23,7 @@ module.exports = api => {
 
   const plugins = [
     "@babel/plugin-proposal-numeric-separator",
+    "@babel/plugin-proposal-optional-chaining",
     "@babel/plugin-proposal-class-properties",
     [
       "@babel/plugin-proposal-decorators",
@@ -47,8 +48,8 @@ module.exports = api => {
   plugins.push("macros");
 
   return {
-    presets,
+    ignore,
     plugins,
-    ignore
+    presets
   };
 };

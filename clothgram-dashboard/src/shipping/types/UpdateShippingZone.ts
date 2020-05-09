@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { ShippingZoneInput } from "./../../types/globalTypes";
+import { ShippingZoneUpdateInput, ShippingErrorCode } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateShippingZone
 // ====================================================
 
 export interface UpdateShippingZone_shippingZoneUpdate_errors {
-  __typename: "Error";
+  __typename: "ShippingError";
+  code: ShippingErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface UpdateShippingZone_shippingZoneUpdate_shippingZone_countries {
@@ -30,7 +30,7 @@ export interface UpdateShippingZone_shippingZoneUpdate_shippingZone {
 
 export interface UpdateShippingZone_shippingZoneUpdate {
   __typename: "ShippingZoneUpdate";
-  errors: UpdateShippingZone_shippingZoneUpdate_errors[] | null;
+  errors: UpdateShippingZone_shippingZoneUpdate_errors[];
   shippingZone: UpdateShippingZone_shippingZoneUpdate_shippingZone | null;
 }
 
@@ -40,5 +40,5 @@ export interface UpdateShippingZone {
 
 export interface UpdateShippingZoneVariables {
   id: string;
-  input: ShippingZoneInput;
+  input: ShippingZoneUpdateInput;
 }

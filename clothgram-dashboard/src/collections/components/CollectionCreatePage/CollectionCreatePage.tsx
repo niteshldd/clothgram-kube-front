@@ -17,7 +17,7 @@ import SeoForm from "@saleor/components/SeoForm";
 import VisibilityCard from "@saleor/components/VisibilityCard";
 import useDateLocalize from "@saleor/hooks/useDateLocalize";
 import { commonMessages, sectionNames } from "@saleor/intl";
-import { UserError } from "../../../types";
+import { ProductErrorFragment } from "@saleor/attributes/types/ProductErrorFragment";
 import CollectionDetails from "../CollectionDetails/CollectionDetails";
 import { CollectionImage } from "../CollectionImage/CollectionImage";
 
@@ -37,7 +37,7 @@ export interface CollectionCreatePageFormData {
 
 export interface CollectionCreatePageProps {
   disabled: boolean;
-  errors: UserError[];
+  errors: ProductErrorFragment[];
   saveButtonBarState: ConfirmButtonTransitionState;
   onBack: () => void;
   onSubmit: (data: CollectionCreatePageFormData) => void;
@@ -68,8 +68,8 @@ const CollectionCreatePage: React.FC<CollectionCreatePageProps> = ({
   const localizeDate = useDateLocalize();
 
   return (
-    <Form errors={errors} initial={initialForm} onSubmit={onSubmit}>
-      {({ change, data, errors: formErrors, hasChanged, submit }) => (
+    <Form initial={initialForm} onSubmit={onSubmit}>
+      {({ change, data, hasChanged, submit }) => (
         <Container>
           <AppHeader onBack={onBack}>
             {intl.formatMessage(sectionNames.collections)}
@@ -85,7 +85,7 @@ const CollectionCreatePage: React.FC<CollectionCreatePageProps> = ({
               <CollectionDetails
                 data={data}
                 disabled={disabled}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
               <CardSpacer />
@@ -147,7 +147,7 @@ const CollectionCreatePage: React.FC<CollectionCreatePageProps> = ({
                   <CardContent>
                     <VisibilityCard
                       data={data}
-                      errors={formErrors}
+                      errors={errors}
                       disabled={disabled}
                       hiddenMessage={intl.formatMessage(
                         {

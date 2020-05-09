@@ -15,8 +15,10 @@ import { ShopInfo_shop_permissions } from "@saleor/components/Shop/types/ShopInf
 import { sectionNames } from "@saleor/intl";
 import { maybe } from "@saleor/misc";
 import { ServiceDetails_serviceAccount } from "@saleor/services/types/ServiceDetails";
-import { UserError } from "@saleor/types";
 import { PermissionEnum } from "@saleor/types/globalTypes";
+import { AccountErrorFragment } from "@saleor/customers/types/AccountErrorFragment";
+import { getFormErrors } from "@saleor/utils/errors";
+import getAccountErrorMessage from "@saleor/utils/errors/account";
 import ServiceDefaultToken from "../ServiceDefaultToken";
 import ServiceInfo from "../ServiceInfo";
 import ServiceTokens from "../ServiceTokens";
@@ -30,7 +32,7 @@ export interface ServiceDetailsPageFormData {
 export interface ServiceDetailsPageProps {
   apiUri: string;
   disabled: boolean;
-  errors: UserError[];
+  errors: AccountErrorFragment[];
   permissions: ShopInfo_shop_permissions[];
   saveButtonBarState: ConfirmButtonTransitionState;
   service: ServiceDetails_serviceAccount;
@@ -48,7 +50,7 @@ const ServiceDetailsPage: React.FC<ServiceDetailsPageProps> = props => {
   const {
     apiUri,
     disabled,
-    errors: formErrors,
+    errors,
     permissions,
     saveButtonBarState,
     service,
@@ -62,6 +64,9 @@ const ServiceDetailsPage: React.FC<ServiceDetailsPageProps> = props => {
     onSubmit
   } = props;
   const intl = useIntl();
+
+  const formErrors = getFormErrors(["permissions"], errors || []);
+  const permissionsError = getAccountErrorMessage(formErrors.permissions, intl);
 
   const initialForm: ServiceDetailsPageFormData = {
     hasFullAccess: maybe(
@@ -79,13 +84,8 @@ const ServiceDetailsPage: React.FC<ServiceDetailsPageProps> = props => {
     permissions: maybe(() => service.permissions, []).map(perm => perm.code)
   };
   return (
-    <Form
-      errors={formErrors}
-      initial={initialForm}
-      onSubmit={onSubmit}
-      confirmLeave
-    >
-      {({ data, change, errors, hasChanged, submit }) => (
+    <Form initial={initialForm} onSubmit={onSubmit} confirmLeave>
+      {({ data, change, hasChanged, submit }) => (
         <Container>
           <AppHeader onBack={onBack}>
             {intl.formatMessage(sectionNames.serviceAccounts)}
@@ -112,7 +112,7 @@ const ServiceDetailsPage: React.FC<ServiceDetailsPageProps> = props => {
               />
               <CardSpacer />
               <ServiceTokens
-                tokens={maybe(() => service.tokens)}
+                tokens={service?.tokens}
                 onCreate={onTokenCreate}
                 onDelete={onTokenDelete}
               />
@@ -120,9 +120,20 @@ const ServiceDetailsPage: React.FC<ServiceDetailsPageProps> = props => {
             <div>
               <AccountPermissions
                 data={data}
+                errorMessage={permissionsError}
                 disabled={disabled}
                 permissions={permissions}
+                permissionsExceeded={false}
                 onChange={change}
+                fullAccessLabel={intl.formatMessage({
+                  defaultMessage: "User has full access to the store",
+                  description: "checkbox label"
+                })}
+                description={intl.formatMessage({
+                  defaultMessage:
+                    "Expand or restrict user's permissions to access certain part of saleor system.",
+                  description: "card description"
+                })}
               />
               <CardSpacer />
               <AccountStatus

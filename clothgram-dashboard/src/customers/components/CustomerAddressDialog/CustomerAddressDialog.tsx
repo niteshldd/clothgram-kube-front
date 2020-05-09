@@ -17,9 +17,9 @@ import useModalDialogErrors from "@saleor/hooks/useModalDialogErrors";
 import useStateFromProps from "@saleor/hooks/useStateFromProps";
 import { buttonMessages } from "@saleor/intl";
 import { maybe } from "@saleor/misc";
-import { UserError } from "@saleor/types";
 import { AddressInput } from "@saleor/types/globalTypes";
 import createSingleAutocompleteSelectHandler from "@saleor/utils/handlers/singleAutocompleteSelectChangeHandler";
+import { AccountErrorFragment } from "@saleor/customers/types/AccountErrorFragment";
 import { AddressTypeInput } from "../../types";
 import { CustomerAddresses_user_addresses } from "../../types/CustomerAddresses";
 
@@ -30,7 +30,7 @@ export interface CustomerAddressDialogProps {
     code: string;
     label: string;
   }>;
-  errors: UserError[];
+  errors: AccountErrorFragment[];
   open: boolean;
   variant: "create" | "edit";
   onClose: () => void;
@@ -43,7 +43,10 @@ const styles = createStyles({
   }
 });
 
-const CustomerAddressDialog = withStyles(styles, {})(
+const CustomerAddressDialog = withStyles(
+  styles,
+  {}
+)(
   ({
     address,
     classes,
@@ -98,12 +101,8 @@ const CustomerAddressDialog = withStyles(styles, {})(
         fullWidth
         maxWidth="sm"
       >
-        <Form
-          initial={initialForm}
-          errors={dialogErrors}
-          onSubmit={handleSubmit}
-        >
-          {({ change, data, errors: formErrors }) => {
+        <Form initial={initialForm} onSubmit={handleSubmit}>
+          {({ change, data }) => {
             const handleCountrySelect = createSingleAutocompleteSelectHandler(
               change,
               setCountryDisplayName,
@@ -130,7 +129,7 @@ const CustomerAddressDialog = withStyles(styles, {})(
                     countries={countryChoices}
                     data={data}
                     countryDisplayValue={countryDisplayName}
-                    errors={formErrors}
+                    errors={dialogErrors}
                     onChange={change}
                     onCountryChange={handleCountrySelect}
                   />

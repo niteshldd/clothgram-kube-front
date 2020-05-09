@@ -33,7 +33,7 @@ export interface ShopInfo_shop_languages {
 }
 
 export interface ShopInfo_shop_permissions {
-  __typename: "PermissionDisplay";
+  __typename: "Permission";
   code: PermissionEnum;
   name: string;
 }
@@ -54,5 +54,5 @@ export interface ShopInfo_shop {
 }
 
 export interface ShopInfo {
-  shop: ShopInfo_shop | null;
+  shop: ShopInfo_shop;
 }

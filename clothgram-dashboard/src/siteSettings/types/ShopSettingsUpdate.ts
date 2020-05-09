@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { SiteDomainInput, ShopSettingsInput, AddressInput, AuthorizationKeyType } from "./../../types/globalTypes";
+import { SiteDomainInput, ShopSettingsInput, AddressInput, ShopErrorCode, AuthorizationKeyType } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: ShopSettingsUpdate
 // ====================================================
 
 export interface ShopSettingsUpdate_shopSettingsUpdate_errors {
-  __typename: "Error";
+  __typename: "ShopError";
+  code: ShopErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface ShopSettingsUpdate_shopSettingsUpdate_shop_authorizationKeys {
@@ -68,14 +68,14 @@ export interface ShopSettingsUpdate_shopSettingsUpdate_shop {
 
 export interface ShopSettingsUpdate_shopSettingsUpdate {
   __typename: "ShopSettingsUpdate";
-  errors: ShopSettingsUpdate_shopSettingsUpdate_errors[] | null;
+  errors: ShopSettingsUpdate_shopSettingsUpdate_errors[];
   shop: ShopSettingsUpdate_shopSettingsUpdate_shop | null;
 }
 
 export interface ShopSettingsUpdate_shopDomainUpdate_errors {
-  __typename: "Error";
+  __typename: "ShopError";
+  code: ShopErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface ShopSettingsUpdate_shopDomainUpdate_shop_domain {
@@ -91,14 +91,14 @@ export interface ShopSettingsUpdate_shopDomainUpdate_shop {
 
 export interface ShopSettingsUpdate_shopDomainUpdate {
   __typename: "ShopDomainUpdate";
-  errors: ShopSettingsUpdate_shopDomainUpdate_errors[] | null;
+  errors: ShopSettingsUpdate_shopDomainUpdate_errors[];
   shop: ShopSettingsUpdate_shopDomainUpdate_shop | null;
 }
 
 export interface ShopSettingsUpdate_shopAddressUpdate_errors {
-  __typename: "Error";
+  __typename: "ShopError";
+  code: ShopErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface ShopSettingsUpdate_shopAddressUpdate_shop_companyAddress_country {
@@ -130,7 +130,7 @@ export interface ShopSettingsUpdate_shopAddressUpdate_shop {
 
 export interface ShopSettingsUpdate_shopAddressUpdate {
   __typename: "ShopAddressUpdate";
-  errors: ShopSettingsUpdate_shopAddressUpdate_errors[] | null;
+  errors: ShopSettingsUpdate_shopAddressUpdate_errors[];
   shop: ShopSettingsUpdate_shopAddressUpdate_shop | null;
 }
 

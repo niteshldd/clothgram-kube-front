@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { AuthorizationKeyType } from "./../../types/globalTypes";
+import { AuthorizationKeyType, ShopErrorCode } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: AuthorizationKeyDelete
 // ====================================================
 
 export interface AuthorizationKeyDelete_authorizationKeyDelete_errors {
-  __typename: "Error";
+  __typename: "ShopError";
+  code: ShopErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface AuthorizationKeyDelete_authorizationKeyDelete_shop_authorizationKeys {
@@ -68,7 +68,7 @@ export interface AuthorizationKeyDelete_authorizationKeyDelete_shop {
 
 export interface AuthorizationKeyDelete_authorizationKeyDelete {
   __typename: "AuthorizationKeyDelete";
-  errors: AuthorizationKeyDelete_authorizationKeyDelete_errors[] | null;
+  errors: AuthorizationKeyDelete_authorizationKeyDelete_errors[];
   shop: AuthorizationKeyDelete_authorizationKeyDelete_shop | null;
 }
 

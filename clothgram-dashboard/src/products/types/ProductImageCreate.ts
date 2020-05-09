@@ -2,16 +2,68 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { AttributeInputTypeEnum } from "./../../types/globalTypes";
+import { ProductErrorCode, AttributeInputTypeEnum } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: ProductImageCreate
 // ====================================================
 
 export interface ProductImageCreate_productImageCreate_errors {
-  __typename: "Error";
+  __typename: "ProductError";
+  code: ProductErrorCode;
   field: string | null;
-  message: string | null;
+}
+
+export interface ProductImageCreate_productImageCreate_product_attributes_attribute_values {
+  __typename: "AttributeValue";
+  id: string;
+  name: string | null;
+  slug: string | null;
+}
+
+export interface ProductImageCreate_productImageCreate_product_attributes_attribute {
+  __typename: "Attribute";
+  id: string;
+  slug: string | null;
+  name: string | null;
+  inputType: AttributeInputTypeEnum | null;
+  valueRequired: boolean;
+  values: (ProductImageCreate_productImageCreate_product_attributes_attribute_values | null)[] | null;
+}
+
+export interface ProductImageCreate_productImageCreate_product_attributes_values {
+  __typename: "AttributeValue";
+  id: string;
+  name: string | null;
+  slug: string | null;
+}
+
+export interface ProductImageCreate_productImageCreate_product_attributes {
+  __typename: "SelectedAttribute";
+  attribute: ProductImageCreate_productImageCreate_product_attributes_attribute;
+  values: (ProductImageCreate_productImageCreate_product_attributes_values | null)[];
+}
+
+export interface ProductImageCreate_productImageCreate_product_productType_variantAttributes_values {
+  __typename: "AttributeValue";
+  id: string;
+  name: string | null;
+  slug: string | null;
+}
+
+export interface ProductImageCreate_productImageCreate_product_productType_variantAttributes {
+  __typename: "Attribute";
+  id: string;
+  name: string | null;
+  values: (ProductImageCreate_productImageCreate_product_productType_variantAttributes_values | null)[] | null;
+}
+
+export interface ProductImageCreate_productImageCreate_product_productType {
+  __typename: "ProductType";
+  id: string;
+  variantAttributes: (ProductImageCreate_productImageCreate_product_productType_variantAttributes | null)[] | null;
+  name: string;
+  hasVariants: boolean;
 }
 
 export interface ProductImageCreate_productImageCreate_product_category {
@@ -54,36 +106,6 @@ export interface ProductImageCreate_productImageCreate_product_purchaseCost {
   __typename: "MoneyRange";
   start: ProductImageCreate_productImageCreate_product_purchaseCost_start | null;
   stop: ProductImageCreate_productImageCreate_product_purchaseCost_stop | null;
-}
-
-export interface ProductImageCreate_productImageCreate_product_attributes_attribute_values {
-  __typename: "AttributeValue";
-  id: string;
-  name: string | null;
-  slug: string | null;
-}
-
-export interface ProductImageCreate_productImageCreate_product_attributes_attribute {
-  __typename: "Attribute";
-  id: string;
-  slug: string | null;
-  name: string | null;
-  inputType: AttributeInputTypeEnum | null;
-  valueRequired: boolean;
-  values: (ProductImageCreate_productImageCreate_product_attributes_attribute_values | null)[] | null;
-}
-
-export interface ProductImageCreate_productImageCreate_product_attributes_values {
-  __typename: "AttributeValue";
-  id: string;
-  name: string | null;
-  slug: string | null;
-}
-
-export interface ProductImageCreate_productImageCreate_product_attributes {
-  __typename: "SelectedAttribute";
-  attribute: ProductImageCreate_productImageCreate_product_attributes_attribute;
-  values: (ProductImageCreate_productImageCreate_product_attributes_values | null)[];
 }
 
 export interface ProductImageCreate_productImageCreate_product_pricing_priceRange_start_net {
@@ -133,6 +155,20 @@ export interface ProductImageCreate_productImageCreate_product_variants_priceOve
   currency: string;
 }
 
+export interface ProductImageCreate_productImageCreate_product_variants_stocks_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
+export interface ProductImageCreate_productImageCreate_product_variants_stocks {
+  __typename: "Stock";
+  id: string;
+  quantity: number;
+  quantityAllocated: number;
+  warehouse: ProductImageCreate_productImageCreate_product_variants_stocks_warehouse;
+}
+
 export interface ProductImageCreate_productImageCreate_product_variants {
   __typename: "ProductVariant";
   id: string;
@@ -140,21 +176,15 @@ export interface ProductImageCreate_productImageCreate_product_variants {
   name: string;
   priceOverride: ProductImageCreate_productImageCreate_product_variants_priceOverride | null;
   margin: number | null;
-  quantity: number;
-  quantityAllocated: number | null;
-  stockQuantity: number;
-}
-
-export interface ProductImageCreate_productImageCreate_product_productType {
-  __typename: "ProductType";
-  id: string;
-  name: string;
-  hasVariants: boolean;
+  stocks: (ProductImageCreate_productImageCreate_product_variants_stocks | null)[] | null;
+  trackInventory: boolean;
 }
 
 export interface ProductImageCreate_productImageCreate_product {
   __typename: "Product";
   id: string;
+  attributes: ProductImageCreate_productImageCreate_product_attributes[];
+  productType: ProductImageCreate_productImageCreate_product_productType;
   name: string;
   descriptionJson: any;
   seoTitle: string | null;
@@ -168,17 +198,14 @@ export interface ProductImageCreate_productImageCreate_product {
   isPublished: boolean;
   chargeTaxes: boolean;
   publicationDate: any | null;
-  attributes: ProductImageCreate_productImageCreate_product_attributes[];
   pricing: ProductImageCreate_productImageCreate_product_pricing | null;
   images: (ProductImageCreate_productImageCreate_product_images | null)[] | null;
   variants: (ProductImageCreate_productImageCreate_product_variants | null)[] | null;
-  productType: ProductImageCreate_productImageCreate_product_productType;
-  url: string;
 }
 
 export interface ProductImageCreate_productImageCreate {
   __typename: "ProductImageCreate";
-  errors: ProductImageCreate_productImageCreate_errors[] | null;
+  errors: ProductImageCreate_productImageCreate_errors[];
   product: ProductImageCreate_productImageCreate_product | null;
 }
 

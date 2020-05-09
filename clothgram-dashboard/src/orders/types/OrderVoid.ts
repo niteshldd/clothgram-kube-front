@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
+import { OrderErrorCode, OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: OrderVoid
 // ====================================================
 
 export interface OrderVoid_orderVoid_errors {
-  __typename: "Error";
+  __typename: "OrderError";
+  code: OrderErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface OrderVoid_orderVoid_order_billingAddress_country {
@@ -97,6 +97,12 @@ export interface OrderVoid_orderVoid_order_fulfillments_lines {
   orderLine: OrderVoid_orderVoid_order_fulfillments_lines_orderLine | null;
 }
 
+export interface OrderVoid_orderVoid_order_fulfillments_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
 export interface OrderVoid_orderVoid_order_fulfillments {
   __typename: "Fulfillment";
   id: string;
@@ -104,6 +110,7 @@ export interface OrderVoid_orderVoid_order_fulfillments {
   fulfillmentOrder: number;
   status: FulfillmentStatus;
   trackingNumber: string;
+  warehouse: OrderVoid_orderVoid_order_fulfillments_warehouse | null;
 }
 
 export interface OrderVoid_orderVoid_order_lines_unitPrice_gross {
@@ -268,7 +275,7 @@ export interface OrderVoid_orderVoid_order {
 
 export interface OrderVoid_orderVoid {
   __typename: "OrderVoid";
-  errors: OrderVoid_orderVoid_errors[] | null;
+  errors: OrderVoid_orderVoid_errors[];
   order: OrderVoid_orderVoid_order | null;
 }
 

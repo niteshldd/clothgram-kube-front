@@ -14,13 +14,13 @@ import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import useAddressValidation from "@saleor/hooks/useAddressValidation";
 import useStateFromProps from "@saleor/hooks/useStateFromProps";
 import { commonMessages, sectionNames } from "@saleor/intl";
-import { UserError } from "@saleor/types";
 import createSingleAutocompleteSelectHandler from "@saleor/utils/handlers/singleAutocompleteSelectChangeHandler";
 import { mapCountriesToChoices } from "@saleor/utils/maps";
+import { ShopErrorFragment } from "@saleor/siteSettings/types/ShopErrorFragment";
+import CompanyAddressInput from "@saleor/components/CompanyAddressInput";
 import { maybe } from "../../../misc";
 import { AuthorizationKeyType } from "../../../types/globalTypes";
 import { SiteSettings_shop } from "../../types/SiteSettings";
-import SiteSettingsAddress from "../SiteSettingsAddress/SiteSettingsAddress";
 import SiteSettingsDetails from "../SiteSettingsDetails/SiteSettingsDetails";
 import SiteSettingsKeys from "../SiteSettingsKeys/SiteSettingsKeys";
 import SiteSettingsMailing, {
@@ -48,7 +48,7 @@ export interface SiteSettingsPageFormData
 
 export interface SiteSettingsPageProps {
   disabled: boolean;
-  errors: UserError[];
+  errors: ShopErrorFragment[];
   shop: SiteSettings_shop;
   saveButtonBarState: ConfirmButtonTransitionState;
   onBack: () => void;
@@ -129,7 +129,6 @@ const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
 
   return (
     <Form
-      errors={[...errors, ...validationErrors]}
       initial={initialForm}
       onSubmit={data => {
         const submitFunc = areAddressInputFieldsModified(data)
@@ -139,11 +138,8 @@ const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
       }}
       confirmLeave
     >
-      {({ change, data, errors: formErrors, hasChanged, submit }) => {
-        const siteFormErrors = { ...formErrors };
-        const countryChoices = mapCountriesToChoices(
-          maybe(() => shop.countries, [])
-        );
+      {({ change, data, hasChanged, submit }) => {
+        const countryChoices = mapCountriesToChoices(shop?.countries || []);
         const handleCountryChange = createSingleAutocompleteSelectHandler(
           change,
           setDisplayCountry,
@@ -169,7 +165,7 @@ const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
               </div>
               <SiteSettingsDetails
                 data={data}
-                errors={siteFormErrors}
+                errors={errors}
                 disabled={disabled}
                 onChange={change}
               />
@@ -187,7 +183,7 @@ const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
               </div>
               <SiteSettingsMailing
                 data={data}
-                errors={siteFormErrors}
+                errors={errors}
                 disabled={disabled}
                 onChange={change}
               />
@@ -204,12 +200,16 @@ const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
                   <FormattedMessage defaultMessage="Email adress you provide here will be used as a contact adress for your customers." />
                 </Typography>
               </div>
-              <SiteSettingsAddress
+              <CompanyAddressInput
                 data={data}
                 displayCountry={displayCountry}
                 countries={countryChoices}
-                errors={siteFormErrors}
+                errors={[...errors, ...validationErrors]}
                 disabled={disabled}
+                header={intl.formatMessage({
+                  defaultMessage: "Store Information",
+                  description: "section header"
+                })}
                 onChange={change}
                 onCountryChange={handleCountryChange}
               />

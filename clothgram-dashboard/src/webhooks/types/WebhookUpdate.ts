@@ -9,15 +9,8 @@ import { WebhookUpdateInput, WebhookErrorCode } from "./../../types/globalTypes"
 // ====================================================
 
 export interface WebhookUpdate_webhookUpdate_errors {
-  __typename: "Error";
-  field: string | null;
-  message: string | null;
-}
-
-export interface WebhookUpdate_webhookUpdate_webhookErrors {
   __typename: "WebhookError";
-  code: WebhookErrorCode | null;
-  message: string | null;
+  code: WebhookErrorCode;
   field: string | null;
 }
 
@@ -30,15 +23,14 @@ export interface WebhookUpdate_webhookUpdate_webhook_serviceAccount {
 export interface WebhookUpdate_webhookUpdate_webhook {
   __typename: "Webhook";
   id: string;
-  name: string | null;
+  name: string;
   isActive: boolean;
   serviceAccount: WebhookUpdate_webhookUpdate_webhook_serviceAccount;
 }
 
 export interface WebhookUpdate_webhookUpdate {
   __typename: "WebhookUpdate";
-  errors: WebhookUpdate_webhookUpdate_errors[] | null;
-  webhookErrors: WebhookUpdate_webhookUpdate_webhookErrors[] | null;
+  errors: WebhookUpdate_webhookUpdate_errors[];
   webhook: WebhookUpdate_webhookUpdate_webhook | null;
 }
 

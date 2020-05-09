@@ -2,19 +2,21 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { OrderErrorCode } from "./../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: OrderDraftBulkCancel
 // ====================================================
 
 export interface OrderDraftBulkCancel_draftOrderBulkDelete_errors {
-  __typename: "Error";
+  __typename: "OrderError";
+  code: OrderErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface OrderDraftBulkCancel_draftOrderBulkDelete {
   __typename: "DraftOrderBulkDelete";
-  errors: OrderDraftBulkCancel_draftOrderBulkDelete_errors[] | null;
+  errors: OrderDraftBulkCancel_draftOrderBulkDelete_errors[];
 }
 
 export interface OrderDraftBulkCancel {

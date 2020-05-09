@@ -15,8 +15,9 @@ import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import SeoForm from "@saleor/components/SeoForm";
 import { Tab, TabContainer } from "@saleor/components/Tab";
 import { sectionNames } from "@saleor/intl";
+import { ProductErrorFragment } from "@saleor/attributes/types/ProductErrorFragment";
 import { maybe } from "../../../misc";
-import { TabListActions, UserError } from "../../../types";
+import { TabListActions } from "../../../types";
 import CategoryDetailsForm from "../../components/CategoryDetailsForm";
 import CategoryList from "../../components/CategoryList";
 import {
@@ -44,7 +45,7 @@ export interface CategoryUpdatePageProps
   extends TabListActions<"productListToolbar" | "subcategoryListToolbar"> {
   changeTab: (index: CategoryPageTab) => void;
   currentTab: CategoryPageTab;
-  errors: UserError[];
+  errors: ProductErrorFragment[];
   disabled: boolean;
   category: CategoryDetails_category;
   products: CategoryDetails_category_products_edges_node[];
@@ -75,7 +76,7 @@ export const CategoryUpdatePage: React.FC<CategoryUpdatePageProps> = ({
   currentTab,
   category,
   disabled,
-  errors: userErrors,
+  errors,
   pageInfo,
   products,
   saveButtonBarState,
@@ -115,13 +116,8 @@ export const CategoryUpdatePage: React.FC<CategoryUpdatePageProps> = ({
         seoTitle: ""
       };
   return (
-    <Form
-      onSubmit={onSubmit}
-      initial={initialData}
-      errors={userErrors}
-      confirmLeave
-    >
-      {({ data, change, errors, submit, hasChanged }) => (
+    <Form onSubmit={onSubmit} initial={initialData} confirmLeave>
+      {({ data, change, submit, hasChanged }) => (
         <Container>
           <AppHeader onBack={onBack}>
             {intl.formatMessage(sectionNames.categories)}

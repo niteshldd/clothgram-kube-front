@@ -1,4 +1,5 @@
 import { AttributeInputTypeEnum } from "@saleor/types/globalTypes";
+import { warehouseList } from "@saleor/warehouses/fixtures";
 import { content } from "../storybook/stories/components/RichTextEditor";
 import { ProductDetails_product } from "./types/ProductDetails";
 import { ProductList_products_edges_node } from "./types/ProductList";
@@ -259,10 +260,24 @@ export const product: (
         amount: 678.78,
         currency: "USD"
       },
-      quantity: 12,
-      quantityAllocated: 1,
       sku: "87192-94370",
-      stockQuantity: 48
+      stocks: [
+        {
+          __typename: "Stock",
+          id: "1",
+          quantity: 1,
+          quantityAllocated: 0,
+          warehouse: warehouseList[0]
+        },
+        {
+          __typename: "Stock",
+          id: "2",
+          quantity: 4,
+          quantityAllocated: 2,
+          warehouse: warehouseList[1]
+        }
+      ],
+      trackInventory: true
     },
     {
       __typename: "ProductVariant",
@@ -282,10 +297,17 @@ export const product: (
       margin: 7,
       name: "silver",
       priceOverride: null,
-      quantity: 12,
-      quantityAllocated: 1,
       sku: "69055-15190",
-      stockQuantity: 14
+      stocks: [
+        {
+          __typename: "Stock",
+          id: "1",
+          quantity: 13,
+          quantityAllocated: 2,
+          warehouse: warehouseList[0]
+        }
+      ],
+      trackInventory: false
     }
   ]
 });
@@ -302,6 +324,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo2MQ==",
     isAvailable: true,
+    isPublished: true,
     name: "Nebula Night Sky Paint",
     productType: {
       __typename: "ProductType",
@@ -323,6 +346,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo2NA==",
     isAvailable: true,
+    isPublished: false,
     name: "Light Speed Yellow Paint",
     productType: {
       __typename: "ProductType",
@@ -344,6 +368,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo2NQ==",
     isAvailable: true,
+    isPublished: false,
     name: "Hyperspace Turquoise Paint",
     productType: {
       __typename: "ProductType",
@@ -380,6 +405,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo3NQ==",
     isAvailable: true,
+    isPublished: true,
     name: "Pineapple Juice",
     productType: {
       __typename: "ProductType",
@@ -416,6 +442,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo3Ng==",
     isAvailable: true,
+    isPublished: true,
     name: "Coconut Juice",
     productType: {
       __typename: "ProductType",
@@ -452,6 +479,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo3Mg==",
     isAvailable: true,
+    isPublished: true,
     name: "Apple Juice",
     productType: {
       __typename: "ProductType",
@@ -488,6 +516,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo3MQ==",
     isAvailable: true,
+    isPublished: true,
     name: "Orange Juice",
     productType: {
       __typename: "ProductType",
@@ -524,6 +553,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo3NA==",
     isAvailable: true,
+    isPublished: true,
     name: "Banana Juice",
     productType: {
       __typename: "ProductType",
@@ -560,6 +590,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo3OQ==",
     isAvailable: true,
+    isPublished: false,
     name: "Bean Juice",
     productType: {
       __typename: "ProductType",
@@ -596,6 +627,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo3Mw==",
     isAvailable: true,
+    isPublished: true,
     name: "Carrot Juice",
     productType: {
       __typename: "ProductType",
@@ -632,6 +664,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo3OA==",
     isAvailable: true,
+    isPublished: true,
     name: "Green Juice",
     productType: {
       __typename: "ProductType",
@@ -668,6 +701,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo4OQ==",
     isAvailable: true,
+    isPublished: true,
     name: "Code Division T-shirt",
     productType: {
       __typename: "ProductType",
@@ -704,6 +738,7 @@ export const products = (
     },
     id: "UHJvZHVjdDoxMDc=",
     isAvailable: true,
+    isPublished: true,
     name: "Polo Shirt",
     productType: {
       __typename: "ProductType",
@@ -740,6 +775,7 @@ export const products = (
     },
     id: "UHJvZHVjdDoxMDg=",
     isAvailable: true,
+    isPublished: true,
     name: "Polo Shirt",
     productType: {
       __typename: "ProductType",
@@ -776,6 +812,7 @@ export const products = (
     },
     id: "UHJvZHVjdDoxMDk=",
     isAvailable: true,
+    isPublished: true,
     name: "Polo Shirt",
     productType: {
       __typename: "ProductType",
@@ -812,6 +849,7 @@ export const products = (
     },
     id: "UHJvZHVjdDoxMTA=",
     isAvailable: true,
+    isPublished: true,
     name: "Polo Shirt",
     productType: {
       __typename: "ProductType",
@@ -848,6 +886,7 @@ export const products = (
     },
     id: "UHJvZHVjdDoxMTU=",
     isAvailable: true,
+    isPublished: false,
     name: "Black Hoodie",
     productType: {
       __typename: "ProductType",
@@ -884,6 +923,7 @@ export const products = (
     },
     id: "UHJvZHVjdDoxMTY=",
     isAvailable: true,
+    isPublished: true,
     name: "Blue Hoodie",
     productType: {
       __typename: "ProductType",
@@ -920,6 +960,7 @@ export const products = (
     },
     id: "UHJvZHVjdDoxMTc=",
     isAvailable: true,
+    isPublished: true,
     name: "Mustard Hoodie",
     productType: {
       __typename: "ProductType",
@@ -956,6 +997,7 @@ export const products = (
     },
     id: "UHJvZHVjdDo4NQ==",
     isAvailable: true,
+    isPublished: false,
     name: "Colored Parrot Cushion",
     productType: {
       __typename: "ProductType",
@@ -1208,9 +1250,32 @@ export const variant = (placeholderImage: string): ProductVariant => ({
       }
     ]
   },
-  quantity: 19,
-  quantityAllocated: 12,
-  sku: "1230959124123"
+  sku: "1230959124123",
+  stocks: [
+    {
+      __typename: "Stock",
+      id: "1",
+      quantity: 1,
+      quantityAllocated: 1,
+      warehouse: {
+        __typename: "Warehouse",
+        id: "123",
+        name: "Warehouse 1"
+      }
+    },
+    {
+      __typename: "Stock",
+      id: "2",
+      quantity: 4,
+      quantityAllocated: 2,
+      warehouse: {
+        __typename: "Warehouse",
+        id: "1234",
+        name: "Warehouse 2"
+      }
+    }
+  ],
+  trackInventory: true
 });
 export const variantImages = (placeholderImage: string) =>
   variant(placeholderImage).images;

@@ -9,6 +9,8 @@ import useAppState from "./hooks/useAppState";
 import useNotifier from "./hooks/useNotifier";
 import { commonMessages } from "./intl";
 import { maybe, RequireAtLeastOne } from "./misc";
+import { isJwtError } from "./auth/errors";
+import useUser from "./hooks/useUser";
 
 export interface LoadMore<TData, TVariables> {
   loadMore: (
@@ -28,7 +30,6 @@ export interface TypedQueryInnerProps<TData, TVariables> {
   displayLoader?: boolean;
   skip?: boolean;
   variables?: TVariables;
-  require?: Array<keyof TData>;
 }
 
 interface QueryProgressProps {
@@ -65,10 +66,11 @@ class QueryProgress extends React.Component<QueryProgressProps, {}> {
 export function TypedQuery<TData, TVariables>(
   query: DocumentNode
 ): React.FC<TypedQueryInnerProps<TData, TVariables>> {
-  return ({ children, displayLoader, skip, variables, require }) => {
-    const pushMessage = useNotifier();
+  return ({ children, displayLoader, skip, variables }) => {
+    const notify = useNotifier();
     const [, dispatchAppState] = useAppState();
     const intl = useIntl();
+    const user = useUser();
 
     return (
       <Query
@@ -81,14 +83,19 @@ export function TypedQuery<TData, TVariables>(
       >
         {(queryData: QueryResult<TData, TVariables>) => {
           if (queryData.error) {
-            if (
+            if (queryData.error.graphQLErrors.every(isJwtError)) {
+              user.logout();
+              notify({
+                text: intl.formatMessage(commonMessages.sessionExpired)
+              });
+            } else if (
               !queryData.error.graphQLErrors.every(
                 err =>
                   maybe(() => err.extensions.exception.code) ===
                   "PermissionDenied"
               )
             ) {
-              pushMessage({
+              notify({
                 text: intl.formatMessage(commonMessages.somethingWentWrong)
               });
             }
@@ -111,23 +118,6 @@ export function TypedQuery<TData, TVariables>(
               },
               variables: { ...variables, ...extraVariables }
             });
-
-          if (
-            !queryData.loading &&
-            require &&
-            queryData.data &&
-            !require.reduce(
-              (acc, key) => acc && queryData.data[key] !== null,
-              true
-            )
-          ) {
-            dispatchAppState({
-              payload: {
-                error: "not-found"
-              },
-              type: "displayError"
-            });
-          }
 
           if (displayLoader) {
             return (

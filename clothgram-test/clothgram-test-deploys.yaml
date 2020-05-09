@@ -66,6 +66,7 @@ spec:
       containers:
         - name: clothgram-frontend-test
           image: niteshldd/clothgram-storefront:test
+          imagePullPolicy: Always
           ports:
            - containerPort: 80 #changing configuration in client-deployment will applied by changing the configuration
 
@@ -92,6 +93,7 @@ spec:
     spec:
       containers:
         - name: clothgram-dashboard-test
+          imagePullPolicy: Always
           image: niteshldd/clothgram-dashboard:test
           ports:
            - containerPort: 90 #changing configuration in client-deployment will applied by changing the configuration

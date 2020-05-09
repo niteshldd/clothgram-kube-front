@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { FulfillmentUpdateTrackingInput, OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
+import { FulfillmentUpdateTrackingInput, OrderErrorCode, OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: OrderFulfillmentUpdateTracking
 // ====================================================
 
 export interface OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_errors {
-  __typename: "Error";
+  __typename: "OrderError";
+  code: OrderErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_order_billingAddress_country {
@@ -97,6 +97,12 @@ export interface OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_o
   orderLine: OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_order_fulfillments_lines_orderLine | null;
 }
 
+export interface OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_order_fulfillments_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
 export interface OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_order_fulfillments {
   __typename: "Fulfillment";
   id: string;
@@ -104,6 +110,7 @@ export interface OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_o
   fulfillmentOrder: number;
   status: FulfillmentStatus;
   trackingNumber: string;
+  warehouse: OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_order_fulfillments_warehouse | null;
 }
 
 export interface OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_order_lines_unitPrice_gross {
@@ -268,7 +275,7 @@ export interface OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_o
 
 export interface OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking {
   __typename: "FulfillmentUpdateTracking";
-  errors: OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_errors[] | null;
+  errors: OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_errors[];
   order: OrderFulfillmentUpdateTracking_orderFulfillmentUpdateTracking_order | null;
 }
 

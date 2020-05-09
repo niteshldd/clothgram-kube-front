@@ -56,6 +56,9 @@ export const commonMessages = defineMessages({
   savedChanges: {
     defaultMessage: "Saved changes"
   },
+  sessionExpired: {
+    defaultMessage: "Your session has expired. Please log in again to continue."
+  },
   somethingWentWrong: {
     defaultMessage: "Saleor ran into an unexpected problem"
   },
@@ -81,6 +84,10 @@ export const commonMessages = defineMessages({
 });
 
 export const buttonMessages = defineMessages({
+  accept: {
+    defaultMessage: "Accept",
+    description: "button"
+  },
   back: {
     defaultMessage: "Back",
     description: "button"
@@ -115,6 +122,10 @@ export const buttonMessages = defineMessages({
   },
   manage: {
     defaultMessage: "Manage",
+    description: "button"
+  },
+  ok: {
+    defaultMessage: "OK",
     description: "button"
   },
   remove: {
@@ -176,6 +187,10 @@ export const sectionNames = defineMessages({
     defaultMessage: "Pages",
     description: "pages section name"
   },
+  permissionGroups: {
+    defaultMessage: "Permission Groups",
+    description: "permission groups section name"
+  },
   plugins: {
     defaultMessage: "Plugins",
     description: "plugins section name"
@@ -219,6 +234,10 @@ export const sectionNames = defineMessages({
   vouchers: {
     defaultMessage: "Vouchers",
     description: "vouchers section name"
+  },
+  warehouses: {
+    defaultMessage: "Warehouses",
+    description: "warehouses section name"
   },
   webhooks: {
     defaultMessage: "Webhooks",

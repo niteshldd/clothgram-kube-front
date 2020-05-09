@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
+import { OrderErrorCode, OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: OrderLineDelete
 // ====================================================
 
 export interface OrderLineDelete_draftOrderLineDelete_errors {
-  __typename: "Error";
+  __typename: "OrderError";
+  code: OrderErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface OrderLineDelete_draftOrderLineDelete_order_billingAddress_country {
@@ -97,6 +97,12 @@ export interface OrderLineDelete_draftOrderLineDelete_order_fulfillments_lines {
   orderLine: OrderLineDelete_draftOrderLineDelete_order_fulfillments_lines_orderLine | null;
 }
 
+export interface OrderLineDelete_draftOrderLineDelete_order_fulfillments_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
 export interface OrderLineDelete_draftOrderLineDelete_order_fulfillments {
   __typename: "Fulfillment";
   id: string;
@@ -104,6 +110,7 @@ export interface OrderLineDelete_draftOrderLineDelete_order_fulfillments {
   fulfillmentOrder: number;
   status: FulfillmentStatus;
   trackingNumber: string;
+  warehouse: OrderLineDelete_draftOrderLineDelete_order_fulfillments_warehouse | null;
 }
 
 export interface OrderLineDelete_draftOrderLineDelete_order_lines_unitPrice_gross {
@@ -268,7 +275,7 @@ export interface OrderLineDelete_draftOrderLineDelete_order {
 
 export interface OrderLineDelete_draftOrderLineDelete {
   __typename: "DraftOrderLineDelete";
-  errors: OrderLineDelete_draftOrderLineDelete_errors[] | null;
+  errors: OrderLineDelete_draftOrderLineDelete_errors[];
   order: OrderLineDelete_draftOrderLineDelete_order | null;
 }
 

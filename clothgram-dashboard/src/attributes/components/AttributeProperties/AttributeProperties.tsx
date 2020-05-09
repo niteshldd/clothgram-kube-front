@@ -11,13 +11,14 @@ import ControlledCheckbox from "@saleor/components/ControlledCheckbox";
 import FormSpacer from "@saleor/components/FormSpacer";
 import Hr from "@saleor/components/Hr";
 import { commonMessages } from "@saleor/intl";
-import { FormErrors } from "@saleor/types";
+import { getFormErrors, getProductErrorMessage } from "@saleor/utils/errors";
+import { ProductErrorFragment } from "@saleor/attributes/types/ProductErrorFragment";
 import { AttributePageFormData } from "../AttributePage";
 
 export interface AttributePropertiesProps {
   data: AttributePageFormData;
   disabled: boolean;
-  errors: FormErrors<"storefrontSearchPosition">;
+  errors: ProductErrorFragment[];
   onChange: (event: React.ChangeEvent<any>) => void;
 }
 
@@ -28,6 +29,8 @@ const AttributeProperties: React.FC<AttributePropertiesProps> = ({
   onChange
 }) => {
   const intl = useIntl();
+
+  const formErrors = getFormErrors(["storefrontSearchPosition"], errors);
 
   return (
     <Card>
@@ -85,9 +88,12 @@ const AttributeProperties: React.FC<AttributePropertiesProps> = ({
         {data.filterableInStorefront && (
           <TextField
             disabled={disabled}
-            error={!!errors.storefrontSearchPosition}
+            error={!!formErrors.storefrontSearchPosition}
             fullWidth
-            helperText={errors.storefrontSearchPosition}
+            helperText={getProductErrorMessage(
+              formErrors.storefrontSearchPosition,
+              intl
+            )}
             name={"storefrontSearchPosition" as keyof AttributePageFormData}
             label={intl.formatMessage({
               defaultMessage: "Position in faceted navigation",

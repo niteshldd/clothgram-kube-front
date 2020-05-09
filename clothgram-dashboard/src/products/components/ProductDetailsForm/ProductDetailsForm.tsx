@@ -9,6 +9,8 @@ import CardTitle from "@saleor/components/CardTitle";
 import FormSpacer from "@saleor/components/FormSpacer";
 import RichTextEditor from "@saleor/components/RichTextEditor";
 import { commonMessages } from "@saleor/intl";
+import { getFormErrors, getProductErrorMessage } from "@saleor/utils/errors";
+import { ProductErrorFragment } from "@saleor/attributes/types/ProductErrorFragment";
 
 interface ProductDetailsFormProps {
   data: {
@@ -16,7 +18,7 @@ interface ProductDetailsFormProps {
     name: string;
   };
   disabled?: boolean;
-  errors: { [key: string]: string };
+  errors: ProductErrorFragment[];
   // Draftail isn't controlled - it needs only initial input
   // because it's autosaving on its own.
   // Ref https://github.com/mirumee/saleor/issues/4470
@@ -33,6 +35,8 @@ export const ProductDetailsForm: React.FC<ProductDetailsFormProps> = ({
 }) => {
   const intl = useIntl();
 
+  const formErrors = getFormErrors(["name", "descriptionJson"], errors);
+
   return (
     <Card>
       <CardTitle
@@ -40,8 +44,8 @@ export const ProductDetailsForm: React.FC<ProductDetailsFormProps> = ({
       />
       <CardContent>
         <TextField
-          error={!!errors.name}
-          helperText={errors.name}
+          error={!!formErrors.name}
+          helperText={getProductErrorMessage(formErrors.name, intl)}
           disabled={disabled}
           fullWidth
           label={intl.formatMessage({
@@ -55,8 +59,8 @@ export const ProductDetailsForm: React.FC<ProductDetailsFormProps> = ({
         <FormSpacer />
         <RichTextEditor
           disabled={disabled}
-          error={!!errors.descriptionJson}
-          helperText={errors.descriptionJson}
+          error={!!formErrors.descriptionJson}
+          helperText={getProductErrorMessage(formErrors.descriptionJson, intl)}
           initial={initialDescription}
           label={intl.formatMessage(commonMessages.description)}
           name="description"

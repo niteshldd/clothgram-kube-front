@@ -14,17 +14,17 @@ import SingleAutocompleteSelectField, {
 } from "@saleor/components/SingleAutocompleteSelectField";
 import { ChangeEvent } from "@saleor/hooks/useForm";
 import { commonMessages } from "@saleor/intl";
-import { FormErrors } from "@saleor/types";
-import { WebhookCreate_webhookCreate_webhookErrors } from "@saleor/webhooks/types/WebhookCreate";
+import { getFormErrors } from "@saleor/utils/errors";
+import getWebhookErrorMessage from "@saleor/utils/errors/webhooks";
+import { WebhookErrorFragment } from "@saleor/webhooks/types/WebhookErrorFragment";
 import { FormData } from "../WebhooksDetailsPage";
 
 interface WebhookInfoProps {
-  apiErrors: WebhookCreate_webhookCreate_webhookErrors[];
   data: FormData;
   disabled: boolean;
+  errors: WebhookErrorFragment[];
   serviceDisplayValue: string;
   services: SingleAutocompleteChoiceType[];
-  errors: FormErrors<"name" | "targetUrl" | "secretKey">;
   onChange: (event: React.ChangeEvent<any>) => void;
   serviceOnChange: (event: ChangeEvent) => void;
   fetchServiceAccounts: (data: string) => void;
@@ -45,7 +45,6 @@ const useStyles = makeStyles(
 );
 
 const WebhookInfo: React.FC<WebhookInfoProps> = ({
-  apiErrors,
   data,
   disabled,
   services,
@@ -57,8 +56,9 @@ const WebhookInfo: React.FC<WebhookInfoProps> = ({
 }) => {
   const classes = useStyles({});
   const intl = useIntl();
-  const serviceAccountsError =
-    apiErrors.filter(error => error.field === null).length > 0;
+
+  const serviceAccountError = errors.find(error => error.field === null);
+  const formErrors = getFormErrors(["name", "targetUrl", "secretKey"], errors);
 
   return (
     <Card>
@@ -74,8 +74,8 @@ const WebhookInfo: React.FC<WebhookInfoProps> = ({
         </Typography>
         <TextField
           disabled={disabled}
-          error={!!errors.name}
-          helperText={errors.name}
+          error={!!formErrors.name}
+          helperText={getWebhookErrorMessage(formErrors.name, intl)}
           label={intl.formatMessage({
             defaultMessage: "Webhook Name",
             description: "webhook"
@@ -100,11 +100,8 @@ const WebhookInfo: React.FC<WebhookInfoProps> = ({
           label={intl.formatMessage({
             defaultMessage: "Assign to Service Account"
           })}
-          error={serviceAccountsError}
-          helperText={
-            serviceAccountsError &&
-            intl.formatMessage(commonMessages.requiredField)
-          }
+          error={!!serviceAccountError}
+          helperText={getWebhookErrorMessage(serviceAccountError, intl)}
           name="serviceAccount"
           onChange={serviceOnChange}
           value={data.serviceAccount}
@@ -117,11 +114,14 @@ const WebhookInfo: React.FC<WebhookInfoProps> = ({
         <FormSpacer />
         <TextField
           disabled={disabled}
-          error={!!errors.targetUrl}
-          helperText={intl.formatMessage({
-            defaultMessage: "This URL will receive webhook POST requests",
-            description: "webhook target url help text"
-          })}
+          error={!!formErrors.targetUrl}
+          helperText={
+            getWebhookErrorMessage(formErrors.targetUrl, intl) ||
+            intl.formatMessage({
+              defaultMessage: "This URL will receive webhook POST requests",
+              description: "webhook target url help text"
+            })
+          }
           label={intl.formatMessage({
             defaultMessage: "Target URL",
             description: "webhook"
@@ -134,12 +134,15 @@ const WebhookInfo: React.FC<WebhookInfoProps> = ({
         <FormSpacer />
         <TextField
           disabled={disabled}
-          error={!!errors.secretKey}
-          helperText={intl.formatMessage({
-            defaultMessage:
-              "secret key is used to create a hash signature with each payload. *optional field",
-            description: "webhook secret key help text"
-          })}
+          error={!!formErrors.secretKey}
+          helperText={
+            getWebhookErrorMessage(formErrors.secretKey, intl) ||
+            intl.formatMessage({
+              defaultMessage:
+                "secret key is used to create a hash signature with each payload. *optional field",
+              description: "webhook secret key help text"
+            })
+          }
           label={intl.formatMessage({
             defaultMessage: "Secrect Key",
             description: "webhook"

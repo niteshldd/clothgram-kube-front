@@ -2,19 +2,21 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { MenuErrorCode } from "./../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: MenuBulkDelete
 // ====================================================
 
 export interface MenuBulkDelete_menuBulkDelete_errors {
-  __typename: "Error";
+  __typename: "MenuError";
+  code: MenuErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface MenuBulkDelete_menuBulkDelete {
   __typename: "MenuBulkDelete";
-  errors: MenuBulkDelete_menuBulkDelete_errors[] | null;
+  errors: MenuBulkDelete_menuBulkDelete_errors[];
 }
 
 export interface MenuBulkDelete {

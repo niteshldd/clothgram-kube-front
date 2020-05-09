@@ -4,14 +4,13 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import ActionDialog from "@saleor/components/ActionDialog";
 import { ConfirmButtonTransitionState } from "@saleor/components/ConfirmButton";
-import ControlledCheckbox from "@saleor/components/ControlledCheckbox";
 
 export interface OrderBulkCancelDialogProps {
   confirmButtonState: ConfirmButtonTransitionState;
   numberOfOrders: string;
   open: boolean;
   onClose: () => void;
-  onConfirm: (restock: boolean) => void;
+  onConfirm: () => void;
 }
 
 const OrderBulkCancelDialog: React.FC<OrderBulkCancelDialogProps> = ({
@@ -22,7 +21,6 @@ const OrderBulkCancelDialog: React.FC<OrderBulkCancelDialogProps> = ({
   onConfirm
 }) => {
   const intl = useIntl();
-  const [restock, setRestock] = React.useState(true);
 
   return (
     <ActionDialog
@@ -34,26 +32,17 @@ const OrderBulkCancelDialog: React.FC<OrderBulkCancelDialogProps> = ({
         description: "dialog header"
       })}
       onClose={onClose}
-      onConfirm={() => onConfirm(restock)}
+      onConfirm={onConfirm}
     >
       <DialogContentText>
         <FormattedMessage
-          defaultMessage="Are you sure you want to cancel {counter,plural,one{this order} other{{displayQuantity} orders}}?"
+          defaultMessage="{counter,plural,one{Are you sure you want to cancel this order?} other{Are you sure you want to cancel {displayQuantity} orders?}}"
           values={{
             counter: numberOfOrders,
             displayQuantity: <strong>{numberOfOrders}</strong>
           }}
         />
       </DialogContentText>
-      <ControlledCheckbox
-        checked={restock}
-        label={intl.formatMessage({
-          defaultMessage: "Release all stock allocated to these orders",
-          description: "switch button"
-        })}
-        name="restock"
-        onChange={event => setRestock(event.target.value)}
-      />
     </ActionDialog>
   );
 };

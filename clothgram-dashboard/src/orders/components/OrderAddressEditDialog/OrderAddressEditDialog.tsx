@@ -18,9 +18,9 @@ import useModalDialogErrors from "@saleor/hooks/useModalDialogErrors";
 import useStateFromProps from "@saleor/hooks/useStateFromProps";
 import { buttonMessages } from "@saleor/intl";
 import { maybe } from "@saleor/misc";
-import { UserError } from "@saleor/types";
 import { AddressInput } from "@saleor/types/globalTypes";
 import createSingleAutocompleteSelectHandler from "@saleor/utils/handlers/singleAutocompleteSelectChangeHandler";
+import { OrderErrorFragment } from "@saleor/orders/types/OrderErrorFragment";
 
 const useStyles = makeStyles(
   {
@@ -35,7 +35,7 @@ interface OrderAddressEditDialogProps {
   confirmButtonState: ConfirmButtonTransitionState;
   address: AddressTypeInput;
   open: boolean;
-  errors: UserError[];
+  errors: OrderErrorFragment[];
   variant: "billing" | "shipping" | string;
   countries?: Array<{
     code: string;
@@ -80,8 +80,8 @@ const OrderAddressEditDialog: React.FC<OrderAddressEditDialogProps> = props => {
 
   return (
     <Dialog onClose={onClose} open={open} classes={{ paper: classes.overflow }}>
-      <Form initial={address} errors={dialogErrors} onSubmit={handleSubmit}>
-        {({ change, data, errors, submit }) => {
+      <Form initial={address} onSubmit={handleSubmit}>
+        {({ change, data, submit }) => {
           const handleCountrySelect = createSingleAutocompleteSelectHandler(
             change,
             setCountryDisplayName,
@@ -106,7 +106,7 @@ const OrderAddressEditDialog: React.FC<OrderAddressEditDialogProps> = props => {
                   countries={countryChoices}
                   countryDisplayValue={countryDisplayName}
                   data={data}
-                  errors={errors}
+                  errors={dialogErrors}
                   onChange={change}
                   onCountryChange={handleCountrySelect}
                 />

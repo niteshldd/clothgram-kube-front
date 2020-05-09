@@ -7,15 +7,14 @@ import { useIntl } from "react-intl";
 import CardTitle from "@saleor/components/CardTitle";
 import FormSpacer from "@saleor/components/FormSpacer";
 import { commonMessages } from "@saleor/intl";
+import { getFormErrors } from "@saleor/utils/errors";
+import { ShopErrorFragment } from "@saleor/siteSettings/types/ShopErrorFragment";
+import getShopErrorMessage from "@saleor/utils/errors/shop";
 import { SiteSettingsPageFormData } from "../SiteSettingsPage";
 
 interface SiteSettingsDetailsProps {
   data: SiteSettingsPageFormData;
-  errors: Partial<{
-    description: string;
-    domain: string;
-    name: string;
-  }>;
+  errors: ShopErrorFragment[];
   disabled: boolean;
   onChange: (event: React.ChangeEvent<any>) => void;
 }
@@ -28,6 +27,8 @@ const SiteSettingsDetails: React.FC<SiteSettingsDetailsProps> = ({
 }) => {
   const intl = useIntl();
 
+  const formErrors = getFormErrors(["name", "domain", "description"], errors);
+
   return (
     <Card>
       <CardTitle
@@ -36,14 +37,14 @@ const SiteSettingsDetails: React.FC<SiteSettingsDetailsProps> = ({
       <CardContent>
         <TextField
           disabled={disabled}
-          error={!!errors.name}
+          error={!!formErrors.name}
           fullWidth
           name="name"
           label={intl.formatMessage({
             defaultMessage: "Name of your store"
           })}
           helperText={
-            errors.name ||
+            getShopErrorMessage(formErrors.name, intl) ||
             intl.formatMessage({
               defaultMessage:
                 "Name of your store is shown on tab in web browser"
@@ -55,27 +56,27 @@ const SiteSettingsDetails: React.FC<SiteSettingsDetailsProps> = ({
         <FormSpacer />
         <TextField
           disabled={disabled}
-          error={!!errors.domain}
+          error={!!formErrors.domain}
           fullWidth
           name="domain"
           label={intl.formatMessage({
             defaultMessage: "URL of your online store"
           })}
-          helperText={errors.domain}
+          helperText={getShopErrorMessage(formErrors.domain, intl)}
           value={data.domain}
           onChange={onChange}
         />
         <FormSpacer />
         <TextField
           disabled={disabled}
-          error={!!errors.domain}
+          error={!!formErrors.description}
           fullWidth
           name="description"
           label={intl.formatMessage({
             defaultMessage: "Store Description"
           })}
           helperText={
-            errors.description ||
+            getShopErrorMessage(formErrors.description, intl) ||
             intl.formatMessage({
               defaultMessage:
                 "Store description is shown on taskbar after your store name"

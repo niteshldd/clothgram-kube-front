@@ -2,19 +2,21 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { WebhookErrorCode } from "./../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: WebhookDelete
 // ====================================================
 
 export interface WebhookDelete_webhookDelete_errors {
-  __typename: "Error";
+  __typename: "WebhookError";
+  code: WebhookErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface WebhookDelete_webhookDelete {
   __typename: "WebhookDelete";
-  errors: WebhookDelete_webhookDelete_errors[] | null;
+  errors: WebhookDelete_webhookDelete_errors[];
 }
 
 export interface WebhookDelete {

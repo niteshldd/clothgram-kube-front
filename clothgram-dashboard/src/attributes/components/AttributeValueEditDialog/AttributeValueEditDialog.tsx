@@ -14,7 +14,9 @@ import Form from "@saleor/components/Form";
 import useModalDialogErrors from "@saleor/hooks/useModalDialogErrors";
 import { buttonMessages } from "@saleor/intl";
 import { maybe } from "@saleor/misc";
-import { UserError } from "@saleor/types";
+import { getFormErrors } from "@saleor/utils/errors";
+import { ProductErrorFragment } from "@saleor/attributes/types/ProductErrorFragment";
+import { getAttributeValueErrorMessage } from "@saleor/attributes/errors";
 import { AttributeDetails_attribute_values } from "../../types/AttributeDetails";
 
 export interface AttributeValueEditDialogFormData {
@@ -24,7 +26,7 @@ export interface AttributeValueEditDialogProps {
   attributeValue: AttributeDetails_attribute_values | null;
   confirmButtonState: ConfirmButtonTransitionState;
   disabled: boolean;
-  errors: UserError[];
+  errors: ProductErrorFragment[];
   open: boolean;
   onSubmit: (data: AttributeValueEditDialogFormData) => void;
   onClose: () => void;
@@ -44,6 +46,7 @@ const AttributeValueEditDialog: React.FC<AttributeValueEditDialogProps> = ({
     name: maybe(() => attributeValue.name, "")
   };
   const errors = useModalDialogErrors(apiErrors, open);
+  const formErrors = getFormErrors(["name"], errors);
 
   return (
     <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
@@ -60,8 +63,8 @@ const AttributeValueEditDialog: React.FC<AttributeValueEditDialogProps> = ({
           />
         )}
       </DialogTitle>
-      <Form errors={errors} initial={initialForm} onSubmit={onSubmit}>
-        {({ change, data, errors: formErrors, submit }) => (
+      <Form initial={initialForm} onSubmit={onSubmit}>
+        {({ change, data, submit }) => (
           <>
             <DialogContent>
               <TextField
@@ -69,7 +72,10 @@ const AttributeValueEditDialog: React.FC<AttributeValueEditDialogProps> = ({
                 disabled={disabled}
                 error={!!formErrors.name}
                 fullWidth
-                helperText={formErrors.name}
+                helperText={getAttributeValueErrorMessage(
+                  formErrors.name,
+                  intl
+                )}
                 name={"name" as keyof AttributeValueEditDialogFormData}
                 label={intl.formatMessage({
                   defaultMessage: "Name",

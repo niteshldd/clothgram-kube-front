@@ -6,6 +6,34 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum AccountErrorCode {
+  ACTIVATE_OWN_ACCOUNT = "ACTIVATE_OWN_ACCOUNT",
+  ACTIVATE_SUPERUSER_ACCOUNT = "ACTIVATE_SUPERUSER_ACCOUNT",
+  DEACTIVATE_OWN_ACCOUNT = "DEACTIVATE_OWN_ACCOUNT",
+  DEACTIVATE_SUPERUSER_ACCOUNT = "DEACTIVATE_SUPERUSER_ACCOUNT",
+  DELETE_NON_STAFF_USER = "DELETE_NON_STAFF_USER",
+  DELETE_OWN_ACCOUNT = "DELETE_OWN_ACCOUNT",
+  DELETE_STAFF_ACCOUNT = "DELETE_STAFF_ACCOUNT",
+  DELETE_SUPERUSER_ACCOUNT = "DELETE_SUPERUSER_ACCOUNT",
+  DUPLICATED_INPUT_ITEM = "DUPLICATED_INPUT_ITEM",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
+  INVALID_PASSWORD = "INVALID_PASSWORD",
+  LEFT_NOT_MANAGEABLE_PERMISSION = "LEFT_NOT_MANAGEABLE_PERMISSION",
+  NOT_FOUND = "NOT_FOUND",
+  OUT_OF_SCOPE_GROUP = "OUT_OF_SCOPE_GROUP",
+  OUT_OF_SCOPE_PERMISSION = "OUT_OF_SCOPE_PERMISSION",
+  OUT_OF_SCOPE_SERVICE_ACCOUNT = "OUT_OF_SCOPE_SERVICE_ACCOUNT",
+  OUT_OF_SCOPE_USER = "OUT_OF_SCOPE_USER",
+  PASSWORD_ENTIRELY_NUMERIC = "PASSWORD_ENTIRELY_NUMERIC",
+  PASSWORD_TOO_COMMON = "PASSWORD_TOO_COMMON",
+  PASSWORD_TOO_SHORT = "PASSWORD_TOO_SHORT",
+  PASSWORD_TOO_SIMILAR = "PASSWORD_TOO_SIMILAR",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
 export enum AddressTypeEnum {
   BILLING = "BILLING",
   SHIPPING = "SHIPPING",
@@ -18,8 +46,6 @@ export enum AttributeInputTypeEnum {
 
 export enum AttributeSortField {
   AVAILABLE_IN_GRID = "AVAILABLE_IN_GRID",
-  DASHBOARD_PRODUCT_POSITION = "DASHBOARD_PRODUCT_POSITION",
-  DASHBOARD_VARIANT_POSITION = "DASHBOARD_VARIANT_POSITION",
   FILTERABLE_IN_DASHBOARD = "FILTERABLE_IN_DASHBOARD",
   FILTERABLE_IN_STOREFRONT = "FILTERABLE_IN_STOREFRONT",
   IS_VARIANT_ONLY = "IS_VARIANT_ONLY",
@@ -324,6 +350,15 @@ export enum CountryCode {
   ZW = "ZW",
 }
 
+export enum DiscountErrorCode {
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
 export enum DiscountStatusEnum {
   ACTIVE = "ACTIVE",
   EXPIRED = "EXPIRED",
@@ -386,6 +421,18 @@ export enum LanguageCodeEnum {
   ZH_HANT = "ZH_HANT",
 }
 
+export enum MenuErrorCode {
+  CANNOT_ASSIGN_NODE = "CANNOT_ASSIGN_NODE",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  INVALID_MENU_ITEM = "INVALID_MENU_ITEM",
+  NOT_FOUND = "NOT_FOUND",
+  NO_MENU_ITEM_PROVIDED = "NO_MENU_ITEM_PROVIDED",
+  REQUIRED = "REQUIRED",
+  TOO_MANY_MENU_ITEMS = "TOO_MANY_MENU_ITEMS",
+  UNIQUE = "UNIQUE",
+}
+
 export enum MenuSortField {
   ITEMS_COUNT = "ITEMS_COUNT",
   NAME = "NAME",
@@ -401,6 +448,31 @@ export enum OrderAction {
 export enum OrderDirection {
   ASC = "ASC",
   DESC = "DESC",
+}
+
+export enum OrderErrorCode {
+  BILLING_ADDRESS_NOT_SET = "BILLING_ADDRESS_NOT_SET",
+  CANNOT_CANCEL_FULFILLMENT = "CANNOT_CANCEL_FULFILLMENT",
+  CANNOT_CANCEL_ORDER = "CANNOT_CANCEL_ORDER",
+  CANNOT_DELETE = "CANNOT_DELETE",
+  CANNOT_REFUND = "CANNOT_REFUND",
+  CAPTURE_INACTIVE_PAYMENT = "CAPTURE_INACTIVE_PAYMENT",
+  DUPLICATED_INPUT_ITEM = "DUPLICATED_INPUT_ITEM",
+  FULFILL_ORDER_LINE = "FULFILL_ORDER_LINE",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INSUFFICIENT_STOCK = "INSUFFICIENT_STOCK",
+  INVALID = "INVALID",
+  NOT_EDITABLE = "NOT_EDITABLE",
+  NOT_FOUND = "NOT_FOUND",
+  ORDER_NO_SHIPPING_ADDRESS = "ORDER_NO_SHIPPING_ADDRESS",
+  PAYMENT_ERROR = "PAYMENT_ERROR",
+  PAYMENT_MISSING = "PAYMENT_MISSING",
+  REQUIRED = "REQUIRED",
+  SHIPPING_METHOD_NOT_APPLICABLE = "SHIPPING_METHOD_NOT_APPLICABLE",
+  SHIPPING_METHOD_REQUIRED = "SHIPPING_METHOD_REQUIRED",
+  UNIQUE = "UNIQUE",
+  VOID_INACTIVE_PAYMENT = "VOID_INACTIVE_PAYMENT",
+  ZERO_QUANTITY = "ZERO_QUANTITY",
 }
 
 export enum OrderEventsEmailsEnum {
@@ -462,6 +534,14 @@ export enum OrderStatusFilter {
   UNFULFILLED = "UNFULFILLED",
 }
 
+export enum PageErrorCode {
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
 export enum PageSortField {
   CREATION_DATE = "CREATION_DATE",
   PUBLICATION_DATE = "PUBLICATION_DATE",
@@ -479,6 +559,7 @@ export enum PaymentChargeStatusEnum {
 }
 
 export enum PermissionEnum {
+  MANAGE_APPS = "MANAGE_APPS",
   MANAGE_CHECKOUTS = "MANAGE_CHECKOUTS",
   MANAGE_DISCOUNTS = "MANAGE_DISCOUNTS",
   MANAGE_GIFT_CARD = "MANAGE_GIFT_CARD",
@@ -496,6 +577,21 @@ export enum PermissionEnum {
   MANAGE_WEBHOOKS = "MANAGE_WEBHOOKS",
 }
 
+export enum PermissionGroupErrorCode {
+  ASSIGN_NON_STAFF_MEMBER = "ASSIGN_NON_STAFF_MEMBER",
+  CANNOT_REMOVE_FROM_LAST_GROUP = "CANNOT_REMOVE_FROM_LAST_GROUP",
+  DUPLICATED_INPUT_ITEM = "DUPLICATED_INPUT_ITEM",
+  LEFT_NOT_MANAGEABLE_PERMISSION = "LEFT_NOT_MANAGEABLE_PERMISSION",
+  OUT_OF_SCOPE_PERMISSION = "OUT_OF_SCOPE_PERMISSION",
+  OUT_OF_SCOPE_USER = "OUT_OF_SCOPE_USER",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
+export enum PermissionGroupSortField {
+  NAME = "NAME",
+}
+
 export enum PluginSortField {
   IS_ACTIVE = "IS_ACTIVE",
   NAME = "NAME",
@@ -506,6 +602,7 @@ export enum ProductErrorCode {
   ATTRIBUTE_ALREADY_ASSIGNED = "ATTRIBUTE_ALREADY_ASSIGNED",
   ATTRIBUTE_CANNOT_BE_ASSIGNED = "ATTRIBUTE_CANNOT_BE_ASSIGNED",
   ATTRIBUTE_VARIANTS_DISABLED = "ATTRIBUTE_VARIANTS_DISABLED",
+  DUPLICATED_INPUT_ITEM = "DUPLICATED_INPUT_ITEM",
   GRAPHQL_ERROR = "GRAPHQL_ERROR",
   INVALID = "INVALID",
   NOT_FOUND = "NOT_FOUND",
@@ -558,9 +655,30 @@ export enum ServiceAccountSortField {
   NAME = "NAME",
 }
 
+export enum ShippingErrorCode {
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  DUPLICATED_INPUT_ITEM = "DUPLICATED_INPUT_ITEM",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  MAX_LESS_THAN_MIN = "MAX_LESS_THAN_MIN",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
 export enum ShippingMethodTypeEnum {
   PRICE = "PRICE",
   WEIGHT = "WEIGHT",
+}
+
+export enum ShopErrorCode {
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  CANNOT_FETCH_TAX_RATES = "CANNOT_FETCH_TAX_RATES",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
 }
 
 export enum StaffMemberStatus {
@@ -571,6 +689,15 @@ export enum StaffMemberStatus {
 export enum StockAvailability {
   IN_STOCK = "IN_STOCK",
   OUT_OF_STOCK = "OUT_OF_STOCK",
+}
+
+export enum StockErrorCode {
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
 }
 
 export enum TaxRateType {
@@ -630,6 +757,19 @@ export enum VoucherTypeEnum {
   SPECIFIC_PRODUCT = "SPECIFIC_PRODUCT",
 }
 
+export enum WarehouseErrorCode {
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
+export enum WarehouseSortField {
+  NAME = "NAME",
+}
+
 export enum WebhookErrorCode {
   GRAPHQL_ERROR = "GRAPHQL_ERROR",
   INVALID = "INVALID",
@@ -642,6 +782,7 @@ export enum WebhookEventTypeEnum {
   ANY_EVENTS = "ANY_EVENTS",
   CHECKOUT_QUANTITY_CHANGED = "CHECKOUT_QUANTITY_CHANGED",
   CUSTOMER_CREATED = "CUSTOMER_CREATED",
+  FULFILLMENT_CREATED = "FULFILLMENT_CREATED",
   ORDER_CANCELLED = "ORDER_CANCELLED",
   ORDER_CREATED = "ORDER_CREATED",
   ORDER_FULFILLED = "ORDER_FULFILLED",
@@ -651,6 +792,7 @@ export enum WebhookEventTypeEnum {
 }
 
 export enum WebhookSortField {
+  APP = "APP",
   NAME = "NAME",
   SERVICE_ACCOUNT = "SERVICE_ACCOUNT",
   TARGET_URL = "TARGET_URL",
@@ -855,18 +997,7 @@ export interface DraftOrderInput {
 }
 
 export interface FulfillmentCancelInput {
-  restock?: boolean | null;
-}
-
-export interface FulfillmentCreateInput {
-  trackingNumber?: string | null;
-  notifyCustomer?: boolean | null;
-  lines: (FulfillmentLineInput | null)[];
-}
-
-export interface FulfillmentLineInput {
-  orderLineId?: string | null;
-  quantity?: number | null;
+  warehouseId: string;
 }
 
 export interface FulfillmentUpdateTrackingInput {
@@ -918,7 +1049,7 @@ export interface NameTranslationInput {
 }
 
 export interface OrderAddNoteInput {
-  message?: string | null;
+  message: string;
 }
 
 export interface OrderDraftFilterInput {
@@ -933,6 +1064,21 @@ export interface OrderFilterInput {
   customer?: string | null;
   created?: DateRangeInput | null;
   search?: string | null;
+}
+
+export interface OrderFulfillInput {
+  lines: OrderFulfillLineInput[];
+  notifyCustomer?: boolean | null;
+}
+
+export interface OrderFulfillLineInput {
+  orderLineId?: string | null;
+  stocks: OrderFulfillStockInput[];
+}
+
+export interface OrderFulfillStockInput {
+  quantity?: number | null;
+  warehouse?: string | null;
 }
 
 export interface OrderLineCreateInput {
@@ -986,6 +1132,29 @@ export interface PageTranslationInput {
   contentJson?: any | null;
 }
 
+export interface PermissionGroupCreateInput {
+  addPermissions?: PermissionEnum[] | null;
+  addUsers?: string[] | null;
+  name: string;
+}
+
+export interface PermissionGroupFilterInput {
+  search?: string | null;
+}
+
+export interface PermissionGroupSortingInput {
+  direction: OrderDirection;
+  field: PermissionGroupSortField;
+}
+
+export interface PermissionGroupUpdateInput {
+  addPermissions?: PermissionEnum[] | null;
+  addUsers?: string[] | null;
+  name?: string | null;
+  removePermissions?: PermissionEnum[] | null;
+  removeUsers?: string[] | null;
+}
+
 export interface PluginFilterInput {
   active?: boolean | null;
   search?: string | null;
@@ -1015,6 +1184,7 @@ export interface ProductFilterInput {
   attributes?: (AttributeInput | null)[] | null;
   stockAvailability?: StockAvailability | null;
   productType?: string | null;
+  stocks?: ProductStockFilterInput | null;
   search?: string | null;
   minimalPrice?: PriceRangeInput | null;
   productTypes?: (string | null)[] | null;
@@ -1026,6 +1196,11 @@ export interface ProductOrder {
   field?: ProductOrderField | null;
 }
 
+export interface ProductStockFilterInput {
+  warehouseIds?: string[] | null;
+  quantity?: IntRangeInput | null;
+}
+
 export interface ProductTypeFilterInput {
   search?: string | null;
   configurable?: ProductTypeConfigurable | null;
@@ -1035,6 +1210,7 @@ export interface ProductTypeFilterInput {
 
 export interface ProductTypeInput {
   name?: string | null;
+  slug?: string | null;
   hasVariants?: boolean | null;
   productAttributes?: (string | null)[] | null;
   variantAttributes?: (string | null)[] | null;
@@ -1054,9 +1230,9 @@ export interface ProductVariantBulkCreateInput {
   costPrice?: any | null;
   priceOverride?: any | null;
   sku: string;
-  quantity?: number | null;
   trackInventory?: boolean | null;
   weight?: any | null;
+  stocks?: StockInput[] | null;
 }
 
 export interface ProductVariantCreateInput {
@@ -1064,10 +1240,10 @@ export interface ProductVariantCreateInput {
   costPrice?: any | null;
   priceOverride?: any | null;
   sku?: string | null;
-  quantity?: number | null;
   trackInventory?: boolean | null;
   weight?: any | null;
   product: string;
+  stocks?: StockInput[] | null;
 }
 
 export interface ProductVariantInput {
@@ -1075,7 +1251,6 @@ export interface ProductVariantInput {
   costPrice?: any | null;
   priceOverride?: any | null;
   sku?: string | null;
-  quantity?: number | null;
   trackInventory?: boolean | null;
   weight?: any | null;
 }
@@ -1145,10 +1320,19 @@ export interface ShippingPriceInput {
   shippingZone?: string | null;
 }
 
-export interface ShippingZoneInput {
+export interface ShippingZoneCreateInput {
   name?: string | null;
   countries?: (string | null)[] | null;
   default?: boolean | null;
+  addWarehouses?: (string | null)[] | null;
+}
+
+export interface ShippingZoneUpdateInput {
+  name?: string | null;
+  countries?: (string | null)[] | null;
+  default?: boolean | null;
+  addWarehouses?: (string | null)[] | null;
+  removeWarehouses?: (string | null)[] | null;
 }
 
 export interface ShopSettingsInput {
@@ -1178,22 +1362,28 @@ export interface StaffCreateInput {
   email?: string | null;
   isActive?: boolean | null;
   note?: string | null;
-  permissions?: (PermissionEnum | null)[] | null;
+  addGroups?: string[] | null;
   redirectUrl?: string | null;
 }
 
-export interface StaffInput {
+export interface StaffUpdateInput {
   firstName?: string | null;
   lastName?: string | null;
   email?: string | null;
   isActive?: boolean | null;
   note?: string | null;
-  permissions?: (PermissionEnum | null)[] | null;
+  addGroups?: string[] | null;
+  removeGroups?: string[] | null;
 }
 
 export interface StaffUserInput {
   status?: StaffMemberStatus | null;
   search?: string | null;
+}
+
+export interface StockInput {
+  warehouse: string;
+  quantity?: number | null;
 }
 
 export interface TranslationInput {
@@ -1252,11 +1442,50 @@ export interface VoucherSortingInput {
   field: VoucherSortField;
 }
 
+export interface WarehouseAddressInput {
+  streetAddress1: string;
+  streetAddress2?: string | null;
+  city: string;
+  cityArea?: string | null;
+  postalCode?: string | null;
+  country: CountryCode;
+  countryArea?: string | null;
+  phone?: string | null;
+}
+
+export interface WarehouseCreateInput {
+  slug?: string | null;
+  companyName?: string | null;
+  email?: string | null;
+  name: string;
+  address: WarehouseAddressInput;
+  shippingZones?: (string | null)[] | null;
+}
+
+export interface WarehouseFilterInput {
+  search?: string | null;
+  ids?: (string | null)[] | null;
+}
+
+export interface WarehouseSortingInput {
+  direction: OrderDirection;
+  field: WarehouseSortField;
+}
+
+export interface WarehouseUpdateInput {
+  slug?: string | null;
+  companyName?: string | null;
+  email?: string | null;
+  name?: string | null;
+  address?: WarehouseAddressInput | null;
+}
+
 export interface WebhookCreateInput {
   name?: string | null;
   targetUrl?: string | null;
   events?: (WebhookEventTypeEnum | null)[] | null;
   serviceAccount?: string | null;
+  app?: string | null;
   isActive?: boolean | null;
   secretKey?: string | null;
 }
@@ -1276,6 +1505,7 @@ export interface WebhookUpdateInput {
   targetUrl?: string | null;
   events?: (WebhookEventTypeEnum | null)[] | null;
   serviceAccount?: string | null;
+  app?: string | null;
   isActive?: boolean | null;
   secretKey?: string | null;
 }

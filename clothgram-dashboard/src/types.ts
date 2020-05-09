@@ -1,13 +1,13 @@
 import { MutationResult } from "react-apollo";
 
-import { User_permissions } from "./auth/types/User";
+import { User_userPermissions } from "./auth/types/User";
 import { ConfirmButtonTransitionState } from "./components/ConfirmButton";
 import { IFilter } from "./components/Filter";
 import { MultiAutocompleteChoiceType } from "./components/MultiAutocompleteSelectField";
 
 export interface UserError {
-  field: string;
-  message: string;
+  field: string | null;
+  message?: string;
 }
 
 export interface DialogProps {
@@ -31,11 +31,13 @@ export enum ListViews {
   PAGES_LIST = "PAGES_LIST",
   PLUGINS_LIST = "PLUGIN_LIST",
   PRODUCT_LIST = "PRODUCT_LIST",
+  PERMISSION_GROUP_LIST = "PERMISSION_GROUP_LIST",
   PRODUCT_TYPE_LIST = "PRODUCT_TYPE_LIST",
   SALES_LIST = "SALES_LIST",
   SHIPPING_METHODS_LIST = "SHIPPING_METHODS_LIST",
   STAFF_MEMBERS_LIST = "STAFF_MEMBERS_LIST",
   VOUCHER_LIST = "VOUCHER_LIST",
+  WAREHOUSE_LIST = "WAREHOUSE_LIST",
   WEBHOOK_LIST = "WEBHOOK_LIST"
 }
 
@@ -60,6 +62,13 @@ export interface SortPage<TSortKey extends string> {
   sort: Sort<TSortKey>;
   onSort: (field: TSortKey, id?: string) => void;
 }
+
+/**
+ * @param toggle Will be use to change status of item
+ * @param isChecked Returns true for ids of chosen items
+ * @param selected  Number of chosen items.
+ */
+
 export interface ListActionsWithoutToolbar {
   toggle: (id: string) => void;
   toggleAll: (items: React.ReactNodeArray, selected: number) => void;
@@ -79,9 +88,11 @@ export interface PageListProps<TColumns extends string = string>
   onAdd: () => void;
 }
 
-export interface SearchPageProps {
-  initialSearch: string;
+export interface SearchProps {
   onSearchChange: (value: string) => void;
+}
+export interface SearchPageProps extends SearchProps {
+  initialSearch: string;
 }
 export interface FilterPageProps<TKeys extends string, TOpts extends object>
   extends FilterProps<TKeys>,
@@ -115,8 +126,6 @@ export interface PartialMutationProviderOutput<
 export interface Node {
   id: string;
 }
-
-export type FormErrors<TKeys extends string> = Partial<Record<TKeys, string>>;
 
 export type Pagination = Partial<{
   after: string;
@@ -167,7 +176,7 @@ export interface FetchMoreProps {
 export type TabActionDialog = "save-search" | "delete-search";
 
 export interface UserPermissionProps {
-  userPermissions: User_permissions[];
+  userPermissions: User_userPermissions[];
 }
 
 export interface MutationResultAdditionalProps {

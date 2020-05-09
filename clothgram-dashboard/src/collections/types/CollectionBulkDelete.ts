@@ -2,19 +2,21 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { ProductErrorCode } from "./../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: CollectionBulkDelete
 // ====================================================
 
 export interface CollectionBulkDelete_collectionBulkDelete_errors {
-  __typename: "Error";
+  __typename: "ProductError";
+  code: ProductErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface CollectionBulkDelete_collectionBulkDelete {
   __typename: "CollectionBulkDelete";
-  errors: CollectionBulkDelete_collectionBulkDelete_errors[] | null;
+  errors: CollectionBulkDelete_collectionBulkDelete_errors[];
 }
 
 export interface CollectionBulkDelete {

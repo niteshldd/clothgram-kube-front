@@ -1,3 +1,6 @@
+import React from "react";
+import { FormattedMessage, useIntl } from "react-intl";
+
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -5,31 +8,31 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import React from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-
 import ConfirmButton, {
   ConfirmButtonTransitionState
 } from "@saleor/components/ConfirmButton";
-import { ControlledCheckbox } from "@saleor/components/ControlledCheckbox";
 import Form from "@saleor/components/Form";
 import FormSpacer from "@saleor/components/FormSpacer";
 import { buttonMessages, commonMessages } from "@saleor/intl";
-import { UserError } from "../../../types";
+import useModalDialogErrors from "@saleor/hooks/useModalDialogErrors";
+import { getFormErrors } from "@saleor/utils/errors";
+import { StaffErrorFragment } from "@saleor/staff/types/StaffErrorFragment";
+import { SearchPermissionGroups_search_edges_node } from "@saleor/searches/types/SearchPermissionGroups";
+import { FetchMoreProps, SearchPageProps } from "@saleor/types";
+import getStaffErrorMessage from "@saleor/utils/errors/staff";
 
-export interface FormData {
+export interface AddMemberFormData {
   email: string;
   firstName: string;
-  fullAccess: boolean;
   lastName: string;
+  permissionGroups: string[];
 }
 
-const initialForm: FormData = {
+const initialForm: AddMemberFormData = {
   email: "",
   firstName: "",
-  fullAccess: false,
-  lastName: ""
+  lastName: "",
+  permissionGroups: []
 };
 
 const useStyles = makeStyles(
@@ -54,24 +57,32 @@ const useStyles = makeStyles(
   { name: "StaffAddMemberDialog" }
 );
 
-interface StaffAddMemberDialogProps {
+interface StaffAddMemberDialogProps extends SearchPageProps {
+  availablePermissionGroups: SearchPermissionGroups_search_edges_node[];
   confirmButtonState: ConfirmButtonTransitionState;
-  errors: UserError[];
+  disabled: boolean;
+  errors: StaffErrorFragment[];
+  fetchMorePermissionGroups: FetchMoreProps;
   open: boolean;
   onClose: () => void;
-  onConfirm: (data: FormData) => void;
+  onConfirm: (data: AddMemberFormData) => void;
 }
 
 const StaffAddMemberDialog: React.FC<StaffAddMemberDialogProps> = props => {
-  const { confirmButtonState, errors, open, onClose, onConfirm } = props;
-  const classes = useStyles(props);
+  const { confirmButtonState, errors, onClose, onConfirm, open } = props;
 
+  const classes = useStyles(props);
+  const dialogErrors = useModalDialogErrors(errors, open);
   const intl = useIntl();
+  const formErrors = getFormErrors(
+    ["firstName", "lastName", "email"],
+    dialogErrors
+  );
 
   return (
     <Dialog onClose={onClose} open={open}>
-      <Form errors={errors} initial={initialForm} onSubmit={onConfirm}>
-        {({ change, data, errors: formErrors, hasChanged }) => (
+      <Form initial={initialForm} onSubmit={onConfirm}>
+        {({ change, data: formData, hasChanged }) => (
           <>
             <DialogTitle>
               <FormattedMessage
@@ -83,20 +94,26 @@ const StaffAddMemberDialog: React.FC<StaffAddMemberDialogProps> = props => {
               <div className={classes.textFieldGrid}>
                 <TextField
                   error={!!formErrors.firstName}
-                  helperText={formErrors.firstName}
+                  helperText={
+                    !!formErrors.firstName &&
+                    getStaffErrorMessage(formErrors.firstName, intl)
+                  }
                   label={intl.formatMessage(commonMessages.firstName)}
                   name="firstName"
                   type="text"
-                  value={data.firstName}
+                  value={formData.firstName}
                   onChange={change}
                 />
                 <TextField
                   error={!!formErrors.lastName}
-                  helperText={formErrors.lastName}
+                  helperText={
+                    !!formErrors.lastName &&
+                    getStaffErrorMessage(formErrors.lastName, intl)
+                  }
                   label={intl.formatMessage(commonMessages.lastName)}
                   name="lastName"
                   type="text"
-                  value={data.lastName}
+                  value={formData.lastName}
                   onChange={change}
                 />
               </div>
@@ -104,31 +121,18 @@ const StaffAddMemberDialog: React.FC<StaffAddMemberDialogProps> = props => {
               <TextField
                 error={!!formErrors.email}
                 fullWidth
-                helperText={formErrors.email}
+                helperText={
+                  !!formErrors.email &&
+                  getStaffErrorMessage(formErrors.email, intl)
+                }
                 label={intl.formatMessage(commonMessages.email)}
                 name="email"
                 type="email"
-                value={data.email}
+                value={formData.email}
                 onChange={change}
               />
             </DialogContent>
             <hr className={classes.hr} />
-            <DialogContent>
-              <Typography className={classes.sectionTitle}>
-                <FormattedMessage defaultMessage="Permissions" />
-              </Typography>
-              <Typography>
-                <FormattedMessage defaultMessage="Expand or restrict user’s permissions to access certain part of saleor system." />
-              </Typography>
-              <ControlledCheckbox
-                checked={data.fullAccess}
-                label={intl.formatMessage({
-                  defaultMessage: "User has full access"
-                })}
-                name="fullAccess"
-                onChange={change}
-              />
-            </DialogContent>
             <DialogActions>
               <Button onClick={onClose}>
                 <FormattedMessage {...buttonMessages.back} />

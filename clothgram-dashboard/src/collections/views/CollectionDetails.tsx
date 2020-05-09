@@ -16,6 +16,7 @@ import usePaginator, {
 import { commonMessages } from "@saleor/intl";
 import useProductSearch from "@saleor/searches/useProductSearch";
 import createDialogActionHandlers from "@saleor/utils/handlers/dialogActionHandlers";
+import NotFoundPage from "@saleor/components/NotFoundPage";
 import { getMutationState, maybe } from "../../misc";
 import { productUrl } from "../../products/urls";
 import { CollectionInput } from "../../types/globalTypes";
@@ -34,6 +35,7 @@ import {
   CollectionUrlQueryParams,
   CollectionUrlDialog
 } from "../urls";
+import { CollectionUpdateWithHomepage } from "../types/CollectionUpdateWithHomepage";
 
 interface CollectionDetailsProps {
   id: string;
@@ -61,14 +63,19 @@ export const CollectionDetails: React.FC<CollectionDetailsProps> = ({
   >(navigate, params => collectionUrl(id, params), params);
 
   const paginationState = createPaginationState(PAGINATE_BY, params);
+  const handleBack = () => navigate(collectionListUrl());
 
   return (
     <TypedCollectionDetailsQuery
       displayLoader
       variables={{ id, ...paginationState }}
-      require={["collection"]}
     >
       {({ data, loading }) => {
+        const collection = data?.collection;
+
+        if (collection === null) {
+          return <NotFoundPage onBack={handleBack} />;
+        }
         const handleCollectionUpdate = (data: CollectionUpdate) => {
           if (data.collectionUpdate.errors.length === 0) {
             notify({
@@ -82,9 +89,16 @@ export const CollectionDetails: React.FC<CollectionDetailsProps> = ({
             );
             if (backgroundImageError) {
               notify({
-                text: backgroundImageError.message
+                text: intl.formatMessage(commonMessages.somethingWentWrong)
               });
             }
+          }
+        };
+        const handleCollectioUpdateWithHomepage = (
+          data: CollectionUpdateWithHomepage
+        ) => {
+          if (data.homepageCollectionUpdate.errors.length === 0) {
+            handleCollectionUpdate(data);
           }
         };
 
@@ -124,6 +138,7 @@ export const CollectionDetails: React.FC<CollectionDetailsProps> = ({
         return (
           <CollectionOperations
             onUpdate={handleCollectionUpdate}
+            onUpdateWithCollection={handleCollectioUpdateWithHomepage}
             onProductAssign={handleProductAssign}
             onProductUnassign={handleProductUnassign}
             onRemove={handleCollectionRemove}
@@ -196,9 +211,12 @@ export const CollectionDetails: React.FC<CollectionDetailsProps> = ({
                   <WindowTitle title={maybe(() => data.collection.name)} />
                   <CollectionDetailsPage
                     onAdd={() => openModal("assign")}
-                    onBack={() => navigate(collectionListUrl())}
+                    onBack={handleBack}
                     disabled={loading}
-                    collection={maybe(() => data.collection)}
+                    collection={data?.collection}
+                    errors={
+                      updateCollection.opts?.data?.collectionUpdate.errors || []
+                    }
                     isFeatured={maybe(
                       () =>
                         data.shop.homepageCollection.id === data.collection.id,
@@ -309,7 +327,7 @@ export const CollectionDetails: React.FC<CollectionDetailsProps> = ({
                   >
                     <DialogContentText>
                       <FormattedMessage
-                        defaultMessage="Are you sure you want to unassign {counter,plural,one{this product} other{{displayQuantity} products}}?"
+                        defaultMessage="{counter,plural,one{Are you sure you want to unassign this product?} other{Are you sure you want to unassign {displayQuantity} products?}}"
                         values={{
                           counter: maybe(() => params.ids.length),
                           displayQuantity: (

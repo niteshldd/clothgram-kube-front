@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { DraftOrderInput, OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
+import { DraftOrderInput, OrderErrorCode, OrderEventsEmailsEnum, OrderEventsEnum, FulfillmentStatus, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: OrderDraftUpdate
 // ====================================================
 
 export interface OrderDraftUpdate_draftOrderUpdate_errors {
-  __typename: "Error";
+  __typename: "OrderError";
+  code: OrderErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface OrderDraftUpdate_draftOrderUpdate_order_billingAddress_country {
@@ -97,6 +97,12 @@ export interface OrderDraftUpdate_draftOrderUpdate_order_fulfillments_lines {
   orderLine: OrderDraftUpdate_draftOrderUpdate_order_fulfillments_lines_orderLine | null;
 }
 
+export interface OrderDraftUpdate_draftOrderUpdate_order_fulfillments_warehouse {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
 export interface OrderDraftUpdate_draftOrderUpdate_order_fulfillments {
   __typename: "Fulfillment";
   id: string;
@@ -104,6 +110,7 @@ export interface OrderDraftUpdate_draftOrderUpdate_order_fulfillments {
   fulfillmentOrder: number;
   status: FulfillmentStatus;
   trackingNumber: string;
+  warehouse: OrderDraftUpdate_draftOrderUpdate_order_fulfillments_warehouse | null;
 }
 
 export interface OrderDraftUpdate_draftOrderUpdate_order_lines_unitPrice_gross {
@@ -268,7 +275,7 @@ export interface OrderDraftUpdate_draftOrderUpdate_order {
 
 export interface OrderDraftUpdate_draftOrderUpdate {
   __typename: "DraftOrderUpdate";
-  errors: OrderDraftUpdate_draftOrderUpdate_errors[] | null;
+  errors: OrderDraftUpdate_draftOrderUpdate_errors[];
   order: OrderDraftUpdate_draftOrderUpdate_order | null;
 }
 

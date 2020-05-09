@@ -1,4 +1,5 @@
 import { PermissionEnum } from "@saleor/types/globalTypes";
+
 import { ServiceDetails_serviceAccount } from "./types/ServiceDetails";
 import { ServiceList_serviceAccounts_edges_node } from "./types/ServiceList";
 
@@ -30,7 +31,7 @@ export const service: ServiceDetails_serviceAccount = {
   name: "Magento Importer",
   permissions: [
     {
-      __typename: "PermissionDisplay" as "PermissionDisplay",
+      __typename: "Permission" as "Permission",
       code: PermissionEnum.MANAGE_PRODUCTS,
       name: "Manage products."
     }

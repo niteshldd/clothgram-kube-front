@@ -10,7 +10,8 @@ import FormSpacer from "@saleor/components/FormSpacer";
 import RichTextEditor from "@saleor/components/RichTextEditor";
 import { commonMessages } from "@saleor/intl";
 import { maybe } from "@saleor/misc";
-import { FormErrors } from "@saleor/types";
+import { getProductErrorMessage, getFormErrors } from "@saleor/utils/errors";
+import { ProductErrorFragment } from "@saleor/attributes/types/ProductErrorFragment";
 import { CollectionDetails_collection } from "../../types/CollectionDetails";
 
 export interface CollectionDetailsProps {
@@ -20,7 +21,7 @@ export interface CollectionDetailsProps {
     name: string;
   };
   disabled: boolean;
-  errors: FormErrors<"descriptionJson" | "name">;
+  errors: ProductErrorFragment[];
   onChange: (event: React.ChangeEvent<any>) => void;
 }
 
@@ -32,6 +33,8 @@ const CollectionDetails: React.FC<CollectionDetailsProps> = ({
   errors
 }) => {
   const intl = useIntl();
+
+  const formErrors = getFormErrors(["name", "descriptionJson"], errors);
 
   return (
     <Card>
@@ -48,14 +51,14 @@ const CollectionDetails: React.FC<CollectionDetailsProps> = ({
           disabled={disabled}
           value={data.name}
           onChange={onChange}
-          error={!!errors.name}
-          helperText={errors.name}
+          error={!!formErrors.name}
+          helperText={getProductErrorMessage(formErrors.name, intl)}
           fullWidth
         />
         <FormSpacer />
         <RichTextEditor
-          error={!!errors.descriptionJson}
-          helperText={errors.descriptionJson}
+          error={!!formErrors.descriptionJson}
+          helperText={getProductErrorMessage(formErrors.descriptionJson, intl)}
           initial={maybe(() => JSON.parse(collection.descriptionJson))}
           label={intl.formatMessage(commonMessages.description)}
           name="description"

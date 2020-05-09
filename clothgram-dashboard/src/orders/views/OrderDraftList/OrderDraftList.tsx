@@ -69,7 +69,7 @@ export const OrderDraftList: React.FC<OrderDraftListProps> = ({ params }) => {
   const handleCreateOrderCreateSuccess = (data: OrderDraftCreate) => {
     notify({
       text: intl.formatMessage({
-        defaultMessage: "Order draft succesfully created"
+        defaultMessage: "Order draft successfully created"
       })
     });
     navigate(orderUrl(data.draftOrderCreate.order.id));
@@ -229,7 +229,7 @@ export const OrderDraftList: React.FC<OrderDraftListProps> = ({ params }) => {
             >
               <DialogContentText>
                 <FormattedMessage
-                  defaultMessage="Are you sure you want to delete {counter,plural,one{this order draft} other{{displayQuantity} orderDrafts}}?"
+                  defaultMessage="{counter,plural,one{Are you sure you want to delete this order draft?} other{Are you sure you want to delete {displayQuantity} order drafts?}}"
                   description="dialog content"
                   values={{
                     counter: maybe(() => params.ids.length),

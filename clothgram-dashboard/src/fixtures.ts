@@ -9,6 +9,7 @@ import {
   TabPageProps
 } from "./types";
 import { PermissionEnum } from "./types/globalTypes";
+import { User_userPermissions } from "./auth/types/User";
 
 const pageInfo = {
   hasNextPage: true,
@@ -365,19 +366,142 @@ export const permissions: ShopInfo_shop_permissions[] = [
     name: "Manage plugins."
   },
   {
-    code: PermissionEnum.MANAGE_SERVICE_ACCOUNTS,
-    name: "Manage service accounts."
+    code: PermissionEnum.MANAGE_APPS,
+    name: "Manage apps."
   },
   {
     code: PermissionEnum.MANAGE_WEBHOOKS,
     name: "Manage webhooks."
   }
 ].map(perm => ({
-  __typename: "PermissionDisplay" as "PermissionDisplay",
+  __typename: "Permission" as "Permission",
   ...perm
 }));
 
 export const date = {
   from: "2019-12-09",
   to: "2019-12-38"
+};
+
+export const adminUserPermissions: User_userPermissions[] = [
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_CHECKOUTS,
+    name: "Manage checkouts"
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_CHECKOUTS,
+    name: "Manage checkouts"
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_DISCOUNTS,
+    name: "Manage sales and vouchers."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_GIFT_CARD,
+    name: "Manage gift cards."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_GIFT_CARD,
+    name: "Manage gift cards."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_MENUS,
+    name: "Manage navigation."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_ORDERS,
+    name: "Manage orders."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_ORDERS,
+    name: "Manage orders."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_PAGES,
+    name: "Manage pages."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_PLUGINS,
+    name: "Manage plugins"
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_PRODUCTS,
+    name: "Manage products."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_SERVICE_ACCOUNTS,
+    name: "Manage service account"
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_SERVICE_ACCOUNTS,
+    name: "Manage service account"
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_SETTINGS,
+    name: "Manage settings."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_SHIPPING,
+    name: "Manage shipping."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_STAFF,
+    name: "Manage staff."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_STAFF,
+    name: "Manage staff."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_TRANSLATIONS,
+    name: "Manage translations."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_USERS,
+    name: "Manage customers."
+  },
+  {
+    __typename: "UserPermission",
+    code: PermissionEnum.MANAGE_USERS,
+    name: "Manage customers."
+  }
+];
+
+export const address = {
+  __typename: "Address" as "Address",
+  city: "Port Danielshire",
+  cityArea: "",
+  companyName: "",
+  country: {
+    __typename: "CountryDisplay" as "CountryDisplay",
+    code: "SE",
+    country: "Szwecja"
+  },
+  countryArea: "",
+  firstName: "Elizabeth",
+  id: "QWRkcmVzczoy",
+  lastName: "Vaughn",
+  phone: "",
+  postalCode: "52203",
+  streetAddress1: "419 Ruiz Orchard Apt. 199",
+  streetAddress2: "0238 Cremin Freeway"
 };

@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { ShippingMethodTypeEnum } from "./../../types/globalTypes";
+import { ShippingErrorCode, ShippingMethodTypeEnum } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: DeleteShippingRate
 // ====================================================
 
 export interface DeleteShippingRate_shippingPriceDelete_errors {
-  __typename: "Error";
+  __typename: "ShippingError";
+  code: ShippingErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface DeleteShippingRate_shippingPriceDelete_shippingZone_countries {
@@ -62,6 +62,12 @@ export interface DeleteShippingRate_shippingPriceDelete_shippingZone_shippingMet
   type: ShippingMethodTypeEnum | null;
 }
 
+export interface DeleteShippingRate_shippingPriceDelete_shippingZone_warehouses {
+  __typename: "Warehouse";
+  id: string;
+  name: string;
+}
+
 export interface DeleteShippingRate_shippingPriceDelete_shippingZone {
   __typename: "ShippingZone";
   id: string;
@@ -69,11 +75,12 @@ export interface DeleteShippingRate_shippingPriceDelete_shippingZone {
   name: string;
   default: boolean;
   shippingMethods: (DeleteShippingRate_shippingPriceDelete_shippingZone_shippingMethods | null)[] | null;
+  warehouses: (DeleteShippingRate_shippingPriceDelete_shippingZone_warehouses | null)[] | null;
 }
 
 export interface DeleteShippingRate_shippingPriceDelete {
   __typename: "ShippingPriceDelete";
-  errors: DeleteShippingRate_shippingPriceDelete_errors[] | null;
+  errors: DeleteShippingRate_shippingPriceDelete_errors[];
   shippingZone: DeleteShippingRate_shippingPriceDelete_shippingZone | null;
 }
 

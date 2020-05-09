@@ -14,8 +14,9 @@ import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import { Tab, TabContainer } from "@saleor/components/Tab";
 import { RequirementsPicker } from "@saleor/discounts/types";
 import { sectionNames } from "@saleor/intl";
+import { DiscountErrorFragment } from "@saleor/discounts/types/DiscountErrorFragment";
 import { maybe, splitDateTime } from "../../../misc";
-import { ListProps, TabListActions, UserError } from "../../../types";
+import { ListProps, TabListActions } from "../../../types";
 import {
   DiscountValueTypeEnum,
   VoucherTypeEnum
@@ -72,7 +73,7 @@ export interface VoucherDetailsPageProps
     > {
   activeTab: VoucherDetailsPageTab;
   defaultCurrency: string;
-  errors: UserError[];
+  errors: DiscountErrorFragment[];
   saveButtonBarState: ConfirmButtonTransitionState;
   voucher: VoucherDetails_voucher;
   onBack: () => void;
@@ -166,8 +167,8 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
   };
 
   return (
-    <Form errors={errors} initial={initialForm} onSubmit={onSubmit}>
-      {({ change, data, errors: formErrors, hasChanged, submit }) => (
+    <Form initial={initialForm} onSubmit={onSubmit}>
+      {({ change, data, hasChanged, submit }) => (
         <Container>
           <AppHeader onBack={onBack}>
             {intl.formatMessage(sectionNames.vouchers)}
@@ -178,7 +179,7 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
               <VoucherInfo
                 data={data}
                 disabled={disabled}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
                 variant="update"
               />
@@ -186,7 +187,7 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
               <VoucherTypes
                 data={data}
                 disabled={disabled}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
               <CardSpacer />
@@ -195,7 +196,7 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
                   data={data}
                   disabled={disabled}
                   defaultCurrency={defaultCurrency}
-                  errors={formErrors}
+                  errors={errors}
                   onChange={change}
                   variant="update"
                 />
@@ -337,7 +338,7 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
                 data={data}
                 disabled={disabled}
                 defaultCurrency={defaultCurrency}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
               <CardSpacer />
@@ -345,7 +346,7 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
                 data={data}
                 disabled={disabled}
                 defaultCurrency={defaultCurrency}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
               <CardSpacer />
@@ -353,7 +354,7 @@ const VoucherDetailsPage: React.FC<VoucherDetailsPageProps> = ({
                 data={data}
                 disabled={disabled}
                 defaultCurrency={defaultCurrency}
-                errors={formErrors}
+                errors={errors}
                 onChange={change}
               />
             </div>

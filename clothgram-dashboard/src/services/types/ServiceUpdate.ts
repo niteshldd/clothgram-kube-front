@@ -2,20 +2,20 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { ServiceAccountInput, PermissionEnum } from "./../../types/globalTypes";
+import { ServiceAccountInput, AccountErrorCode, PermissionEnum } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: ServiceUpdate
 // ====================================================
 
 export interface ServiceUpdate_serviceAccountUpdate_errors {
-  __typename: "Error";
+  __typename: "AccountError";
+  code: AccountErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface ServiceUpdate_serviceAccountUpdate_serviceAccount_permissions {
-  __typename: "PermissionDisplay";
+  __typename: "Permission";
   code: PermissionEnum;
   name: string;
 }
@@ -38,7 +38,7 @@ export interface ServiceUpdate_serviceAccountUpdate_serviceAccount {
 
 export interface ServiceUpdate_serviceAccountUpdate {
   __typename: "ServiceAccountUpdate";
-  errors: ServiceUpdate_serviceAccountUpdate_errors[] | null;
+  errors: ServiceUpdate_serviceAccountUpdate_errors[];
   serviceAccount: ServiceUpdate_serviceAccountUpdate_serviceAccount | null;
 }
 

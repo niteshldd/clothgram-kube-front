@@ -1,5 +1,6 @@
 import gql from "graphql-tag";
 
+import { accountErrorFragment } from "@saleor/customers/mutations";
 import { TypedMutation } from "../mutations";
 import { serviceDetailsFragment, serviceFragment } from "./queries";
 import { ServiceCreate, ServiceCreateVariables } from "./types/ServiceCreate";
@@ -15,14 +16,14 @@ import {
 import { ServiceUpdate, ServiceUpdateVariables } from "./types/ServiceUpdate";
 
 const serviceCreateMutation = gql`
+  ${accountErrorFragment}
   ${serviceFragment}
   mutation ServiceCreate($input: ServiceAccountInput!) {
     serviceAccountCreate(input: $input) {
-      errors {
-        field
-        message
-      }
       authToken
+      errors: accountErrors {
+        ...AccountErrorFragment
+      }
       serviceAccount {
         ...ServiceFragment
       }
@@ -36,11 +37,11 @@ export const ServiceCreateMutation = TypedMutation<
 >(serviceCreateMutation);
 
 const serviceDeleteMutation = gql`
+  ${accountErrorFragment}
   mutation ServiceDelete($id: ID!) {
     serviceAccountDelete(id: $id) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountErrorFragment
       }
     }
   }
@@ -51,12 +52,12 @@ export const ServiceDeleteMutation = TypedMutation<
 >(serviceDeleteMutation);
 
 const serviceUpdateMutation = gql`
+  ${accountErrorFragment}
   ${serviceDetailsFragment}
   mutation ServiceUpdate($id: ID!, $input: ServiceAccountInput!) {
     serviceAccountUpdate(id: $id, input: $input) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountErrorFragment
       }
       serviceAccount {
         ...ServiceDetailsFragment
@@ -71,13 +72,13 @@ export const ServiceUpdateMutation = TypedMutation<
 >(serviceUpdateMutation);
 
 const serviceTokenCreate = gql`
+  ${accountErrorFragment}
   mutation ServiceTokenCreate($input: ServiceAccountTokenInput!) {
     serviceAccountTokenCreate(input: $input) {
-      errors {
-        field
-        message
-      }
       authToken
+      errors: accountErrors {
+        ...AccountErrorFragment
+      }
     }
   }
 `;
@@ -87,11 +88,11 @@ export const ServiceTokenCreateMutation = TypedMutation<
 >(serviceTokenCreate);
 
 const serviceTokenDelete = gql`
+  ${accountErrorFragment}
   mutation ServiceTokenDelete($id: ID!) {
     serviceAccountTokenDelete(id: $id) {
-      errors {
-        field
-        message
+      errors: accountErrors {
+        ...AccountErrorFragment
       }
     }
   }

@@ -2,16 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { OrderAddNoteInput, OrderEventsEmailsEnum, OrderEventsEnum } from "./../../types/globalTypes";
+import { OrderAddNoteInput, OrderErrorCode, OrderEventsEmailsEnum, OrderEventsEnum } from "./../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: OrderAddNote
 // ====================================================
 
 export interface OrderAddNote_orderAddNote_errors {
-  __typename: "Error";
+  __typename: "OrderError";
+  code: OrderErrorCode;
   field: string | null;
-  message: string | null;
 }
 
 export interface OrderAddNote_orderAddNote_order_events_user {
@@ -41,7 +41,7 @@ export interface OrderAddNote_orderAddNote_order {
 
 export interface OrderAddNote_orderAddNote {
   __typename: "OrderAddNote";
-  errors: OrderAddNote_orderAddNote_errors[] | null;
+  errors: OrderAddNote_orderAddNote_errors[];
   order: OrderAddNote_orderAddNote_order | null;
 }
 
