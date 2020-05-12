@@ -1,50 +1,144 @@
 
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: clothgram-server-deployment
-#   namespace: development
-# spec:
-#   replicas: 1
-#   strategy:
-#     type: RollingUpdate
-#   selector:
-#     matchLabels:
-#       component: clothgram-server
-#   template:
-#     metadata:
-#       labels:
-#         component: clothgram-server
-#     spec:
-#       volumes:
-#         - name: clothgram-media
-#           persistentVolumeClaim:
-#             claimName: jenkins-storage
-#       containers:
-#         - name: clothgram-server
-#           image: niteshldd/clothgram:latest
-#           volumeMounts:
-#           - name: clothgram-media
-#             mountPath: /app/media/
-#             subPath: cloth-media
-#           # command: ["python3 manage.py migrate --no-input && python3 manage.py collectstatic --noinput && python3 manage.py populatedb --createsuperuser"]
-#           ports:
-#             - containerPort: 8000
-#           env:
-#             - name: DATABASE_URL
-#               value: postgres://postgres:pg12345nitesh@postrgess-cluster-ip-services/postgres
-#             - name: CELERY_BROKER_URL
-#               value: redis://redis-cluster-ip-services:6379/1
-#             - name: SECRET_KEY
-#               value: 'niteshkwhdiw'
-#             - name: JWT_VERIFY_EXPIRATION
-#               value: 'True'
-#             - name: ALLOWED_HOSTS
-#               value: '*'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clothgram-api-deployment
+  namespace: development
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: clothgram-api-test
+  template:
+    metadata:
+      labels:
+        component: clothgram-api-test
+    spec:
+      # volumes:
+      #   - name: clothgram-media
+      #     persistentVolumeClaim:
+      #       claimName: jenkins-storage
+      containers:
+        - name: clothgram-api-test
+          imagePullPolicy: Always
+          # image: niteshldd/clothgram:latest
+          image: niteshldd/saleor_test
+          resources:
+            limits:
+              cpu: 400m
+            requests:
+              cpu: 100m              
+          args:
+          - python
+          - manage.py
+          - runserver
+          - 0.0.0.0:8000
+          # volumeMounts:
+          # - name: clothgram-media
+          #   mountPath: /app/media/
+          #   subPath: cloth-media
+          # command: ["python3 manage.py migrate --no-input && python3 manage.py collectstatic --noinput && python3 manage.py populatedb --createsuperuser"]
+          ports:
+            - containerPort: 8000
+          env:
+            - name: RAZORPAY_PUBLIC_KEY
+              value: "rzp_live_8ZJgrCfdqEWl4k"
+            - name: RAZORPAY_SECRET_KEY	
+              value: "TuR9pNOD9vf783MO73TYFx2I"
+            - name: ALLOWED_CLIENT_HOSTS
+              value: "*"
+            - name: DEFAULT_COUNTRY
+              value: IN
+            - name: VATLAYER_ACCESS_KEY
+            - name: DEFAULT_CURRENCY
+              value: INR
+            - name: DATABASE_URL
+              value: postgres://postgres:pg12345nitesh@postrgess-dev-cluster-ip-services/test_clothgram
+            - name: DASHBOARD_URL
+              value: http://localhost:90
+            - name: STOREFRONT_URL
+              value: http://localhost:80
+            - name: CELERY_BROKER_URL
+              value: redis://redis-cluster-ip-services:6379/1
+            - name: SECRET_KEY
+              value: 'niteshkwhdiw'
+            - name: JWT_VERIFY_EXPIRATION
+              value: 'True'
+            - name: ALLOWED_HOSTS
+              value: '*'
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clothgram-worker-test
+  namespace: development
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: clothgram-worker-test
+  template:
+    metadata:
+      labels:
+        component: clothgram-worker-test
+    spec:
+      # volumes:
+      #   - name: clothgram-media
+      #     persistentVolumeClaim:
+      #       claimName: jenkins-storage
+      containers:
+        - name: clothgram-worker-test
+          imagePullPolicy: Always
+          # image: niteshldd/clothgram:latest
+          image: niteshldd/saleor_test
+          args:
+          - celery
+          - -A
+          - saleor
+          - worker
+          - --app=saleor.celeryconf:app
+          - --loglevel=info
+          resources:
+            limits:
+              cpu: 400m
+            requests:
+              cpu: 100m              
+          # volumeMounts:
+          # - name: clothgram-media
+          #   mountPath: /app/media/
+          #   subPath: cloth-media
+          # command: ["python3 manage.py migrate --no-input && python3 manage.py collectstatic --noinput && python3 manage.py populatedb --createsuperuser"]
+          env:
+            - name: RAZORPAY_PUBLIC_KEY
+              value: "rzp_live_8ZJgrCfdqEWl4k"
+            - name: RAZORPAY_SECRET_KEY	
+              value: "TuR9pNOD9vf783MO73TYFx2I"
+            - name: ALLOWED_CLIENT_HOSTS
+              value: "*"
+            - name: DEFAULT_COUNTRY
+              value: IN
+            - name: VATLAYER_ACCESS_KEY
+            - name: DEFAULT_CURRENCY
+              value: INR
+            - name: DATABASE_URL
+              value: postgres://postgres:pg12345nitesh@postrgess-dev-cluster-ip-services/test_clothgram
+            - name: CELERY_BROKER_URL
+              value: redis://redis-cluster-ip-services:6379/1
+            - name: SECRET_KEY
+              value: 'niteshkwhdiw'
+            - name: JWT_VERIFY_EXPIRATION
+              value: 'True'
+            - name: ALLOWED_HOSTS
+              value: '*'
 
 
-
-# ---
+---
 
 apiVersion: apps/v1
 kind: Deployment
@@ -98,3 +192,48 @@ spec:
           ports:
            - containerPort: 90 #changing configuration in client-deployment will applied by changing the configuration
 
+
+######################POSTGRESS #################
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgress-dev-deployment
+  namespace: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      newlabels: postgress-dev
+  template:
+    metadata:
+      labels:
+        newlabels: postgress-dev
+    spec:
+      volumes:
+        - name: postgress-storage
+          persistentVolumeClaim:
+            claimName: dev-storage
+      containers:
+          - name: postgress-dev
+            image: postgres
+            ports:
+              - containerPort: 5432
+            volumeMounts:
+              - name: postgress-storage #It will same as volumes in spec so it can use same
+                mountPath: /var/lib/postgresql/data #Path to mount in container
+                subPath: postgres #It will be storage as in EBS postgress-storage/postgres
+            env:
+              - name: PGPASSWORD # name of the enviroment value as its look for same 
+                valueFrom: #we are refrencing from secret from applied by command 
+                  secretKeyRef: 
+                    name: pgpassword
+                    key: PGPASSWORD  # We can change the name of the 
+              - name: POSTGRES_PASSWORD
+                valueFrom: #we are refrencing from secret from applied by command 
+                  secretKeyRef: 
+                    name: pgpassword
+                    key: PGPASSWORD  # We can change the name of the 
+            resoursce:

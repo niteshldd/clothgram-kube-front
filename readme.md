@@ -7,6 +7,7 @@ For Frontend - https://test-clothgram.kube.rukjaana.com
 
 For Dashboard - https://test-dash-cloth.kube.rukjaana.com
 
+FOR NEW TEST API - https://api-test-clothgram.kube.rukjaana.com
 
 For older version of dashboard - https://api-clothgram.kube.rukjaana.com/dashboard/
 
