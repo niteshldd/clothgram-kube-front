@@ -7,7 +7,7 @@
   border-bottom: none;
   display: flex;
   flex-direction: row;
-  height: 5rem;
+  height: 3.55rem;
   position: relative;
 
   &__left {
@@ -45,8 +45,8 @@
       width: 4rem;
 
       @media (min-width: $small-screen) {
-        width: 4rem;
-        height: 4.5rem;
+        width: 7rem;
+        height: 3.5rem;
       }
     }
   }
