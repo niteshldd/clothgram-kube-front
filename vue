@@ -8,3 +8,6 @@ Use this to solve - https://github.com/bitnami/bitnami-docker-magento/issues/89
 $ php /opt/bitnami/magento/htdocs/bin/magento sampledata:deploy
 $ php /opt/bitnami/magento/htdocs/bin/magento setup:upgrade
 $ chown -R bitnami:daemon /opt/bitnami/magento/htdocs
+
+
+php bin/magento setup:di:compile;
